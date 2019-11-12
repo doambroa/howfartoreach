@@ -56,8 +56,13 @@ class CarsController extends AppController
         $this->set(compact('cars'));
         $this->set('_serialize', ['cars']);
 
-        $marcas = $this->Cars->find()->select(['Cars.marca'])->distinct()->toArray();
-        $fuelTypes = $this->Cars->find()->select(['Cars.combustible'])->distinct()->toArray();
+         $query = $this->Cars->find('all');
+    foreach ($query as $usersandcar) {
+        debug($usersandcar);
+    }
+
+       // $marcas = $this->Cars->find()->select(['Cars.marca'])->distinct()->toArray();
+        //$fuelTypes = $this->Cars->find()->select(['Cars.combustible'])->distinct()->toArray();
 
         // $most = $this->Cars->find()->select(['count' => $this->Cars->find()->func()->count('*')])->group(['Cars.modelo']);
         // debug($most);
@@ -66,8 +71,8 @@ class CarsController extends AppController
         // $results = $connection->execute(' SELECT modelo FROM cars WHERE (SELECT COUNT(modelo) FROM cars GROUP BY modelo'))->fetchAll('assoc');
         // debug($results);
 
-        $this->set('marcas', $marcas);
-        $this->set('fuelType', $fuelTypes);
+//        $this->set('marcas', $marcas);
+  //      $this->set('fuelType', $fuelTypes);
 
     }
 
@@ -382,18 +387,18 @@ class CarsController extends AppController
      */
     public function add()
     {
-        $cars = $this->Cars;
-        $query = $cars->find('all');
-        foreach ($query as $car) {
-            echo $car;
-        }
+        
+        debug($this->Cars->find('all')->contain(['Users']));
 
-/*
         $car = $this->Cars->newEntity();
         if ($this->request->is('post')) {
-            $car = $this->Cars->patchEntity($car, $this->request->getData());
+            $car = $this->Cars->patchEntity($car, $this->request->getData(),
+                ['associated' => [
+                    'Users.__joinData']]
+            );
 
             $car->user_id = $this->Auth->user('id'); //el usuario autenticado
+            
 
             if ($this->Cars->save($car)) {
                 $this->Flash->success(__('The car has been saved.'));
@@ -401,7 +406,7 @@ class CarsController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The car could not be saved. Please, try again.'));
-        }*/
+        }
 
         //$users = $this->Cars->Users->find('list', ['limit' => 200]);
 

@@ -88,7 +88,7 @@ FIN ADMIN -->
             </div>
         </div>
     </div>
-
+METER PRECIO POR KM
 </div>
 
 <?php////////////// REPETIMOS /////////////////////?>

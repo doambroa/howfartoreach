@@ -17,8 +17,7 @@
   <p>Car mileage real data from the real final drivers</p>      
 </div>
 <section>
-  <div class="container-fluid">
-
+  <div class="container">
   <div class="row">  
     <div class="col-md-6 double-col-text">
       <h2>From users like you</h2>
@@ -31,7 +30,7 @@
 
   <div class="row">
     <div class="col-md-6 double-col-img" style="background-image:url('img/reliable.jpg');background-position: bottom; ">
-    </div>
+</div>
 
     <div class="col-md-6 double-col-text">
       <h2>Reliable and trusty</h2>

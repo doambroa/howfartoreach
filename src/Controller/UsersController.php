@@ -71,11 +71,11 @@ class UsersController extends AppController
     
     $query = $this->Users->find('all')->contain(['Cars']);
     foreach ($query as $usersandcar) {
-        echo $usersandcar;
+        debug($usersandcar);
     }
          $this->Users->recursive = 1;
       $users = $this->Users->find('all');
-      
+      debug($users);
 
         $users = $this->Users->find('all');
         $this->set('users', $users);
