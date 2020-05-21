@@ -4,11 +4,10 @@
  echo $this->Html->image('main.png', ['alt' => 'Main image', 'style' => 'style="width:128px;height:128px;']);
  ?>
  -->
-<img class="img-responsive" src="img/main2.png" alt="main image">
+<img class="img-responsive" src="img/main3.jpg" alt="main image">
 <div class="titf">
          <h1 class="titu"> How far can your car go? </strong></h1>
 </div>
-
 
 </div>
 <div class="container" style="text-align: center; font-family: lato; padding-top: 64px; padding-bottom: 64px;">
@@ -122,7 +121,7 @@
       <div class="col-xl-9 mx-auto">
        <center>
        <h1> Ready to contribute? Share your measure!</h1>
-        <?= $this->Html->link(__('Submit'), ['controller' => 'Cars', 'action' => 'add'], ['class' => 'btn btn-lg btn-recolor-blue btn-default ']) ?>
+        <?= $this->Html->link(__('Submit'), ['controller' => 'Cars', 'action' => 'addContribution'], ['class' => 'btn btn-lg btn-recolor-blue btn-default ']) ?>
         </center>
       </div>
     </div>

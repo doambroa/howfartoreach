@@ -53,7 +53,7 @@ class UsersFixture extends TestFixture
             'role' => 'Lorem ipsum dolor sit amet',
             'sex' => 'Lorem ipsum dolor sit amet',
             'country' => 'Lorem ipsum dolor sit amet',
-            'creado' => '2019-03-05 21:19:04'
+            'creado' => '2020-05-07 22:54:13'
         ],
     ];
 }

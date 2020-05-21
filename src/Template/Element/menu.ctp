@@ -25,7 +25,7 @@
 <!--             <li class="active">
               <?php echo $this->Html->link('Home', ['controller' => 'users', 'action' => 'index'])?>
             </li>  -->
-            <li><?php echo $this->Html->link('Cars', ['controller' => 'cars', 'action' => 'index'])?></li>
+            <li><?php echo $this->Html->link('Cars', ['controller' => 'cars', 'action' => 'contributions'])?></li>
 
             <?php if(isset($current_user) && $current_user['role'] == 'admin'): ?>
               <li><?php echo $this->Html->link('Users', ['controller' => 'users', 'action' => 'index'])?></li>
@@ -41,10 +41,10 @@
             <?php echo $this->Form->end();?>
         </div>
 
-            <ul class="nav navbar-nav"><li><?php echo $this->Html->link('Submit', ['controller' => 'cars', 'action' => 'add'])?></li></ul>
+            <ul class="nav navbar-nav"><li><?php echo $this->Html->link('Submit', ['controller' => 'cars', 'action' => 'addContribution'])?></li></ul>
 
           <?php if(isset($current_user) && $current_user['role'] == 'admin'): ?>
-            <ul class="nav navbar-nav"><li><?php echo $this->Html->link('NEW CAR', ['controller' => 'cars', 'action' => 'addNew'])?></li></ul>
+            <ul class="nav navbar-nav"><li><?php echo $this->Html->link('NEW CAR', ['controller' => 'cars', 'action' => 'add'])?></li></ul>
           <?php endif ?>
 
 

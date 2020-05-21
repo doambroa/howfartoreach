@@ -192,7 +192,11 @@ width: 41%;
     }
 }
 .titf{
-    position: absolute; top: 60px; left: 300px; font-family: fantasy;
+    position: absolute;
+    top: 200px;
+    left: 300px;
+    font-family: fantasy;
+    color: white;
 }
 
 #cardTitle {

@@ -37,10 +37,10 @@ class UsersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsToMany('Cars', [
-            'through' => 'CarsUsers',
             'foreignKey' => 'user_id',
             'targetForeignKey' => 'car_id',
-            'joinTable' => 'cars_users'
+            'joinTable' => 'cars_users',
+            'through' => 'CarsUsers'
         ]);
     }
 
@@ -95,7 +95,7 @@ class UsersTable extends Table
         return $validator;
     }
 
-     public function findAuth(\Cake\ORM\Query $query, array $options){
+    public function findAuth(\Cake\ORM\Query $query, array $options){
 
         //usamos el querybuilder
         $query->select(['id', 'login', 'password', 'mail', 'age', 'role', 'sex', 'country', 'creado']);
@@ -103,6 +103,7 @@ class UsersTable extends Table
 
         return $query;
     }
+
 
     /**
      * Returns a rules checker object that will be used for validating

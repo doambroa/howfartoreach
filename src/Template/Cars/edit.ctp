@@ -4,7 +4,7 @@
  * @var \App\Model\Entity\Car $car
  */
 ?>
-<!-- <nav class="large-3 medium-4 columns" id="actions-sidebar">
+<nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Form->postLink(
@@ -17,23 +17,18 @@
         <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
     </ul>
-</nav> -->
-<div class="col-md-6 col-md-offset-3" style="padding-top: 40px;">
+</nav>
+<div class="cars form large-9 medium-8 columns content">
     <?= $this->Form->create($car) ?>
     <fieldset>
         <legend><?= __('Edit Car') ?></legend>
         <?php
-            echo $this->Form->control('marca',['disabled']);
-            echo $this->Form->control('modelo',['disabled']);
-            echo $this->Form->control('consumoCiudad');
-            echo $this->Form->control('consumoAutopista');
-            echo $this->Form->control('combinado');
-            echo $this->Form->control('combustible', ['label' => 'Fuel', 'options' => ['Diesel' => 'Diesel', 'Gasolina' => 'Petrol', 'electrico' => 'Electric']]);
-            // echo $this->Form->control('user_id', ['options' => $users, 'empty' => true]);
+            echo $this->Form->control('marca');
+            echo $this->Form->control('modelo');
+            echo $this->Form->control('combustible');
+            echo $this->Form->control('users._ids', ['options' => $users]);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Confirm changes'), ['class' => 'btn btn-primary']) ?>
-    <?= $this->Form->button('Reset', ['type' => 'reset', 'class'=>'btn btn-warning']) ?>
-
+    <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
 </div>

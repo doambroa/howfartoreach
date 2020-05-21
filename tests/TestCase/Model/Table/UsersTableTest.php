@@ -26,9 +26,7 @@ class UsersTableTest extends TestCase
     public $fixtures = [
         'app.users',
         'app.cars',
-        'app.cars_users',
-        'app.cars_cars_users',
-        'app.cars_users_users'
+        'app.cars_users'
     ];
 
     /**
@@ -76,16 +74,6 @@ class UsersTableTest extends TestCase
     }
 
     /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
      * Test findAuth method
      *
      * @return void
@@ -96,11 +84,11 @@ class UsersTableTest extends TestCase
     }
 
     /**
-     * Test recoverPassword method
+     * Test buildRules method
      *
      * @return void
      */
-    public function testRecoverPassword()
+    public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

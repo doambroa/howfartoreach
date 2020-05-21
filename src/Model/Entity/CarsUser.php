@@ -36,7 +36,7 @@ class CarsUser extends Entity
         'combinado' => true,
         'tipoConduccion' => true,
         'creado' => true,
-        'car' => true,
-        'user' => true
+        'car_id' => true,
+        'user_id' => true
     ];
 }

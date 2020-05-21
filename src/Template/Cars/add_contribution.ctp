@@ -42,7 +42,7 @@ use Cake\Routing\Router;
 </script>
 <div class="container">
     <div class="" style=" margin-top: 40px;background-image: url(../img/tires3.png);">
-        <?= $this->Form->create($carsuser,['type' => 'file', 'class' => 'ajax_page']) ?>
+        <?= $this->Form->create($carsUser,['type' => 'file', 'class' => 'ajax_page']) ?>
         <fieldset>
             <legend><?= __('Add new poll') ?><div class="ajax_loading_image"></div></legend>
 
@@ -97,7 +97,7 @@ use Cake\Routing\Router;
                     <span style="font-weight: bold;">Type of fuel</span>
                     <div class="input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-tint"></span></span>
-                        <?php echo $this->Form->control('combustible', ['label' => false, 'options' => ['Diesel' => 'Diesel', 'Gasolina' => 'Petrol', 'electrico' => 'Electric']]);?>
+                        <?php echo $this->Form->control('combustible', ['label' => false, 'options' => ['Diesel' => 'Diesel', 'Petrol' => 'Petrol', 'Electric' => 'Electric']]);?>
                     </div>
                 </div>    
                 <div class="form-group select"">
@@ -107,7 +107,11 @@ use Cake\Routing\Router;
                         <?php echo $this->Form->control('tipoConduccion', ['label' => false, 'options' => ['Eco' => 'Eco', 'Normal' => 'Normal', 'Deportiva' => 'Sport'] ]);?>
                     </div>
                 </div>   
-            
+                            <?php echo $this->Form->hidden('user_id', ['value' => $current_user['id']]); ?>
+                            <?php echo $this->Form->hidden('creado', ['value' => date("Y-m-d H:i:s")]); ?>
+
+
+
             </div>
         </fieldset>
         <?= $this->Form->button(__('Submit')) ?> METER MEDIDAS DE CONSUMO PARA 95 y 98
@@ -146,44 +150,6 @@ use Cake\Routing\Router;
             echo $this->Form->control('modelo');
             echo $this->Form->control('combustible');
             echo $this->Form->control('users._ids', ['options' => $users]);
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
-</div>
- -->
-
-
-
-
-
-
-<!-- <?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Carsuser $carsuser
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Carsusers'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Cars'), ['controller' => 'Cars', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Car'), ['controller' => 'Cars', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="carsusers form large-9 medium-8 columns content">
-    <?= $this->Form->create($carsuser) ?>
-    <fieldset>
-        <legend><?= __('Add Carsuser') ?></legend>
-        <?php
-            echo $this->Form->control('consumoCiudad');
-            echo $this->Form->control('consumoAutopista');
-            echo $this->Form->control('combinado');
-            echo $this->Form->control('tipoConduccion');
-            echo $this->Form->control('creado');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

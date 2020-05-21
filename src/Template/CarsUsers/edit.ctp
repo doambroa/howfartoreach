@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\CarsUser $carsUser
+ * @var \App\Model\Entity\Carsuser $carsuser
  */
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
@@ -13,17 +13,17 @@
                 ['confirm' => __('Are you sure you want to delete # {0}?', $carsUser->id)]
             )
         ?></li>
-        <li><?= $this->Html->link(__('List Cars Users'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('List Carsusers'), ['action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('List Cars'), ['controller' => 'Cars', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Car'), ['controller' => 'Cars', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
     </ul>
 </nav>
-<div class="carsUsers form large-9 medium-8 columns content">
+<div class="carsusers form large-9 medium-8 columns content">
     <?= $this->Form->create($carsUser) ?>
     <fieldset>
-        <legend><?= __('Edit Cars User') ?></legend>
+        <legend><?= __('Edit Carsuser') ?></legend>
         <?php
             echo $this->Form->control('consumoCiudad');
             echo $this->Form->control('consumoAutopista');

@@ -55,7 +55,7 @@ class CarsUsersFixture extends TestFixture
             'consumoAutopista' => 1,
             'combinado' => 1,
             'tipoConduccion' => 'Lorem ipsum dolor sit amet',
-            'creado' => '2019-03-07 21:02:45'
+            'creado' => '2020-05-07 23:35:25'
         ],
     ];
 }

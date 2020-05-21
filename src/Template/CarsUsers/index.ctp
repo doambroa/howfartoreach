@@ -1,21 +1,21 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\CarsUser[]|\Cake\Collection\CollectionInterface $carsUsers
+ * @var \App\Model\Entity\Carsuser[]|\Cake\Collection\CollectionInterface $carsusers
  */
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Cars User'), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('New Carsuser'), ['action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Cars'), ['controller' => 'Cars', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Car'), ['controller' => 'Cars', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
     </ul>
 </nav>
-<div class="carsUsers index large-9 medium-8 columns content">
-    <h3><?= __('Cars Users') ?></h3>
+<div class="carsusers index large-9 medium-8 columns content">
+    <h3><?= __('Carsusers') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
@@ -31,20 +31,20 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($carsUsers as $carsUser): ?>
+            <?php foreach ($carsUsers as $carsuser): ?>
             <tr>
-                <td><?= $this->Number->format($carsUser->id) ?></td>
-                <td><?= $carsUser->has('car') ? $this->Html->link($carsUser->car->id, ['controller' => 'Cars', 'action' => 'view', $carsUser->car->id]) : '' ?></td>
-                <td><?= $carsUser->has('user') ? $this->Html->link($carsUser->user->id, ['controller' => 'Users', 'action' => 'view', $carsUser->user->id]) : '' ?></td>
-                <td><?= $this->Number->format($carsUser->consumoCiudad) ?></td>
-                <td><?= $this->Number->format($carsUser->consumoAutopista) ?></td>
-                <td><?= $this->Number->format($carsUser->combinado) ?></td>
-                <td><?= h($carsUser->tipoConduccion) ?></td>
-                <td><?= h($carsUser->creado) ?></td>
+                <td><?= $this->Number->format($carsuser->id) ?></td>
+                <td><?= $carsuser->has('car') ? $this->Html->link($carsuser->car->id, ['controller' => 'Cars', 'action' => 'view', $carsuser->car->id]) : '' ?></td>
+                <td><?= $carsuser->has('user') ? $this->Html->link($carsuser->user->id, ['controller' => 'Users', 'action' => 'view', $carsuser->user->id]) : '' ?></td>
+                <td><?= $this->Number->format($carsuser->consumoCiudad) ?></td>
+                <td><?= $this->Number->format($carsuser->consumoAutopista) ?></td>
+                <td><?= $this->Number->format($carsuser->combinado) ?></td>
+                <td><?= h($carsuser->tipoConduccion) ?></td>
+                <td><?= h($carsuser->creado) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $carsUser->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $carsUser->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $carsUser->id], ['confirm' => __('Are you sure you want to delete # {0}?', $carsUser->id)]) ?>
+                    <?= $this->Html->link(__('View'), ['action' => 'view', $carsuser->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $carsuser->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $carsuser->id], ['confirm' => __('Are you sure you want to delete # {0}?', $carsuser->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

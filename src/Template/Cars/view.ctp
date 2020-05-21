@@ -1,3 +1,4 @@
+
 <?php
 /**
  * @var \App\View\AppView $this
@@ -22,11 +23,29 @@ FIN ADMIN -->
     <div class="col-md-6" style="padding-bottom: 20px">
         <h1> <?= $car->marca . ' ' . $car->modelo ?></h1> <!-- aqui tiene que ir marca y modelo del coche traído de la BD así -->
     </div>
-    <div class="col-md-6">
-        <span class="col-md-4"><h1>Diesel</h1></span> 
-<!--         <span class="col-md-4"><a><h1>Gasoline</h1></a></span>
-        <span class="col-md-4"><a><h1>Electric</h1></a></span>
-    </div> -->
+    <div class="col-md-6"><?php
+        switch ($car->combustible) {
+            case 'Diesel':
+                ?><span class="col-md-4"><h1><u>Diesel</u></h1></span>
+                <span class="col-md-4"><h1><?= $this->Html->link('Petrol', ['action' => 'view', 'Petrol'],['style' => 'color: lightgrey;']) ?></h1></span>
+                <span class="col-md-4"><h1><?= $this->Html->link('Electric', ['action' => 'view', 'Electric'],['style' => 'color: lightgrey;']) ?></h1></span><?php
+                break;
+            case 'Petrol':
+                ?><span class="col-md-4"><h1><u>Petrol</u></h1></span>
+                <span class="col-md-4"><h1><?= $this->Html->link('Diesel', ['action' => 'view', 'Diesel'],['style' => 'color: lightgrey;']) ?></h1></span>
+                <span class="col-md-4"><h1><?= $this->Html->link('Electric', ['action' => 'view', 'Electric'],['style' => 'color: lightgrey;']) ?></h1></span><?php
+                break;
+
+            case 'Electric':
+                ?><span class="col-md-4"><h1><u>Electric</u></h1></span>
+                <span class="col-md-4"><h1><?= $this->Html->link('Petrol', ['action' => 'view', 'Petrol'],['style' => 'color: lightgrey;']) ?></h1></span>
+                <span class="col-md-4"><h1><?= $this->Html->link('Diesel', ['action' => 'view', 'Diesel'],['style' => 'color: lightgrey;']) ?></h1></span>
+                <?php
+                break;                    
+            default:
+                break;
+        }?> 
+  </div>
 
         <!-- poner en gris los otros dos a ambos lados seleccionables FUEL y ELECTRIC y que se peuda cambmiar entre ellos-->
     </div>
@@ -42,10 +61,10 @@ FIN ADMIN -->
                 <b>City</b>
             </span>
              <div class="progress col-md-10">
-                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$car->consumoCiudad*7?>%">
+                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$avgCity*7?>%">
                   <span>
-                    <?php if ($car->consumoCiudad != 0) {   // aquí estou mostrando lso registros del coche al que accede, no del total, debería cambiarlo
-                       echo $car->consumoCiudad . '%'; 
+                    <?php if ($avgCity != 0) {
+                       echo round($avgCity,3) . '%'; 
                     }else{
                         echo 'No polls';
                     }?>
@@ -57,12 +76,12 @@ FIN ADMIN -->
     <div class = col-md-6>
             <span class="col-md-2">
                 <b>Highway</b>
-            </span>
+            </span> 
             <div class="progress col-md-10">
-                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$car->consumoAutopista*7?>%">
+                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$avgHighway*7?>%">
                     <span>
-                    <?php if ($car->consumoAutopista != 0) {
-                       echo $car->consumoAutopista . '%'; 
+                    <?php if ($avgHighway != 0) {
+                       echo round($avgHighway,3) . '%'; 
                     }else{
                         echo 'No polls';
                     }
@@ -77,10 +96,10 @@ FIN ADMIN -->
             <b>Combined</b>
         </span>
         <div class="progress col-md-10">
-            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$car->combinado*7?>%">
+            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$avgCombined*7?>%">
                 <span>
-                    <?php if ($car->combinado != 0) {
-                       echo $car->combinado . '%'; 
+                    <?php if ($avgCombined != 0) {
+                       echo round($avgCombined,3) . '%'; 
                     }else{
                         echo 'No polls';
                     }?>
@@ -89,130 +108,29 @@ FIN ADMIN -->
         </div>
     </div>
 METER PRECIO POR KM
-</div>
+</div>  
 
-<?php////////////// REPETIMOS /////////////////////?>
-<!-- <div id="gasolina" style="visibility: hidden;">
-    <div class = col-md-6>
-            <span class="col-md-2">
-                <b>City</b>
-            </span>
-             <div class="progress col-md-10">
-                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$avgCityF*7?>%">
-                  <span>
-                    <?php if ($avgCityF != 0) {   // aquí estou mostrando lso registros del coche al que accede, no del total, debería cambiarlo
-                       echo $avgCityF. '%'; 
-                    }else{
-                        echo 'No polls';
-                    }?>
-                    </span>
-                </div>
-            </div>
-    </div>
-
-    <div class = col-md-6>
-
-            <span class="col-md-2">
-                <b>Highway</b>
-            </span>
-            <div class="progress col-md-10">
-                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$avgHighwayF*7?>%">
-                    <span>
-                    <?php if ($avgHighwayF != 0) {
-                       echo $avgHighwayF . '%'; 
-                    }else{
-                        echo 'No polls';
-                    }
-                ?>
-                    </span>
-                </div>
-            </div>
-    </div>
-
-    <div class = col-md-6>
-
-            <span class="col-md-2">
-                <b>Combined</b>
-            </span>
-             <div class="progress col-md-10">
-                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$avgCombinedF*7?>%">
-              <span>
-                    <?php if ($avgCombinedF != 0) {
-                       echo $avgCombinedF . '%'; 
-                    }else{
-                        echo 'No polls';
-                    }?>
-                    </span>
-                </div>
-      </div>
-    </div>
-</div>
-
-<script type="text/javascript">
-    
-    
-    
-</script>
-
-<?php /////////////////////// REPETIMOS, darle un id y pintar sólo el active //////////////////////////////////////////?>
-<div id="electrico" style="visibility: hidden;">
-    <div class = col-md-6>
-            <span class="col-md-2">
-                <b>City</b>
-            </span>
-             <div class="progress col-md-10">
-                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$avgCityD*7?>%">
-                  <span>
-                    <?php if ($avgCityD != 0) {   // aquí estou mostrando lso registros del coche al que accede, no del total, debería cambiarlo
-                       echo $avgCityD . '%'; 
-                    }else{
-                        echo 'No polls';
-                    }?>
-                    </span>
-                </div>
-            </div>
-    </div>
-
-    <div class = col-md-6>
-
-            <span class="col-md-2">
-                <b>Highway</b>
-            </span>
-            <div class="progress col-md-10">
-                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$avgHighwayD*7?>%">
-                    <span>
-                    <?php if ($avgHighwayD != 0) {
-                       echo $avgHighwayD . '%'; 
-                    }else{
-                        echo 'No polls';
-                    }
-                ?>
-                    </span>
-                </div>
-            </div>
-    </div>
-
-    <div class = col-md-6>
-
-            <span class="col-md-2">
-                <b>Combined</b>
-            </span>
-             <div class="progress col-md-10">
-                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$avgCombinedD*7?>%">
-              <span>
-                    <?php if ($avgCombinedD != 0) {
-                       echo $avgCombinedD . '%'; 
-                    }else{
-                        echo 'No polls';
-                    }?>
-                    </span>
-                </div>
-      </div>
-    </div>
-</div> -->
-<?php //////////////////////////////// REPETIMO fin ////////////////////////////////////////////////////?>
-
-  <div class = "col-md-6" style=" visibility: hidden;">
+  <div class = "col-md-2" style=" visibility: ;">
+    <center style="opacity:0.3; margin-top:10px; cursor: not-allowed;">
+        <span title="NOT IMPLEMENTED">
+            
+                    <input type="checkbox"> <?= $this->Html->image('../img/eco.png', ['width'=>'10%', 'height'=>'10%', 'style'=>'cursor: not-allowed;' ]) ?> <b> Eco driving  </b>
+                <!-- aquí podríamos poner un redio button que sea thrifty/saving, normal y sportive -->
+                
+                </span>
+                </center>
+  </div>
+   <div class = "col-md-2" style=" visibility: ;">
+    <center style="opacity:0.3; margin-top:10px; cursor: not-allowed;">
+        <span title="NOT IMPLEMENTED">
+            
+                    <input type="checkbox"> <?= $this->Html->image('../img/normal.png', ['width'=>'10%', 'height'=>'10%', 'style'=>'cursor: not-allowed;' ]) ?> <b> Normal driving  </b>
+                <!-- aquí podríamos poner un redio button que sea thrifty/saving, normal y sportive -->
+                
+                </span>
+                </center>
+  </div>
+   <div class = "col-md-2" style=" visibility: ;">
     <center style="opacity:0.3; margin-top:10px; cursor: not-allowed;">
         <span title="NOT IMPLEMENTED">
             
@@ -240,7 +158,7 @@ METER PRECIO POR KM
       <tr>
         <td>City</td>
         <td><?= $pollsCity ?></td> 
-        <td><?= $avgCity ?> %</td>
+        <td><?= round($avgCity,3) ?> %</td>
         <td>5.65</td>
         <td><?= $minCity  ?> %</td>
         <td><?= $maxCity ?> %</td>
@@ -248,7 +166,7 @@ METER PRECIO POR KM
       <tr>
         <td>Highway</td>
         <td><?= $pollsHighway ?></td>
-        <td><?= $avgHighway ?> %</td>
+        <td><?= round($avgHighway,3) ?> %</td>
         <td>6</td>
         <td><?= $minHighway ?> %</td>
         <td><?= $maxHighway ?> %</td>
@@ -256,7 +174,7 @@ METER PRECIO POR KM
       <tr>
         <td>Combined</td>
         <td><?= $pollsCombined ?></td>
-        <td><?= $avgCombined ?> %</td>
+        <td><?= round($avgCombined,3) ?> %</td>
         <td>5.5</td>
         <td><?= $minCombined ?> %</td>
         <td><?= $maxCombined ?> %</td>
@@ -264,7 +182,6 @@ METER PRECIO POR KM
     </tbody>
   </table>
 </div>
-
 
 
 <div class="container" style="padding-top: 20px">
@@ -275,7 +192,7 @@ METER PRECIO POR KM
         <table class="table table-striped" cellpadding="0" cellspacing="0" style="text-align: center;">
             <thead>
                 <tr>
-                    <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('id') ?></th>
+                    <!-- <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('id') ?></th> -->
                     <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('marca', ['label' => 'Brand'])//en un array se mete el nombre que se queire que aparezca, habría que echarle un ojo a la internacionalización para ver como se hace ?></th>
                     <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('modelo', ['label' => 'Model']) ?></th>
                     <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('consumoCiudad', ['label' => 'City']) ?></th>
@@ -287,16 +204,26 @@ METER PRECIO POR KM
             </thead>
 
             <tbody>
-           <?php foreach ($modelo as $car): ?>
+           <?php foreach ($relatedContributions as $contribution): ?>
                 <tr>
-                    <td><a href=""><?= $this->Number->format($car->id) ?></a></td>
+                    <!-- <td><a href=""><?= $this->Number->format($car->id) ?></a></td> -->
                     <td><?= h($car->marca) ?></td>
                     <td><?= h($car->modelo) ?></td>
-                    <td><?= $this->Number->format($car->consumoCiudad) ?></td>
-                    <td><?= $this->Number->format($car->consumoAutopista) ?></td>
-                    <td><?= $this->Number->format($car->combinado) ?></td>
+                    <td><?= $this->Number->format(round($contribution->consumoCiudad, 3)) ?></td>
+                    <td><?= $this->Number->format(round($contribution->consumoAutopista, 3)) ?></td>
+                    <td><?= $this->Number->format(round($contribution->combinado, 3))?></td>
                     <td><?= h($car->combustible) ?></td>
-                    <td><?= $this->Html->link($car->user_id, ['controller' => 'Users', 'action' => 'view', $car->user_id]) ?></td>
+                    <?php
+                      if($contribution->user_id == $current_user['id']){
+                        ?><td><?=$this->Html->link('Edit', ['controller' => 'CarsUsers',
+                                                            'action' => 'edit',$contribution->id, $contribution->car_id, $contribution->user_id
+                                                            
+                                                         ])?>
+                                                         </td><?php
+                    }else{
+                        ?><td><?= $this->Html->link($contribution->user_id, ['controller' => 'Users', 'action' => 'view', $contribution->user_id]) ?></td><?php
+                    }
+                    ?>
                 </tr> 
             <?php  endforeach ?>
             </tbody>
@@ -307,7 +234,7 @@ METER PRECIO POR KM
 </div>
 
 <div class="container" style="padding-top: 60px;">
-    <a href="/howfartoreach/cars/add">Add your own measure</a>
+    <?= $this->Html->link('Add your own measure', ['controller' => 'Cars', 'action' => 'addContribution', $contribution->car_id]) ?> <!-- Pasamos el id del coche para que en un fguturo el formulario se autorellene con esa info-->
 </div>
 <!-- 
 <div class="cars view large-9 medium-8 columns content">
@@ -346,5 +273,82 @@ METER PRECIO POR KM
             <td><?= $this->Number->format($car->combinado) ?></td>
         </tr>
     </table>
+</div>
+ -->
+
+<!-- <?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Car $car
+ */
+?>
+<nav class="large-3 medium-4 columns" id="actions-sidebar">
+    <ul class="side-nav">
+        <li class="heading"><?= __('Actions') ?></li>
+        <li><?= $this->Html->link(__('Edit Car'), ['action' => 'edit', $car->id]) ?> </li>
+        <li><?= $this->Form->postLink(__('Delete Car'), ['action' => 'delete', $car->id], ['confirm' => __('Are you sure you want to delete # {0}?', $car->id)]) ?> </li>
+        <li><?= $this->Html->link(__('List Cars'), ['action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Car'), ['action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?> </li>
+    </ul>
+</nav>
+<div class="cars view large-9 medium-8 columns content">
+    <h3><?= h($car->id) ?></h3>
+    <table class="vertical-table">
+        <tr>
+            <th scope="row"><?= __('Marca') ?></th>
+            <td><?= h($car->marca) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Modelo') ?></th>
+            <td><?= h($car->modelo) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Combustible') ?></th>
+            <td><?= h($car->combustible) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Id') ?></th>
+            <td><?= $this->Number->format($car->id) ?></td>
+        </tr>
+    </table>
+    <div class="related">
+        <h4><?= __('Related Users') ?></h4>
+        <?php if (!empty($car->users)): ?>
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th scope="col"><?= __('Id') ?></th>
+                <th scope="col"><?= __('Login') ?></th>
+                <th scope="col"><?= __('Password') ?></th>
+                <th scope="col"><?= __('Mail') ?></th>
+                <th scope="col"><?= __('Age') ?></th>
+                <th scope="col"><?= __('Role') ?></th>
+                <th scope="col"><?= __('Sex') ?></th>
+                <th scope="col"><?= __('Country') ?></th>
+                <th scope="col"><?= __('Creado') ?></th>
+                <th scope="col" class="actions"><?= __('Actions') ?></th>
+            </tr>
+            <?php foreach ($car->users as $users): ?>
+            <tr>
+                <td><?= h($users->id) ?></td>
+                <td><?= h($users->login) ?></td>
+                <td><?= h($users->password) ?></td>
+                <td><?= h($users->mail) ?></td>
+                <td><?= h($users->age) ?></td>
+                <td><?= h($users->role) ?></td>
+                <td><?= h($users->sex) ?></td>
+                <td><?= h($users->country) ?></td>
+                <td><?= h($users->creado) ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(__('View'), ['controller' => 'Users', 'action' => 'view', $users->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'Users', 'action' => 'edit', $users->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Users', 'action' => 'delete', $users->id], ['confirm' => __('Are you sure you want to delete # {0}?', $users->id)]) ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php endif; ?>
+    </div>
 </div>
  -->

@@ -37,10 +37,10 @@ class CarsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsToMany('Users', [
-            'through' => 'CarsUsers',
             'foreignKey' => 'car_id',
             'targetForeignKey' => 'user_id',
-            'joinTable' => 'cars_users'
+            'joinTable' => 'cars_users',
+            'through' => 'CarsUsers'
         ]);
     }
 

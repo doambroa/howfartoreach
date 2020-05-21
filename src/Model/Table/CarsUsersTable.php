@@ -60,6 +60,12 @@ class CarsUsersTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->integer('car_id');
+
+        $validator
+            ->integer('user_id');
+
+        $validator
             ->numeric('consumoCiudad')
             ->allowEmpty('consumoCiudad');
 

@@ -26,9 +26,7 @@ class CarsTableTest extends TestCase
     public $fixtures = [
         'app.cars',
         'app.users',
-        'app.cars_users',
-        'app.cars_cars_users',
-        'app.cars_users_users'
+        'app.cars_users'
     ];
 
     /**
