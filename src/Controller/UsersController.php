@@ -54,7 +54,7 @@ class UsersController extends AppController
                 $this->Auth->setUser($user);
                 return $this->redirect($this->Auth->redirectUrl());
             }else{
- debug($user);
+                debug($user);
                 $this->Flash->error('Invalid credentials, please try again', ['key' => 'auth']);
             }
         }
@@ -140,8 +140,9 @@ class UsersController extends AppController
 
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $this->Auth->setUser($user);
+                $current_user = $this->Auth->user();
+                return $this->redirect(['action' => 'view', $user->id]);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }

@@ -49,7 +49,7 @@ use Cake\Routing\Router;
                 <div class="form-group select">
                     <span style="font-weight: bold;">Brand</span>
                     <div class="input-group">
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-tags"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-tag"></span></span>
                         <select name="marca" class="form-control" id="brands" onchange="filterBrands()" required>
                             <option value="" selected="selected">(Please select a car brand)</option>
                             <?php foreach ($brands as $brand) {
@@ -61,7 +61,7 @@ use Cake\Routing\Router;
                 <div class="form-group select">
                     <span style="font-weight: bold;">Model</span>
                     <div class="input-group">
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-tag"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-tags"></span></span>
                         <select name="modelo" class="form-control" id="models">
                             <option value="" selected="selected">(Please select a car model)</option>
                            <?php foreach ($models as $model) {

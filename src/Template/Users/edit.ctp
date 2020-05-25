@@ -3,6 +3,7 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\User $user
  */
+
 ?>
 <head>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha256-3dkvEK0WLHRJ7/Csr0BZjAWxERc5WH7bdeUya2aXxdU= sha512-+L4yy6FRcDGbXJ9mPG8MT/3UCDzwR9gPeyFNMCtInsol++5m3bk2bXWKdZjvybmohrAsn3Ua5x8gfLnbE1YkOg==" crossorigin="anonymous">
@@ -140,7 +141,16 @@
                     </form>
                 </div>  
             <div class="col-md-2 hidden-xs">
-        <img src="../../img/Profile.png" class="img-responsive img-thumbnail ">
+              <?php       
+
+                if($current_user['sex']=='male'){
+                  ?><img src="../../img/Profile.png" class="img-responsive img-thumbnail "><?php
+                } else if($current_user['sex']=='female'){
+                  ?><img src="../../img/profile-female.jpg" class="img-responsive img-thumbnail "><?php
+                } else{
+                  ?><img src="../../img/profile-undefined.png" class="img-responsive img-thumbnail "><?php 
+                }
+              ?>
       </div>
     </div>
 </div>

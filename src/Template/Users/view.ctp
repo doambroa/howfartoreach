@@ -4,55 +4,70 @@
  * @var \App\Model\Entity\User $user
  */
 ?>
-<div class="col-md-6" style="padding-top:20px;">
-    <h3><?= h($user->login) ?></h3>
-    <table class="table">
+    <div class="" style=" margin-top: 40px;background-image: url(../../img/tires3.png);">
 
-        <tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($user->id) ?></td>
-        </tr>
-            <th scope="row"><?= __('Login') ?></th>
-            <td><?= h($user->login) ?></td>
-        </tr>
-        <?php
-        if($current_user['role'] == 'admin' || $current_user['id'] == $user->id){ ?>
+<div class="container" style="margin-top: 40px;">
+    <div class="col-md-6" style="padding-top:20px;">
+        <h3><?= h($user->login) ?></h3>
+        <table class="table">
+
             <tr>
-                <th scope="row"><?= __('Mail') ?></th>
-                <td><?= h($user->mail) ?></td>
-            </tr><?php
-        }?>
+            <tr>
+                <th scope="row"><?= __('Id') ?></th>
+                <td><?= $this->Number->format($user->id) ?></td>
+            </tr>
+                <th scope="row"><?= __('Login') ?></th>
+                <td><?= h($user->login) ?></td>
+            </tr>
+            <?php
+            if($current_user['role'] == 'admin' || $current_user['id'] == $user->id){ ?>
+                <tr>
+                    <th scope="row"><?= __('Mail') ?></th>
+                    <td><?= h($user->mail) ?></td>
+                </tr><?php
+            }?>
 
-        <tr>
-            <th scope="row"><?= __('Role') ?></th>
-            <td><?= h($user->role) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Sex') ?></th>
-            <td><?= h($user->sex) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Country') ?></th>
-            <td><?= h($user->country) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Age') ?></th>
-            <td><?= $this->Number->format($user->age) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Signed up on') ?></th>
-            <td><?= h($user->creado) ?></td>
-        </tr>
-    </table>
-</div>
+            <tr>
+                <th scope="row"><?= __('Role') ?></th>
+                <td><?= h($user->role) ?></td>
+            </tr>
+            <tr>
+                <th scope="row"><?= __('Sex') ?></th>
+                <td><?= h($user->sex) ?></td>
+            </tr>
+            <tr>
+                <th scope="row"><?= __('Country') ?></th>
+                <td><?= h($user->country) ?></td>
+            </tr>
+            <tr>
+                <th scope="row"><?= __('Age') ?></th>
+                <td><?= $this->Number->format($user->age) ?></td>
+            </tr>
+            <tr>
+                <th scope="row"><?= __('Signed up on') ?></th>
+                <td><?= h($user->creado) ?></td>
+            </tr>
+        </table>
+    </div>
 
-    <div class="container col-md-6 container" style="padding-top: 50px; padding-left: 50px; position: relative;
-  width: 50%;">
+    <div class="container col-md-6 usrimg">
 
-            <img style="width: 50%; height: auto;" src="../../img/Profile.png" alt="Profile photo" width="35%">
-             <?php if($current_user['role'] == 'admin' || $current_user['id'] == $user->id){ ?>
-                <?= $this->Html->link(__('Edit my profile'), ['action' => 'edit', $user->id], ['class' => 'btn btn-lg btn-warning', 'style' => 'position: absolute;top: 80%;left: 28%;transform: translate(-50%,-50%);text-align: center;']) ?>
+            <!-- <img style="width: 50%; height: auto;" src="../../img/Profile.png" alt="Profile photo" width="35%"> -->
+
+            <!-- <img alt="User Pic" src="../../img/Profile.png" id="profile-image1" class="img-circle img-responsive" width="60%"> -->
+            <?php
+                if($current_user['sex']=='male'){
+                  ?><img alt="User Pic" src="../../img/Profile.png" id="profile-image1" class="img-circle img-responsive" width="60%"><?php
+                } else if($current_user['sex']=='female'){
+                  ?><img alt="User Pic" src="../../img/profile-female.jpg" id="profile-image1" class="img-circle img-responsive" width="60%"><?php
+                } else{
+                  ?><img alt="User Pic" src="../../img/profile-undefined.png" id="profile-image1" class="img-circle img-responsive" width="60%"><?php 
+                }
+                ?>
+              <div class="overlay"></div>
+
+            <?php if($current_user['role'] == 'admin' || $current_user['id'] == $user->id){ ?>
+                <?= $this->Html->link(__('Edit my profile'), ['action' => 'edit', $user->id], ['class' => 'btn btn-lg btn-warning', 'style' => 'position: absolute;top: 50%;left: 31%;transform: translate(-50%,-50%);text-align: center;']) ?>
             <?php 
             }
             ?>
@@ -65,7 +80,7 @@
 
 <?php //debug($user->cars[0]->_joinData->consumoCiudad); ?>
 
-    <div class="col-md-12" style="padding-top:40px;">
+    <div class="col-md-10" style="padding-top:40px;">
         <h4><?= __('Related Contributions') ?></h4>          
         <?php if (!empty($user->cars)): ?>
         <table class="table" cellpadding="0" cellspacing="0">
@@ -98,12 +113,15 @@
             </tr>
             <?php endforeach; ?>
         </table>
+    <?php else:?>
+        <span>You have no contributions yet. You can add your own measure <?= $this->Html->link(__('here'), ['controller' => 'Cars', 'action' => 'add_contribution'], ['class' => '']) ?>
+</span>
         <?php endif; ?>
     </div>
+</div>
 
-
-
-<div class="col-md-7 ">
+</div>
+<!--     <div class="col-md-7 ">
 
 <div class="panel panel-default">
   <div class="panel-heading">  <h4>User Profile</h4></div>
@@ -117,19 +135,11 @@
                 
                 <input id="profile-image-upload" class="hidden" type="file">
 <div style="color:#999;">click here to change profile image</div>
-                <!--Upload Image Js And Css-->
-           
-              
-   
-                
-                
-                     
-                     
+                          
                      </div>
               
               <br>
-    
-              <!-- /input-group -->
+
             </div>
             <div class="col-sm-6">
             <h4 style="color:#00b1b1;">Prasad Shankar Huddedar </h4>
@@ -180,4 +190,4 @@
             
     </div> 
     </div>
-</div>
+</div> -->

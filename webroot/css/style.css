@@ -400,3 +400,10 @@ width: 41%;
 #calculator{
     text-align: center;
 }
+
+.usrimg {
+  position: relative;
+  margin-top: 50px;
+  width: 500px;
+  height: 300px;
+}
