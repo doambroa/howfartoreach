@@ -364,7 +364,7 @@ function checkFuel(){
 
                 var newOptions = {
 
-                    "":""
+                    "Escalade":"Escalade"
                 };
                 $("#logoBrand").attr("src","http://www.carlogos.org/logo/Cadillac-emblem-2009-640x537.jpg");
             }
@@ -372,7 +372,15 @@ function checkFuel(){
 
                 var newOptions = {
 
-                    "":""
+                    "Matiz":"Matiz",
+                    "Captiva":"Captiva",
+                    "Corvette":"Corvette",
+                    "Cruze":"Cruze",
+                    "Malibu":"Malibu",
+                    "Orlando":"Orlando",
+                    "Trax":"Trax",
+                    "Volt":"Volt"
+
                 };
                 $("#logoBrand").attr("src","http://www.carlogos.org/logo/Chevrolet-logo.png");
             }
@@ -411,14 +419,6 @@ function checkFuel(){
                 };
                 $("#logoBrand").attr("src","http://www.carlogos.org/logo/Dacia-logo-2008-640x550.jpg");
             }
-            if(brand == "Daewoo"){
-
-                var newOptions = {
-
-                    "Matiz":"Matiz"
-                };
-                $("#logoBrand").attr("src","http://www.carlogos.org/logo/Daewoo-logo-640x404.jpg");
-            }
             if(brand == "Dodge"){
 
                 var newOptions = {
@@ -433,6 +433,7 @@ function checkFuel(){
 
                     "DS 3":"DS 3",
                     "DS 5":"DS 5",
+                    "DS 4 Crossback":"DS 4 Crossback",
                     "DS 7 Crossback":"DS 7 Crossback",
                     "DS 4":"DS 4"
                 };
@@ -442,7 +443,16 @@ function checkFuel(){
 
                 var newOptions = {
 
-                    "":""
+                    "488":"488",
+                    "GTC4":"GTC4",
+                    "California":"California",
+                    "F12":"F12",
+                    "Portofino":"Portofino",
+                    "812":"812",
+                    "458":"458",
+                    "F12":"F12",
+                    "F40":"F40",
+                    "F50":"F50"
                 };
                 $("#logoBrand").attr("src","http://www.carlogos.org/logo/Ferrari-logo-640x550.jpg");
             }

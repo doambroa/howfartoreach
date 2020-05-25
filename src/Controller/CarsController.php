@@ -56,10 +56,19 @@ class CarsController extends AppController
 
     public function contributions()
     {
-        $cars = $this->Cars->find('all')->contain(['Users']);
-        foreach ($cars as $usersandcar) {
-         //  debug($usersandcar);
-        }
+        $cars = $this->Cars->find()->contain(['Users'])->group(['Cars.modelo','Cars.combustible']);;
+        // debug($cars);
+
+//QUERY PARA OBTENER TODAS LAS MEDIAS DE TODOS LOS COHES POR MARCA Y COMBUSTIBLE AGRUPADAS
+// Select cars.id, cars.modelo, AVG(contribution.consumoCiudad), AVG(contribution.consumoAutopista), AVG(contribution.combinado), cars.combustible
+// FROM cars_users AS contribution
+// INNER JOIN cars ON cars.id = contribution.car_id
+// GROUP BY cars.modelo, cars.combustible
+
+
+        //$query = $this->Cars->query("SELECT cars.id, cars.modelo, AVG(contribution.consumoCiudad), AVG(contribution.consumoAutopista), AVG(contribution.combinado), cars.combustible FROM cars_users AS contribution INNER JOIN cars ON cars.id = contribution.car_id GROUP BY cars.modelo, cars.combustible");
+        //debug($query); // esto solo me hace un select para este modelo
+
 
 //    //     $modelArrayElectrics = $this->Cars->find()->select(['Cars.marca'])->distinct()->toArray();
         $fuelTypes = $this->Cars->find()->select(['Cars.combustible'])->distinct()->toArray();
@@ -69,13 +78,25 @@ class CarsController extends AppController
 //    //      $results = $connection->execute(' SELECT modelo FROM cars WHERE (SELECT COUNT(modelo) FROM cars GROUP BY modelo'))->fetchAll('assoc');
 
         $marcas = $this->Cars->find()->select(['Cars.marca'])->distinct()->toArray();
-        $brands = $this->Cars->find('all', ['fields'=>['DISTINCT marca']]);
-        //debug($marcas);
+        //$brands = $this->Cars->find('all', ['fields'=>['DISTINCT marca']]);
+
+        
+        $query = $cars->find('all')->contain(['Users']);
+        foreach ($query as $car) {
+            if($car->users){
+                if (isset($contributions)) {
+                    $contributions = (object) array_merge((array) $contributions, (array) $car->users);
+                }else{
+                    $contributions = $car->users;
+                }
+            }
+        }
+        // debug($query);
 
         $this->paginate($this->Cars);
         
         $this->set('marcas', $marcas);
-        $this->set('fuelType', $fuelTypes);
+        $this->set('fuelTypes', $fuelTypes);
         $this->set(compact('cars'));
         $this->set('_serialize', ['cars']);
     }
@@ -204,20 +225,58 @@ class CarsController extends AppController
         $totalCity = 0;
         $totalHighway = 0;
         $totalCombined = 0;
+
+        $medianCity = array();
+        $medianHighway = array();
+        $medianCombined = array();
     
         foreach ($relatedContributions as $contribution) {
             if($contribution->consumoCiudad != null && $contribution->consumoCiudad != 0){
                $totalCity += $contribution->consumoCiudad;
+               array_push($medianCity,$contribution->consumoCiudad);
                $pollsCity++;
             }
             if($contribution->consumoAutopista != null && $contribution->consumoAutopista != 0){
                $totalHighway += $contribution->consumoAutopista;
+               array_push($medianHighway,$contribution->consumoAutopista);
                $pollsHighway++;
             }
             if($contribution->combinado != null && $contribution->combinado != 0){
                $totalCombined += $contribution->combinado;
+               array_push($medianCombined,$contribution->combinado);
                $pollsCombined++;
             }
+        }
+        
+        //ordenamos los arrays de medianas y tomamos el valor del medio en pares e impares
+        sort($medianCity);
+        $middlevalCity = floor(($pollsCity-1)/2);
+        if($pollsCity % 2) {
+            $medianCity = $medianCity[$middlevalCity];
+        } else {
+            $low = $medianCity[$middlevalCity];
+            $high = $medianCity[$middlevalCity+1];
+            $medianCity = (($low+$high)/2);
+        }
+
+        sort($medianHighway);
+        $middlevalHighway = floor(($pollsHighway-1)/2);
+        if($pollsHighway % 2) {
+            $medianHighway = $medianHighway[$middlevalHighway];
+        } else {
+            $low = $medianHighway[$middlevalHighway];
+            $high = $medianHighway[$middlevalHighway+1];
+            $medianHighway = (($low+$high)/2);
+        }
+
+        sort($medianCombined);
+        $middlevalCombined = floor(($pollsCombined-1)/2);
+        if($pollsCombined % 2) {
+            $medianCombined = $medianCombined[$middlevalCombined];
+        } else {
+            $low = $medianCombined[$middlevalCombined];
+            $high = $medianCombined[$middlevalCombined+1];
+            $medianCombined = (($low+$high)/2);
         }
 
         $avgCity = $totalCity / $pollsCity;
@@ -263,6 +322,11 @@ class CarsController extends AppController
         $this->set('pollsCity', $pollsCity);
         $this->set('pollsHighway', $pollsHighway);
         $this->set('pollsCombined', $pollsCombined);
+
+        $this->set('medianCity', $medianCity);
+        $this->set('medianHighway', $medianHighway);
+        $this->set('medianCombined', $medianCombined);
+
 
         $this->set('car', $car);
         $this->set('_serialize', ['car']);

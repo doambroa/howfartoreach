@@ -103,7 +103,7 @@ use Cake\Routing\Router;
                 <div class="form-group select"">
                     <span style="font-weight: bold;">Driving</span>
                     <div class="input-group">
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-tint"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-fire"></span></span>
                         <?php echo $this->Form->control('tipoConduccion', ['label' => false, 'options' => ['Eco' => 'Eco', 'Normal' => 'Normal', 'Deportiva' => 'Sport'] ]);?>
                     </div>
                 </div>   
@@ -114,7 +114,7 @@ use Cake\Routing\Router;
 
             </div>
         </fieldset>
-        <?= $this->Form->button(__('Submit')) ?> METER MEDIDAS DE CONSUMO PARA 95 y 98
+        <?= $this->Form->button(__('Submit')) ?>
         <?= $this->Form->end() ?>
             <span style="position: ;"><a href="howto">How can I calculate my own mileage?</a></span>
 

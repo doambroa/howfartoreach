@@ -149,7 +149,7 @@ METER PRECIO POR KM
         <th>Way</th>
         <th>Polled</th>
         <th>Average</th>
-        <th>Mode</th>
+        <th>Median</th>
         <th>Lowest</th>
         <th>Highest</th>
       </tr>
@@ -159,7 +159,7 @@ METER PRECIO POR KM
         <td>City</td>
         <td><?= $pollsCity ?></td> 
         <td><?= round($avgCity,3) ?> %</td>
-        <td>5.65</td>
+        <td><?=$medianCity?> %</td>
         <td><?= $minCity  ?> %</td>
         <td><?= $maxCity ?> %</td>
       </tr>
@@ -167,7 +167,7 @@ METER PRECIO POR KM
         <td>Highway</td>
         <td><?= $pollsHighway ?></td>
         <td><?= round($avgHighway,3) ?> %</td>
-        <td>6</td>
+        <td><?=$medianHighway?> %</td>
         <td><?= $minHighway ?> %</td>
         <td><?= $maxHighway ?> %</td>
       </tr>
@@ -175,7 +175,7 @@ METER PRECIO POR KM
         <td>Combined</td>
         <td><?= $pollsCombined ?></td>
         <td><?= round($avgCombined,3) ?> %</td>
-        <td>5.5</td>
+        <td><?=$medianCombined?></td>
         <td><?= $minCombined ?> %</td>
         <td><?= $maxCombined ?> %</td>
       </tr>
@@ -236,119 +236,3 @@ METER PRECIO POR KM
 <div class="container" style="padding-top: 60px;">
     <?= $this->Html->link('Add your own measure', ['controller' => 'Cars', 'action' => 'addContribution', $contribution->car_id]) ?> <!-- Pasamos el id del coche para que en un fguturo el formulario se autorellene con esa info-->
 </div>
-<!-- 
-<div class="cars view large-9 medium-8 columns content">
-    <h3><?= h($car->id) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Marca') ?></th>
-            <td><?= h($car->marca) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Modelo') ?></th>
-            <td><?= h($car->modelo) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Combustible') ?></th>
-            <td><?= h($car->combustible) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('User') ?></th>
-            <td><?= $car->has('user') ? $this->Html->link($car->user->id, ['controller' => 'Users', 'action' => 'view', $car->user->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($car->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('ConsumoCiudad') ?></th>
-            <td><?= $this->Number->format($car->consumoCiudad) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('ConsumoAutopista') ?></th>
-            <td><?= $this->Number->format($car->consumoAutopista) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Combinado') ?></th>
-            <td><?= $this->Number->format($car->combinado) ?></td>
-        </tr>
-    </table>
-</div>
- -->
-
-<!-- <?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Car $car
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Car'), ['action' => 'edit', $car->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Car'), ['action' => 'delete', $car->id], ['confirm' => __('Are you sure you want to delete # {0}?', $car->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Cars'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Car'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="cars view large-9 medium-8 columns content">
-    <h3><?= h($car->id) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Marca') ?></th>
-            <td><?= h($car->marca) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Modelo') ?></th>
-            <td><?= h($car->modelo) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Combustible') ?></th>
-            <td><?= h($car->combustible) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($car->id) ?></td>
-        </tr>
-    </table>
-    <div class="related">
-        <h4><?= __('Related Users') ?></h4>
-        <?php if (!empty($car->users)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Login') ?></th>
-                <th scope="col"><?= __('Password') ?></th>
-                <th scope="col"><?= __('Mail') ?></th>
-                <th scope="col"><?= __('Age') ?></th>
-                <th scope="col"><?= __('Role') ?></th>
-                <th scope="col"><?= __('Sex') ?></th>
-                <th scope="col"><?= __('Country') ?></th>
-                <th scope="col"><?= __('Creado') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($car->users as $users): ?>
-            <tr>
-                <td><?= h($users->id) ?></td>
-                <td><?= h($users->login) ?></td>
-                <td><?= h($users->password) ?></td>
-                <td><?= h($users->mail) ?></td>
-                <td><?= h($users->age) ?></td>
-                <td><?= h($users->role) ?></td>
-                <td><?= h($users->sex) ?></td>
-                <td><?= h($users->country) ?></td>
-                <td><?= h($users->creado) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Users', 'action' => 'view', $users->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Users', 'action' => 'edit', $users->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Users', 'action' => 'delete', $users->id], ['confirm' => __('Are you sure you want to delete # {0}?', $users->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
-</div>
- -->
