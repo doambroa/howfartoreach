@@ -5,21 +5,8 @@
  * @var \App\Model\Entity\Car $car
  */
 ?>
-<!-- ESTO SERÍA COMO MUCHO PARA EL ADMINISTRADOR
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Car'), ['action' => 'edit', $car->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Car'), ['action' => 'delete', $car->id], ['confirm' => __('Are you sure you want to delete # {0}?', $car->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Cars'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Car'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-FIN ADMIN -->
 
-<div class="container-fluid" style="text-align: center;">
+    <div class="container" style="text-align: center;">
     <div class="col-md-6" style="padding-bottom: 20px">
         <h1> <?= $car->marca . ' ' . $car->modelo ?></h1> <!-- aqui tiene que ir marca y modelo del coche traído de la BD así -->
     </div>
@@ -27,19 +14,19 @@ FIN ADMIN -->
         switch ($car->combustible) {
             case 'Diesel':
                 ?><span class="col-md-4"><h1><u>Diesel</u></h1></span>
-                <span class="col-md-4"><h1><?= $this->Html->link('Petrol', ['action' => 'view', 'Petrol'],['style' => 'color: lightgrey;']) ?></h1></span>
-                <span class="col-md-4"><h1><?= $this->Html->link('Electric', ['action' => 'view', 'Electric'],['style' => 'color: lightgrey;']) ?></h1></span><?php
+                <span class="col-md-4"><h1><?= $this->Html->link('Petrol', ['action' => 'view',  null,'Petrol'],['style' => 'color: lightgrey;']) ?></h1></span>
+                <span class="col-md-4"><h1><?= $this->Html->link('Electric', ['action' => 'view',  null,'Electric'],['style' => 'color: lightgrey;']) ?></h1></span><?php
                 break;
             case 'Petrol':
                 ?><span class="col-md-4"><h1><u>Petrol</u></h1></span>
-                <span class="col-md-4"><h1><?= $this->Html->link('Diesel', ['action' => 'view', 'Diesel'],['style' => 'color: lightgrey;']) ?></h1></span>
-                <span class="col-md-4"><h1><?= $this->Html->link('Electric', ['action' => 'view', 'Electric'],['style' => 'color: lightgrey;']) ?></h1></span><?php
+                <span class="col-md-4"><h1><?= $this->Html->link('Diesel', ['action' => 'view',  null,'Diesel'],['style' => 'color: lightgrey;']) ?></h1></span>
+                <span class="col-md-4"><h1><?= $this->Html->link('Electric', ['action' => 'view',  null,'Electric'],['style' => 'color: lightgrey;']) ?></h1></span><?php
                 break;
 
             case 'Electric':
                 ?><span class="col-md-4"><h1><u>Electric</u></h1></span>
-                <span class="col-md-4"><h1><?= $this->Html->link('Petrol', ['action' => 'view', 'Petrol'],['style' => 'color: lightgrey;']) ?></h1></span>
-                <span class="col-md-4"><h1><?= $this->Html->link('Diesel', ['action' => 'view', 'Diesel'],['style' => 'color: lightgrey;']) ?></h1></span>
+                <span class="col-md-4"><h1><?= $this->Html->link('Petrol', ['action' => 'view', null,'Petrol'],['style' => 'color: lightgrey;']) ?></h1></span>
+                <span class="col-md-4"><h1><?= $this->Html->link('Diesel', ['action' => 'view',  null,'Diesel'],['style' => 'color: lightgrey;']) ?></h1></span>
                 <?php
                 break;                    
             default:
@@ -51,7 +38,7 @@ FIN ADMIN -->
     </div>
 </div>
 
-<div class="container-fluid">
+<div class="container">
 <div class = col-md-6 style="margin: 0 auto;">
     <?php echo $this->Html->image('../img/cars/' . $car->modelo . '.png', ['alt' => $car->marca . ' ' . $car->modelo, 'class' => 'img-responsive', 'style' => 'margin:auto;'])?>
 </div>
@@ -107,7 +94,15 @@ FIN ADMIN -->
             </div>
         </div>
     </div>
-METER PRECIO POR KM
+
+
+METER PRECIO POR KM 
+<li><?=$avgCombined/100?> L/Km </li>
+<li><?=($avgCombined/100)*1.20?> €/km OBTENER PRECIO CARBURANTE EN TIEMPO REAL</li>
+METER PRECIO LLENAR DEPOSITO APROX
+Meter emisiones de CO2 si sobra tiempo
+
+
 </div>  
 
   <div class = "col-md-2" style=" visibility: ;">
@@ -115,7 +110,6 @@ METER PRECIO POR KM
         <span title="NOT IMPLEMENTED">
             
                     <input type="checkbox"> <?= $this->Html->image('../img/eco.png', ['width'=>'10%', 'height'=>'10%', 'style'=>'cursor: not-allowed;' ]) ?> <b> Eco driving  </b>
-                <!-- aquí podríamos poner un redio button que sea thrifty/saving, normal y sportive -->
                 
                 </span>
                 </center>
@@ -125,7 +119,6 @@ METER PRECIO POR KM
         <span title="NOT IMPLEMENTED">
             
                     <input type="checkbox"> <?= $this->Html->image('../img/normal.png', ['width'=>'10%', 'height'=>'10%', 'style'=>'cursor: not-allowed;' ]) ?> <b> Normal driving  </b>
-                <!-- aquí podríamos poner un redio button que sea thrifty/saving, normal y sportive -->
                 
                 </span>
                 </center>
@@ -134,8 +127,7 @@ METER PRECIO POR KM
     <center style="opacity:0.3; margin-top:10px; cursor: not-allowed;">
         <span title="NOT IMPLEMENTED">
             
-                    <input type="checkbox"> <?= $this->Html->image('../img/sportive.png', ['width'=>'10%', 'height'=>'10%', 'style'=>'cursor: not-allowed;' ]) ?> <b> Sportive driving  </b>
-                <!-- aquí podríamos poner un redio button que sea thrifty/saving, normal y sportive -->
+                    <input type="checkbox"> <?= $this->Html->image('../img/sportive.png', ['width'=>'10%', 'height'=>'10%', 'style'=>'cursor: not-allowed;' ]) ?> <b> Sport driving  </b>
                 
                 </span>
                 </center>

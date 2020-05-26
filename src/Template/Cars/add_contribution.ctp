@@ -5,14 +5,7 @@
  */
 use Cake\Routing\Router;
 ?>
-<nav>
-<!--     <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Cars'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-    </ul> -->
-</nav>
+
 <script type="text/javascript">
         $("#brands").on('change',function() {
         var brand = $(this).val();
@@ -104,7 +97,7 @@ use Cake\Routing\Router;
                     <span style="font-weight: bold;">Driving</span>
                     <div class="input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-fire"></span></span>
-                        <?php echo $this->Form->control('tipoConduccion', ['label' => false, 'options' => ['Eco' => 'Eco', 'Normal' => 'Normal', 'Deportiva' => 'Sport'] ]);?>
+                        <?php echo $this->Form->control('tipoConduccion', ['label' => false, 'options' => ['Eco' => 'Eco', 'Normal' => 'Normal', 'Sport' => 'Sport'] ]);?>
                     </div>
                 </div>   
                             <?php echo $this->Form->hidden('user_id', ['value' => $current_user['id']]); ?>
@@ -115,8 +108,31 @@ use Cake\Routing\Router;
             </div>
         </fieldset>
         <?= $this->Form->button(__('Submit')) ?>
-        <?= $this->Form->end() ?>
-            <span style="position: ;"><a href="howto">How can I calculate my own mileage?</a></span>
+        <?= $this->Form->end() ?>   
+
+          <a data-toggle="collapse" data-target="#allRegisters" type="button" class="">How can I calculate my own mileage?</a>
+       <!-- quizá aquí desplegar una lista con cada uno de los registros de coche  en ultimo caso hacerle un redirect a cars-->
+            <div id="allRegisters" class="collapse"> 
+
+                <div id="calculator" class="form-group"><h2>Calculator</h2>
+                    <form oninput="Result.value=(parseFloat( (Litres.value)*100 ) / parseFloat(Kms.value)).toFixed(3)">
+                        <p>
+                            <label>Kms.</label>
+                            <input id="Kms" type="text" name="Kms">
+                        </p>
+                        <p>
+                            <label>Litres</label>
+                            <input id="Litres" type="text" name="Litres">
+                        </p>
+                        <p>
+                            <label>Result</label>
+                            <input id="Result" type="text" name="result">
+                        </p>
+                    </form>
+            <span style="position: ;"><?= $this->Html->link(__('What is this?'), ['controller' => 'Cars', 'action' => 'howto']) ?></span>
+                </div>
+                
+            </div>
 
     </div>
 </div>
@@ -124,35 +140,3 @@ use Cake\Routing\Router;
 <div id="brandLogo" style="visibility:hidden;text-align: center;">
     <img id="logoBrand" src="" alt="Car Brand" width="180">
 </div>
-
-
-
-<!-- <?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Car $car
- */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Cars'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="cars form large-9 medium-8 columns content">
-    <?= $this->Form->create($car) ?>
-    <fieldset>
-        <legend><?= __('Add Car') ?></legend>
-        <?php
-            echo $this->Form->control('marca');
-            echo $this->Form->control('modelo');
-            echo $this->Form->control('combustible');
-            echo $this->Form->control('users._ids', ['options' => $users]);
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
-</div>
- -->

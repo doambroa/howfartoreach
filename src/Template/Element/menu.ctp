@@ -43,8 +43,12 @@
 
             <ul class="nav navbar-nav"><li><?php echo $this->Html->link('Submit', ['controller' => 'cars', 'action' => 'addContribution'])?></li></ul>
 
+
+
           <?php if(isset($current_user) && $current_user['role'] == 'admin'): ?>
             <ul class="nav navbar-nav"><li><?php echo $this->Html->link('NEW CAR', ['controller' => 'cars', 'action' => 'add'])?></li></ul>
+
+            <ul class="nav navbar-nav"><li><?php echo $this->Html->link('LIST CARS', ['controller' => 'cars', 'action' => 'index'])?></li></ul>
           <?php endif ?>
 
 
@@ -64,3 +68,4 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+
