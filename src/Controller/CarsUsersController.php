@@ -49,16 +49,77 @@ class CarsUsersController extends AppController
      */
     public function index()
     {
+        $this->loadModel('Cars');
         $this->loadModel('CarsUsers');
               
         $this->paginate = [
             'contain' => ['Cars', 'Users']
         ];
         $carsUsers = $this->paginate($this->CarsUsers);
-//debug($carsUsers);
+
+
+
+
+      $query = $this->CarsUsers->find()->select(['car_id' => 'cars.id', 
+        'marca' => 'cars.marca',
+        'modelo' => 'cars.modelo',
+        'AVG(contribution.consumoCiudad)' => 'avgCity',
+        'AVG(contribution.consumoAutopista)' => 'avgHighway',
+        'AVG(contribution.combinado)' => 'avgCombined',
+        'cars.combustible' => 'combustible'])
+      ->innerJoinWith('Cars')
+      ->group(['cars.modelo'.'cars.combustible']);
+
+      debug($query);
+
+
+      //debug($carsUsers);
+
+
         $this->set(compact('carsUsers'));
         $this->set('_serialize', ['carsUsers']);
     }
+
+
+        /**
+     * Contributions method
+     *
+     * @return \Cake\Http\Response|void
+     */
+//     public function contributions()
+//     { 
+//         $this->loadModel('Cars');
+//         $this->loadModel('CarsUsers');
+              
+//         $this->paginate = [
+//             'contain' => ['Cars', 'Users']
+//         ];
+
+
+//       $query = $this->CarsUsers->find()->->select(['car_id' => 'cars.id', 'marca' => 'cars.marca','modelo' => 'cars.modelo','AVG(contribution.consumoCiudad)' => 'avgCity','AVG(contribution.consumoAutopista)' => 'avgHighway','AVG(contribution.combinado)' => 'avgCombined', 'cars.combustible' => 'combustible'])
+//       ->innerJoinWith('Cars')
+//       ->group(['cars.modelo'.'cars.combustible'])
+//       ->fetchAll('assoc');;
+
+//       debuig($query);
+//         //         ->order(['title' => 'DESC'])
+//         //         ->execute()
+//         //         ->fetchAll('assoc');;
+
+//         // $query->
+//         //         ->select(['AVG(contribution.consumoCiudad)' => 'avgCity','AVG(contribution.consumoAutopista)' => 'avgHighway','AVG(contribution.combinado)' => 'avgCombined'])
+//         //         ->innerJon('articles')
+//         //         ->where(['created >' => new DateTime('1 day ago')], ['created' => 'datetime'])
+//         //         ->order(['title' => 'DESC'])
+//         //         ->execute()
+//         //         ->fetchAll('assoc');
+
+
+//         $carsUsers = $this->paginate($this->CarsUsers);
+// //debug($carsUsers);
+//         $this->set(compact('carsUsers'));
+//         $this->set('_serialize', ['carsUsers']);
+//     }
 
     /**
      * View method

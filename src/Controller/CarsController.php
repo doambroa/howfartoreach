@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Cars Controller
@@ -47,6 +48,7 @@ class CarsController extends AppController
      */
     public function index()
     {
+        $this->loadModel('CarsUsers');
          $cars = $this->Cars->find('all');
 
         $this->paginate($cars);
@@ -54,51 +56,50 @@ class CarsController extends AppController
         $this->set('_serialize', ['cars']);
     }
 
-    public function contributions()
-    {
-        $cars = $this->Cars->find()->contain(['Users'])->group(['Cars.modelo','Cars.combustible']);;
-        // debug($cars);
+    public function contributions(){
 
-//QUERY PARA OBTENER TODAS LAS MEDIAS DE TODOS LOS COHES POR MARCA Y COMBUSTIBLE AGRUPADAS
-// Select cars.id, cars.modelo, AVG(contribution.consumoCiudad), AVG(contribution.consumoAutopista), AVG(contribution.combinado), cars.combustible
-// FROM cars_users AS contribution
-// INNER JOIN cars ON cars.id = contribution.car_id
-// GROUP BY cars.modelo, cars.combustible
+$this->paginate = [
+        'sortWhitelist' => ['polls','car_id','marca','modelo','consumoCiudad','consumoAutopista','combinado','combustible']
+];
 
+        $cars = $this->Cars->find()->group(['Cars.modelo']);
 
-        //$query = $this->Cars->query("SELECT cars.id, cars.modelo, AVG(contribution.consumoCiudad), AVG(contribution.consumoAutopista), AVG(contribution.combinado), cars.combustible FROM cars_users AS contribution INNER JOIN cars ON cars.id = contribution.car_id GROUP BY cars.modelo, cars.combustible");
-        //debug($query); // esto solo me hace un select para este modelo
+        foreach ($cars as $car) {
+           //debug($car);
+         } 
+    
+        // $connection = ConnectionManager::get('default');
+        // $contributions = $connection->execute('SELECT cars.id as car_id, cars.marca as marca, cars.modelo as modelo, AVG(contribution.consumoCiudad) as avgCity, AVG(contribution.consumoAutopista) as avgHighway, AVG(contribution.combinado) as avgCombined, cars.combustible as combustible, count(cars.id) as polls FROM cars_users AS contribution INNER JOIN cars ON cars.id = contribution.car_id GROUP BY cars.modelo, cars.combustible')->fetchAll('assoc');
+        
 
+        $this->loadModel('CarsUsers');
 
-//    //     $modelArrayElectrics = $this->Cars->find()->select(['Cars.marca'])->distinct()->toArray();
+        $contributions = $this->paginate($this->CarsUsers->find()->select([
+            'id',
+            'car_id' => 'cars.id', 
+            'marca' => 'cars.marca',
+            'modelo' => 'cars.modelo',
+            'consumoCiudad' => 'AVG(carsusers.consumoCiudad)',
+            'consumoAutopista' => 'AVG(carsusers.consumoAutopista)',
+            'combinado' => 'AVG(carsusers.combinado)',
+            'combustible' => 'cars.combustible',
+            'polls' => 'count(cars.id)'])
+        ->innerJoinWith('Cars')
+        ->group(['cars.modelo','cars.combustible'])
+    );
+
         $fuelTypes = $this->Cars->find()->select(['Cars.combustible'])->distinct()->toArray();
-
-        $most = $this->Cars->find()->select(['count' => $this->Cars->find()->func()->count('*')])->group(['Cars.modelo']);
-
-//    //      $results = $connection->execute(' SELECT modelo FROM cars WHERE (SELECT COUNT(modelo) FROM cars GROUP BY modelo'))->fetchAll('assoc');
-
         $marcas = $this->Cars->find()->select(['Cars.marca'])->distinct()->toArray();
+
+       // $most = $this->Cars->find()->select(['count' => $this->Cars->find()->func()->count('*')])->group(['Cars.modelo']);
         //$brands = $this->Cars->find('all', ['fields'=>['DISTINCT marca']]);
 
-        
-        $query = $cars->find('all')->contain(['Users']);
-        foreach ($query as $car) {
-            if($car->users){
-                if (isset($contributions)) {
-                    $contributions = (object) array_merge((array) $contributions, (array) $car->users);
-                }else{
-                    $contributions = $car->users;
-                }
-            }
-        }
-        // debug($query);
-
-        $this->paginate($this->Cars);
         
         $this->set('marcas', $marcas);
         $this->set('fuelTypes', $fuelTypes);
         $this->set(compact('cars'));
         $this->set('_serialize', ['cars']);
+        $this->set(compact('contributions'));
     }
 
     /**
@@ -163,6 +164,7 @@ class CarsController extends AppController
         $this->set('_serialize', ['carsUser']);
     }
 
+
     /**
      * View method
      *
@@ -170,19 +172,51 @@ class CarsController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null, $combustible = null)
-    {
-        if($combustible != null){
-            debug("tototo");
-        }
+    public function view($id = null){
+
+        // if($combustible != null && $modelo != null){
+           
+        //     //se saca ese modelo para el combustible que nos llega, viene del enlace por get
+        //     $id = $this->Cars->find()->select(['Cars.id'])->where(['modelo' => $modelo, 'combustible' => $combustible]);
+            
+
+        //     // debug($carOtroCombustible->first());
+        //     // foreach ($carOtroCombustible as $idOtroCombustuble) {
+        //     //     debug($idOtroCombustuble);
+        //     // }
+        // }
+
         $car = $this->Cars->get($id, [
             'contain' => ['Users']
         ]);
 
-        $combustibles = $this->Cars->find()->select(['Cars.combustible'])->distinct()->toArray();
+        switch ($car->combustible) {
+            case 'Diesel':
+                $idPetrol = $this->Cars->find()->select(['Cars.id'])->where(['modelo' => $car->modelo, 'combustible' => "Petrol"]); 
+                $idElectric = $this->Cars->find()->select(['Cars.id'])->where(['modelo' => $car->modelo, 'combustible' => "Electric"]);
+
+            break;
+
+            case 'Petrol':
+                $idDiesel = $this->Cars->find()->select(['Cars.id'])->where(['modelo' => $car->modelo, 'combustible' => "Diesel"]); 
+                $idElectric = $this->Cars->find()->select(['Cars.id'])->where(['modelo' => $car->modelo, 'combustible' => "Electric"]);
+                
+            break;
+
+            case 'Electric':
+                $idDiesel = $this->Cars->find()->select(['Cars.id'])->where(['modelo' => $car->modelo, 'combustible' => "Diesel"]); 
+                $idPetrol = $this->Cars->find()->select(['Cars.id'])->where(['modelo' => $car->modelo, 'combustible' => "Petrol"]);
+
+            break;
+
+            default:
+            break;
+        }
+
+
+        $combustibles = $this->Cars->find()->select(['Cars.combustible'])->distinct()->where(['modelo'=>$car->modelo])->toArray();
+        
         //obtenemos los datos de la relación
-
-
         $this->loadModel('CarsUsers');
 
         $relatedContributions = $this->CarsUsers->find()->where(['car_id =' => $car->id])->all();
@@ -291,6 +325,17 @@ class CarsController extends AppController
         $this->set('relatedContributions', $relatedContributions);
         $this->set('combustibles', $combustibles);
 
+
+        //inicializamos las variables con los ids del mismo coche pero con distinto combustible
+        if(isset($idDiesel) && $idDiesel->first() != null){
+            $this->set('idDiesel', $idDiesel->first()->id);
+        }
+        if(isset($idPetrol) && $idPetrol->first() != null){
+            $this->set('idPetrol', $idPetrol->first()->id);
+        }
+        if(isset($idElectric) && $idElectric->first() != null){
+            $this->set('idElectric', $idElectric->first()->id);   
+        }
 // // // hacer un find con todos los vehiculos cuyo modelo counter_reset()ponde con el de $car->modelo y sacar las medias y tal
 //         $modelArray = $this->Cars->find()
 //         ->where(['modelo LIKE' => '%'.$car->modelo.'%'])->all();

@@ -40,7 +40,9 @@ class PagesController extends AppController
 
         $numModels = $cars->find('all')->distinct('modelo')->count();
         $numBrands = $cars->find('all')->distinct('marca')->count();
-        $numCarRegisters = $cars->find('all')->count();
+
+         $numCarRegisters = $cars->find()->innerJoinWith('Users')->count();
+        // $numCarRegisters = $cars->Users->find('all')->count();
         $numUsers = $cars->find('all')->count();
 
         $this->set('numModels', $numModels);

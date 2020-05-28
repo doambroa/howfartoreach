@@ -132,8 +132,8 @@
 
 <section>
   <div class="" >
-    <?php echo $numModels;?> different models along <?php echo $numBrands;?> car brands </br>
-        <?php echo $numCarRegisters-$numModels; ?> total measure contributions
+    <?php echo $numModels;?> different models along <?= $numBrands;?> car brands </br>
+        <?php echo $numCarRegisters; ?> total measure contributions
         Total users: <?php echo $numUsers;?>
   </div>
 </section>

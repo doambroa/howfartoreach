@@ -20,19 +20,8 @@
 </nav>
 <div class="" style="text-align: center; margin-top: 40px;">
 
+
     <?= $this->Html->image('cars.png', ['alt' => 'Car image', 'style' => 'width:25%;height:25%;']); ?>
-
-
-
-<!--     <?php 
-	foreach ($cars as $car ) {
-		if($car->users){
-			foreach ($car->users as $carsusers ){
-    			debug($carsusers->_joinData);
-			}
-		}
-    }?> -->
-
 <div class="container-fluid">
     <div class="row">
     <div class="col-xs-6 col-sm-3">
@@ -160,7 +149,7 @@
     </div>
 
  <div class="col-md-9 col-sm-6">
-     <h3><?= __('Cars') ?></h3>
+     <h3><?= __('Contributions') ?></h3>
 
      <div id="carsContainer">
         <div class="progress oculto" id="procesando">
@@ -172,51 +161,49 @@
     <table class="table table-striped" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('id') ?></th>
+                <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('polls', ['label' => 'Polls']) ?></th>
                 <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('marca', ['label' => 'Brand'])//en un array se mete el nombre que se queire que aparezca, habría que echarle un ojo a la internacionalización para ver como se hace ?></th>
                 <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('modelo', ['label' => 'Model']) ?></th>
                 <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('consumoCiudad', ['label' => 'City']) ?></th>
                 <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('consumoAutopista', ['label' => 'Highway']) ?></th>
                 <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('combinado', ['label' => 'Combined']) ?></th>
                 <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('combustible', ['label' => 'Fuel type']) ?></th>
-                <!-- <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('user_id') ?></th> -->
+                <?php //  <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('user_id') </th>?>
+
                 <th style="text-align: center;" scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
         <tbody>
-            <?php $i = 0;
-            foreach ($cars as $car):
+            <?php
 
-            	if($car->users){
 
-            		foreach ($car->users as $carsusers ){?> <!-- En realidad aqui voy a tener que sacar las medias de todo para pintar la lista y que seleccionen los filtros -->
-			 
-			            <tr style="display: "";"  class="carBrands" id="car_<?=$i?>">
-			                <td><a href=""><?= $this->Number->format($car->id) ?></a></td>
-			                <td class="marca"><?= h($car->marca) ?></td>
-			                <td class="modelo"><?= h($car->modelo) ?></td>
+            foreach ($contributions as $contribution): ?>  
+			            <tr style="display: "";"  class="carBrands" id="contribution_<?=$contribution->id?>">
+			                <!-- <td><a href=""><?= $this->Number->format($contribution->id) ?></a></td> -->
+                       <td class="polls"><?= h($contribution->polls) ?></td>
+			                <td class="marca"><?= h($contribution->marca) ?></td>
+			                <td class="modelo"><?= h($contribution->modelo) ?></td>
 			             
-			                <td class="consumoCiudad"><?= $this->Number->format($carsusers->_joinData->consumoCiudad)?></td>      <!-- aquí habra que meter las medias de la table de carsusers -->
-			                <td class="consumoAutopista"><?= $this->Number->format($carsusers->_joinData->consumoAutopista) ?></td>
-			                <td class="consumoCombinado"><?= $this->Number->format($carsusers->_joinData->combinado) ?></td>
-			                <td class="combustible"><?= h($car->combustible) ?></td>
-			                <!-- <td><?= $car->has('user') ? $this->Html->link($car->user->login, ['controller' => 'Users', 'action' => 'view', $car->user->id]) : '' ?></td>-->
+			                <td class="consumoCiudad"><?= $this->Number->format($contribution->consumoCiudad)?></td>
+			                <td class="consumoAutopista"><?= $this->Number->format($contribution->consumoAutopista) ?></td>
+			                <td class="consumoCombinado"><?= $this->Number->format($contribution->combinado) ?></td>
+			                <td class="combustible"><?= h($contribution->combustible) ?></td>
+                     
+			                
+
 			                
 			                <td class="actions">
-			                    <?= $this->Html->link(__('View'), ['action' => 'view', $car->id], ['class' => 'btn btn-sm btn-info']) ?>
+			                    <?= $this->Html->link(__('View'), ['action' => 'view', $contribution->car_id], ['class' => 'btn btn-sm btn-info']) ?>
                           <?php// debug($carsusers); ?>
-			                    <?php if($current_user['role'] == 'admin'): ?>
-			                    <?= $this->Html->link(__('Edit'), ['controller' => 'CarsUsers', 'action' => 'edit', $carsusers->_joinData->id, $carsusers->_joinData->car_id, $carsusers->_joinData->user_id], ['class' => 'btn btn-sm btn-warning'] ) ?>
-			                    <?= $this->Form->postLink('Delete', ['controller' => 'CarsUsers', 'action' => 'delete', $carsusers->_joinData->id, $carsusers->_joinData->car_id, $carsusers->_joinData->user_id], ['confirm' => 'Are you sure you want to delete register number ' . $carsusers->_joinData->id . '?', 'class' => 'btn btn-sm btn-danger']) ?>
+			                    <?php /*if($current_user['role'] == 'admin'): ?>
+			                    <?= $this->Html->link(__('Edit'), ['controller' => 'CarsUsers', 'action' => 'edit', $contribution->id, $contribution->car_id, $contribution->user_id], ['class' => 'btn btn-sm btn-warning'] ) ?>
+			                    <?= $this->Form->postLink('Delete', ['controller' => 'CarsUsers', 'action' => 'delete', $contribution->id, $contribution->car_id, $contribution->user_id], ['confirm' => 'Are you sure you want to delete register number ' . $contribution->id . '?', 'class' => 'btn btn-sm btn-danger']) ?>
 			                    
-			                    <?php endif ?>
+			                    <?php endif */?>
 			                </td>
-			                <?php $i++?>
-			            </tr>
-            	<?php }
-            }
-
-        	endforeach; ?>
+                  </tr>			                
+            	<?php 
+            endforeach ?>
         </tbody>
     </table>
 </div> <!-- container cars -->

@@ -13,21 +13,32 @@
     <div class="col-md-6"><?php
         switch ($car->combustible) {
             case 'Diesel':
-                ?><span class="col-md-4"><h1><u>Diesel</u></h1></span>
-                <span class="col-md-4"><h1><?= $this->Html->link('Petrol', ['action' => 'view',  null,'Petrol'],['style' => 'color: lightgrey;']) ?></h1></span>
-                <span class="col-md-4"><h1><?= $this->Html->link('Electric', ['action' => 'view',  null,'Electric'],['style' => 'color: lightgrey;']) ?></h1></span><?php
+                ?><span class="col-md-4"><h1><u>Diesel</u></h1></span><?php 
+                if (isset($idPetrol)){
+                    ?><span class="col-md-4"><h1><?= $this->Form->postLink('Petrol', ['action' => 'view',  $idPetrol],['style' => 'color: lightgrey;']) ?></h1></span><?php
+                }
+                if (isset($idElectric)){
+                    ?><span class="col-md-4"><h1><?= $this->Form->postLink('Electric', ['action' => 'view',  $idElectric],['style' => 'color: lightgrey;']) ?></h1></span><?php
+                }
                 break;
             case 'Petrol':
-                ?><span class="col-md-4"><h1><u>Petrol</u></h1></span>
-                <span class="col-md-4"><h1><?= $this->Html->link('Diesel', ['action' => 'view',  null,'Diesel'],['style' => 'color: lightgrey;']) ?></h1></span>
-                <span class="col-md-4"><h1><?= $this->Html->link('Electric', ['action' => 'view',  null,'Electric'],['style' => 'color: lightgrey;']) ?></h1></span><?php
+                ?><span class="col-md-4"><h1><u>Petrol</u></h1></span><?php
+                if (isset($idDiesel)){
+                    ?><span class="col-md-4"><h1><?= $this->Html->link('Diesel', ['action' => 'view',  $idDiesel],['style' => 'color: lightgrey;']) ?></h1></span><?php
+                }
+                if (isset($idElectric)){
+                    ?><span class="col-md-4"><h1><?= $this->Form->postLink('Electric', ['action' => 'view',  $idElectric],['style' => 'color: lightgrey;']) ?></h1></span><?php
+                }
                 break;
 
             case 'Electric':
-                ?><span class="col-md-4"><h1><u>Electric</u></h1></span>
-                <span class="col-md-4"><h1><?= $this->Html->link('Petrol', ['action' => 'view', null,'Petrol'],['style' => 'color: lightgrey;']) ?></h1></span>
-                <span class="col-md-4"><h1><?= $this->Html->link('Diesel', ['action' => 'view',  null,'Diesel'],['style' => 'color: lightgrey;']) ?></h1></span>
-                <?php
+                ?><span class="col-md-4"><h1><u>Electric</u></h1></span><?php 
+                if (isset($idPetrol)){
+                    ?><span class="col-md-4"><h1><?= $this->Form->postLink('Petrol', ['action' => 'view',  $idPetrol],['style' => 'color: lightgrey;']) ?></h1></span><?php
+                }
+                if (isset($idPetrol)){
+                    ?><span class="col-md-4"><h1><?= $this->Html->link('Diesel', ['action' => 'view', $idDiesel],['style' => 'color: lightgrey;']) ?></h1></span><?php
+                }
                 break;                    
             default:
                 break;
@@ -39,9 +50,9 @@
 </div>
 
 <div class="container">
-<div class = col-md-6 style="margin: 0 auto;">
-    <?php echo $this->Html->image('../img/cars/' . $car->modelo . '.png', ['alt' => $car->marca . ' ' . $car->modelo, 'class' => 'img-responsive', 'style' => 'margin:auto;'])?>
-</div>
+    <div class = col-md-6 style="margin: 0 auto;">
+        <?php echo $this->Html->image('../img/cars/' . $car->modelo . '.png', ['alt' => $car->marca . ' ' . $car->modelo, 'class' => 'img-responsive', 'style' => 'margin:auto;'])?>
+    </div>
 <div id="diesel">
     <div class = col-md-6>
             <span class="col-md-2">
