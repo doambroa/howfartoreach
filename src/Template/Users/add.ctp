@@ -15,6 +15,15 @@
     </ul>
 </nav> -->
 <div class="container">
+    <?php if (isset($current_user) ){
+        
+        
+        ?>You are already signed up<?php
+
+        }else{
+
+
+    ?>
 <div class="users col-md-6 col-md-offset-3" style="padding-top: 40px;">
     
 <?= $this->Form->create($user) ?>
@@ -312,3 +321,6 @@
     <?= $this->Form->end() ?>
 
 </div>
+<?php
+}
+?>

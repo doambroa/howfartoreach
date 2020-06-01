@@ -18,18 +18,18 @@ class CarsController extends AppController
      public function isAuthorized($user){
         // los de registrado 
         if(isset($user['role']) and $user['role'] === 'user'){
-            if(in_array($this->request->action, ['index', 'view', 'search', 'add', 'filter', 'howTo'])) //acciones que se le permiten a cada user, el this request action devuelve la accion a la que se intentó acceder, y para pdoer acceder tiene q ue estar en la lista
+            if(in_array($this->request->action, ['view', 'search', 'filter', 'addContribution', 'howTo']))
             {
                 return true;
             }
-     
-           if (in_array($this->request->getParam('action'), ['edit', 'delete'])) {
-            // Prior to 3.4.0 $this->request->params('pass.0')
-                $carId = (int)$this->request->getParam('pass.0');
-                if ($this->Cars->isOwnedBy($carId, $user['id'])) {
-                    return true;
-                }
-            }
+        
+           // if (in_array($this->request->getParam('action'), ['edit', 'delete'])) {
+           //  // Prior to 3.4.0 $this->request->params('pass.0')
+           //      $carId = (int)$this->request->getParam('pass.0');
+           //      if ($this->Cars->isOwnedBy($carId, $user['id'])) {
+           //          return true;
+           //      }
+           //  }
         }
             return parent::isAuthorized($user);
 
@@ -37,7 +37,7 @@ class CarsController extends AppController
 
     public function beforeFilter(Event $event){//los de no registrado
 
-        $this->Auth->allow(['search', 'view', 'index', 'contributions', 'addContribution', 'howTo']);
+        $this->Auth->allow(['search', 'view', 'contributions', 'howTo']);
         $this->set('current_user', $this->Auth->user());
     }
 
@@ -58,9 +58,9 @@ class CarsController extends AppController
 
     public function contributions(){
 
-$this->paginate = [
-        'sortWhitelist' => ['polls','car_id','marca','modelo','consumoCiudad','consumoAutopista','combinado','combustible']
-];
+        $this->paginate = [
+            'sortWhitelist' => ['polls','car_id','marca','modelo','consumoCiudad','consumoAutopista','combinado','combustible']
+        ];
 
         $cars = $this->Cars->find()->group(['Cars.modelo']);
 

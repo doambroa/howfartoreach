@@ -18,8 +18,8 @@
         <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
     </ul> -->
 </nav>
+<div style=" margin-top: 40px;background-image: url(../img/tires3.png);">
 <div class="" style="text-align: center; margin-top: 40px;">
-
 
     <?= $this->Html->image('cars.png', ['alt' => 'Car image', 'style' => 'width:25%;height:25%;']); ?>
 <div class="container-fluid">
@@ -149,7 +149,7 @@
     </div>
 
  <div class="col-md-9 col-sm-6">
-     <h3><?= __('Contributions') ?></h3>
+     <h3><?= __('All time averages') ?></h3>
 
      <div id="carsContainer">
         <div class="progress oculto" id="procesando">
@@ -206,7 +206,7 @@
             endforeach ?>
         </tbody>
     </table>
-</div> <!-- container cars -->
+</div>
     <div class="paginator">
         <ul class="pagination">
             <?= $this->Paginator->first('<< ' . __('first')) ?>
@@ -228,7 +228,7 @@
 
 
 
-
+</div>
 
 
 

@@ -14,31 +14,31 @@ use Cake\Event\Event;
 class CarsUsersController extends AppController
 {
 
-    //  public function isAuthorized($user){
-    //     // los de registrado 
-    //     if(isset($user['role']) and $user['role'] === 'user'){
-    //         if(in_array($this->request->action, ['index', 'view', 'add', 'delete'])) //acciones que se le permiten a cada user, el this request action devuelve la accion a la que se intentó acceder, y para pdoer acceder tiene q ue estar en la lista
-    //         {
-    //             return true;
-    //         }
-        
-    //        if (in_array($this->request->getParam('action'), ['edit', 'delete'])) {
-    //             // Prior to 3.4.0 $this->request->params('pass.0')
-    //             $carId = (int)$this->request->getParam('pass.0');
+     public function isAuthorized($user){
+        // los de registrado 
+        if(isset($user['role']) and $user['role'] === 'user'){
+            if(in_array($this->request->action, ['index', 'view', 'add'])) //acciones que se le permiten a cada user, el this request action devuelve la accion a la que se intentó acceder, y para pdoer acceder tiene q ue estar en la lista
+            {
+                return true;
+            }
+          
+           if (in_array($this->request->getParam('action'), ['edit', 'delete'])) {
 
-    //             debug($this->CarsUsers);
+                $id = (int)$this->request->getParam('pass.0');
+                $carId = (int)$this->request->getParam('pass.1');
+                $userId = (int)$this->request->getParam('pass.2');
 
-    //             if ($this->Cars->isOwnedBy($carId, $user['id'])) {
-    //                 return true;
-    //             }
-    //         }
-    //     }
-    //     return parent::isAuthorized($user);
-    // }
+                if ( ( isset($user['id']) and ($userId == $user['id'])) || (isset($user['role']) and $user['role'] === 'admin') ) {
+                    return true;
+                }
+            }
+        }
+        return parent::isAuthorized($user);
+    }
     
     public function beforeFilter(Event $event)
     {//los de no registrado
-        $this->Auth->allow(['home', 'search', 'view', 'edit', 'index', 'howTo']);
+        $this->Auth->allow(['view', 'index']);
         $this->set('current_user', $this->Auth->user());
     }
 
@@ -57,69 +57,20 @@ class CarsUsersController extends AppController
         ];
         $carsUsers = $this->paginate($this->CarsUsers);
 
-
-
-
-      $query = $this->CarsUsers->find()->select(['car_id' => 'cars.id', 
-        'marca' => 'cars.marca',
-        'modelo' => 'cars.modelo',
-        'AVG(contribution.consumoCiudad)' => 'avgCity',
-        'AVG(contribution.consumoAutopista)' => 'avgHighway',
-        'AVG(contribution.combinado)' => 'avgCombined',
-        'cars.combustible' => 'combustible'])
-      ->innerJoinWith('Cars')
-      ->group(['cars.modelo'.'cars.combustible']);
-
-      debug($query);
-
-
-      //debug($carsUsers);
+      // $query = $this->CarsUsers->find()->select(['car_id' => 'cars.id', 
+      //   'marca' => 'cars.marca',
+      //   'modelo' => 'cars.modelo',
+      //   'AVG(contribution.consumoCiudad)' => 'avgCity',
+      //   'AVG(contribution.consumoAutopista)' => 'avgHighway',
+      //   'AVG(contribution.combinado)' => 'avgCombined',
+      //   'cars.combustible' => 'combustible'])
+      // ->innerJoinWith('Cars')
+      // ->group(['cars.modelo'.'cars.combustible']);
 
 
         $this->set(compact('carsUsers'));
         $this->set('_serialize', ['carsUsers']);
     }
-
-
-        /**
-     * Contributions method
-     *
-     * @return \Cake\Http\Response|void
-     */
-//     public function contributions()
-//     { 
-//         $this->loadModel('Cars');
-//         $this->loadModel('CarsUsers');
-              
-//         $this->paginate = [
-//             'contain' => ['Cars', 'Users']
-//         ];
-
-
-//       $query = $this->CarsUsers->find()->->select(['car_id' => 'cars.id', 'marca' => 'cars.marca','modelo' => 'cars.modelo','AVG(contribution.consumoCiudad)' => 'avgCity','AVG(contribution.consumoAutopista)' => 'avgHighway','AVG(contribution.combinado)' => 'avgCombined', 'cars.combustible' => 'combustible'])
-//       ->innerJoinWith('Cars')
-//       ->group(['cars.modelo'.'cars.combustible'])
-//       ->fetchAll('assoc');;
-
-//       debuig($query);
-//         //         ->order(['title' => 'DESC'])
-//         //         ->execute()
-//         //         ->fetchAll('assoc');;
-
-//         // $query->
-//         //         ->select(['AVG(contribution.consumoCiudad)' => 'avgCity','AVG(contribution.consumoAutopista)' => 'avgHighway','AVG(contribution.combinado)' => 'avgCombined'])
-//         //         ->innerJon('articles')
-//         //         ->where(['created >' => new DateTime('1 day ago')], ['created' => 'datetime'])
-//         //         ->order(['title' => 'DESC'])
-//         //         ->execute()
-//         //         ->fetchAll('assoc');
-
-
-//         $carsUsers = $this->paginate($this->CarsUsers);
-// //debug($carsUsers);
-//         $this->set(compact('carsUsers'));
-//         $this->set('_serialize', ['carsUsers']);
-//     }
 
     /**
      * View method
@@ -128,31 +79,11 @@ class CarsUsersController extends AppController
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-  /* metodo inicial
     public function view($id = null)
     {
-        $this->loadModel('CarsUsers');
-        $carsUser = $this->CarsUsers->get($id, [
-            'contain' => ['Cars', 'Users']
-        ]);
 
-        $this->set('carsUser', $carsUser);
-        $this->set('_serialize', ['carsUser']);
+        return $this->redirect(['controller' => 'cars', 'action' => 'view',$id]);
     }
-*/
-
-    public function view($id = null)
-    {
-        $this->loadModel('CarsUsers');
-        $carsUser = $this->CarsUsers->get($id, [
-            'contain' => ['Cars', 'Users']
-        ]);
-
-        
-        $this->set('carsUser', $carsUser);
-        $this->set('_serialize', ['carsUser']);
-    }
-
     
     /**
      * Add method
@@ -161,21 +92,7 @@ class CarsUsersController extends AppController
      */
     public function add()
     {
-        $this->loadModel('CarsUsers');
-        $carsUser = $this->CarsUsers->newEntity();
-        if ($this->request->is('post')) {
-            $carsUser = $this->CarsUsers->patchEntity($carsUser, $this->request->getData());
-            if ($this->CarsUsers->save($carsUser)) {
-                $this->Flash->success(__('The cars user has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The cars user could not be saved. Please, try again.'));
-        }
-        $cars = $this->CarsUsers->Cars->find('list', ['limit' => 200]);
-        $users = $this->CarsUsers->Users->find('list', ['limit' => 200]);
-        $this->set(compact('carsUser', 'cars', 'users'));
-        $this->set('_serialize', ['carsUser']);
+        return $this->redirect(['controller' => 'cars', 'action' => 'addContribution']);
     }
 
     /**

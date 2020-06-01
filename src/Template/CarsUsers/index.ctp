@@ -4,30 +4,23 @@
  * @var \App\Model\Entity\Carsuser[]|\Cake\Collection\CollectionInterface $carsusers
  */
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Carsuser'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Cars'), ['controller' => 'Cars', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Car'), ['controller' => 'Cars', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="carsusers index large-9 medium-8 columns content">
-    <h3><?= __('Carsusers') ?></h3>
-    <table cellpadding="0" cellspacing="0">
+
+<div class="container" style="text-align: center; margin-top: 40px;">
+     <?= $this->Html->image('velocimetro.png', ['alt' => 'contributions icon', 'style' => 'width:15%;height:15%;']); ?>
+
+    <h3><?=__('All contributions')?></h3>
+    <table class="table table-striped" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('car_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('user_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('consumoCiudad') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('consumoAutopista') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('combinado') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('tipoConduccion') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('creado') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+                <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('id') ?></th>
+                <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('car_id') ?></th>
+                <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('user_id') ?></th>
+                <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('consumoCiudad') ?></th>
+                <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('consumoAutopista') ?></th>
+                <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('combinado') ?></th>
+                <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('Driving style') ?></th>
+                <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('Created') ?></th>
+                <th style="text-align: center;" scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -42,22 +35,25 @@
                 <td><?= h($carsuser->tipoConduccion) ?></td>
                 <td><?= h($carsuser->creado) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $carsuser->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $carsuser->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $carsuser->id], ['confirm' => __('Are you sure you want to delete # {0}?', $carsuser->id)]) ?>
+                    <?= $this->Html->link(__('View'), ['action' => 'view', $carsuser->car_id],['class' => 'btn btn-sm btn-info']) ?>
+                    <?php 
+                    if( ($current_user['role'] == 'admin') || ($current_user['id'] == $carsuser->user_id) ): ?>
+                        <?= $this->Html->link(__('Edit'), ['controller' => 'CarsUsers', 'action' => 'edit', $carsuser->id, $carsuser->car_id, $carsuser->user_id], ['class' => 'btn btn-sm btn-warning'] ) ?>
+                            <?= $this->Form->postLink('Delete', ['controller' => 'CarsUsers', 'action' => 'delete', $carsuser->id, $carsuser->car_id, $carsuser->user_id], ['confirm' => 'Are you sure you want to delete register number ' . $carsuser->id . '?', 'class' => 'btn btn-sm btn-danger']) ?> 
+                    <?php endif?>
                 </td>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
+        <div class="paginator">
+            <ul class="pagination">
+                <?= $this->Paginator->first('<< ' . __('first')) ?>
+                <?= $this->Paginator->prev('< ' . __('previous')) ?>
+                <?= $this->Paginator->numbers(['before' => '', 'after' => '']) ?>
+                <?= $this->Paginator->next(__('next') . ' >') ?>
+                <?= $this->Paginator->last(__('last') . ' >>') ?>
+            </ul>
+            <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+        </div>
 </div>

@@ -15,7 +15,7 @@ class UsersController extends AppController
 {
     public function isAuthorized($user){
         if(isset($user['role']) and $user['role'] === 'user'){
-            if(in_array($this->request->action, ['home', 'logout', 'index', 'view'])) //acciones que se le permiten a cada user, el this request action devuelve la accion a la que se intentó acceder, y para pdoer acceder tiene q ue estar en la lista
+            if(in_array($this->request->action, ['home', 'logout', 'view'])) //acciones que se le permiten a cada user, el this request action devuelve la accion a la que se intentó acceder, y para pdoer acceder tiene q ue estar en la lista
             {
                 return true;
             }
@@ -116,7 +116,6 @@ class UsersController extends AppController
                 return $this->redirect(['action' => 'login']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
-            debug($this->request->getData());
         }
         $this->set(compact('user'));
         $this->set('_serialize', ['user']);

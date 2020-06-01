@@ -34,7 +34,7 @@ use Cake\Routing\Router;
     });
 </script>
 <div class="container">
-    <div class="" style=" margin-top: 40px;background-image: url(../img/tires3.png);">
+    <div class="" style=" margin-top: 40px;background-image: url(http://localhost/howfartoreach/img/tires3.png);">
         <?= $this->Form->create($carsUser,['type' => 'file', 'class' => 'ajax_page']) ?>
         <fieldset>
             <legend><?= __('Add new poll') ?><div class="ajax_loading_image"></div></legend>

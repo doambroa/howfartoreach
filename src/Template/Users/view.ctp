@@ -107,8 +107,12 @@
                 <!-- <td><?= h($cars->user_id) ?></td> -->
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Cars', 'action' => 'view', $cars->id], ['class' => 'btn btn-sm btn-info']) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'CarsUsers', 'action' => 'edit', $cars->_joinData->id,$cars->id,$user->id], ['class' => 'btn btn-sm btn-warning']) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'CarsUsers', 'action' => 'delete', $cars->_joinData->id,$cars->id,$user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $cars->_joinData->id), 'class'=>'btn btn-sm btn-danger']) ?>
+                      <?php if($current_user['role'] == 'admin' || $current_user['id'] == $user->id){ ?>
+                        <?= $this->Html->link(__('Edit'), ['controller' => 'CarsUsers', 'action' => 'edit', $cars->_joinData->id,$cars->id,$user->id], ['class' => 'btn btn-sm btn-warning']) ?>
+                      <?php } ?>
+                      <?php if($current_user['role'] == 'admin' || $current_user['id'] == $user->id){ ?>
+                        <?= $this->Form->postLink(__('Delete'), ['controller' => 'CarsUsers', 'action' => 'delete', $cars->_joinData->id,$cars->id,$user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $cars->_joinData->id), 'class'=>'btn btn-sm btn-danger']) ?>
+                      <?php } ?>
                 </td>
             </tr>
             <?php endforeach; ?>
