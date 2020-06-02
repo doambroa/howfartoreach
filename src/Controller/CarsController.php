@@ -383,7 +383,7 @@ class CarsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null Redirects on successful add, renders View otherwise.
      */
     public function add()
     {

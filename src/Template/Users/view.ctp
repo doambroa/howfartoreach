@@ -85,26 +85,24 @@
         <?php if (!empty($user->cars)): ?>
         <table class="table" cellpadding="0" cellspacing="0">
             <tr>
-                <th scope="col"><?= __('Id') ?></th>
                 <th scope="col"><?= __('Brand' ) ?></th>
                 <th scope="col"><?= __('Model') ?></th>
                 <th scope="col"><?= __('City') ?></th>
                 <th scope="col"><?= __('Highway') ?></th>
                 <th scope="col"><?= __('Combined') ?></th>
                 <th scope="col"><?= __('Type of fuel') ?></th>
-                <!-- <th scope="col"><?= __('User Id') ?></th> -->
+                <th scope="col"><?= __('Style') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($user->cars as $cars): ?>
             <tr>
-                <td><?= h($cars->_joinData->id) ?></td>
                 <td><?= h($cars->marca) ?></td>
                 <td><?= h($cars->modelo) ?></td>
                 <td><?= h($cars->_joinData->consumoCiudad) ?></td>
                 <td><?= h($cars->_joinData->consumoAutopista) ?></td>
                 <td><?= h($cars->_joinData->combinado) ?></td>
                 <td><?= h($cars->combustible) ?></td>
-                <!-- <td><?= h($cars->user_id) ?></td> -->
+                <td><?= h($cars->_joinData->tipoConduccion) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Cars', 'action' => 'view', $cars->id], ['class' => 'btn btn-sm btn-info']) ?>
                       <?php if($current_user['role'] == 'admin' || $current_user['id'] == $user->id){ ?>
@@ -125,73 +123,3 @@
 </div>
 
 </div>
-<!--     <div class="col-md-7 ">
-
-<div class="panel panel-default">
-  <div class="panel-heading">  <h4>User Profile</h4></div>
-   <div class="panel-body">
-       
-    <div class="box box-info">
-        
-            <div class="box-body">
-                     <div class="col-sm-6">
-                     <div align="center"> <img alt="User Pic" src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg" id="profile-image1" class="img-circle img-responsive"> 
-                
-                <input id="profile-image-upload" class="hidden" type="file">
-<div style="color:#999;">click here to change profile image</div>
-                          
-                     </div>
-              
-              <br>
-
-            </div>
-            <div class="col-sm-6">
-            <h4 style="color:#00b1b1;">Prasad Shankar Huddedar </h4>
-              <span><p>Aspirant</p></span>            
-            </div>
-            <div class="clearfix"></div>
-            <hr style="margin:5px 0 5px 0;">
-    
-              
-<div class="col-sm-5 col-xs-6 tital ">First Name:</div><div class="col-sm-7 col-xs-6 ">Prasad</div>
-     <div class="clearfix"></div>
-<div class="bot-border"></div>
-
-<div class="col-sm-5 col-xs-6 tital ">Middle Name:</div><div class="col-sm-7"> Shankar</div>
-  <div class="clearfix"></div>
-<div class="bot-border"></div>
-
-<div class="col-sm-5 col-xs-6 tital ">Last Name:</div><div class="col-sm-7"> Huddedar</div>
-  <div class="clearfix"></div>
-<div class="bot-border"></div>
-
-<div class="col-sm-5 col-xs-6 tital ">Date Of Joining:</div><div class="col-sm-7">15 Jun 2016</div>
-
-  <div class="clearfix"></div>
-<div class="bot-border"></div>
-
-<div class="col-sm-5 col-xs-6 tital ">Date Of Birth:</div><div class="col-sm-7">11 Jun 1998</div>
-
-  <div class="clearfix"></div>
-<div class="bot-border"></div>
-
-<div class="col-sm-5 col-xs-6 tital ">Place Of Birth:</div><div class="col-sm-7">Shirdi</div>
-
- <div class="clearfix"></div>
-<div class="bot-border"></div>
-
-<div class="col-sm-5 col-xs-6 tital ">Nationality:</div><div class="col-sm-7">Indian</div>
-
- <div class="clearfix"></div>
-<div class="bot-border"></div>
-
-<div class="col-sm-5 col-xs-6 tital ">Relition:</div><div class="col-sm-7">Hindu</div>
-
-          </div>
-
-        </div>
-       
-            
-    </div> 
-    </div>
-</div> -->

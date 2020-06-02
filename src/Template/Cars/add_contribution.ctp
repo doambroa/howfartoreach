@@ -44,7 +44,7 @@ use Cake\Routing\Router;
                     <div class="input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-tag"></span></span>
                         <select name="marca" class="form-control" id="brands" onchange="filterBrands()" required>
-                            <option value="" selected="selected">(Please select a car brand)</option>
+                            <option value="" selected="selected" required="required">(Please select a car brand)</option>
                             <?php foreach ($brands as $brand) {
                                  ?><option><?= $brand->marca?> </option>
                             <?php } ?>
@@ -56,7 +56,7 @@ use Cake\Routing\Router;
                     <div class="input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-tags"></span></span>
                         <select name="modelo" class="form-control" id="models">
-                            <option value="" selected="selected">(Please select a car model)</option>
+                            <option value="" selected="selected" required="required">(Please select a car model)</option>
                            <?php foreach ($models as $model) {
                                  ?><option><?= $model->modelo?> </option>
                             <?php } ?>
@@ -90,7 +90,7 @@ use Cake\Routing\Router;
                     <span style="font-weight: bold;">Type of fuel</span>
                     <div class="input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-tint"></span></span>
-                        <?php echo $this->Form->control('combustible', ['label' => false, 'options' => ['Diesel' => 'Diesel', 'Petrol' => 'Petrol', 'Electric' => 'Electric']]);?>
+                        <?php echo $this->Form->control('combustible', ['label' => false, 'required', 'options' => ['Diesel' => 'Diesel', 'Petrol' => 'Petrol', 'Electric' => 'Electric']]);?>
                     </div>
                 </div>    
                 <div class="form-group select"">

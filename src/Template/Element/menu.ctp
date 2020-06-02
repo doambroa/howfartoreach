@@ -49,6 +49,9 @@
             <ul class="nav navbar-nav"><li><?php echo $this->Html->link('NEW CAR', ['controller' => 'cars', 'action' => 'add'])?></li></ul>
 
             <ul class="nav navbar-nav"><li><?php echo $this->Html->link('LIST CARS', ['controller' => 'cars', 'action' => 'index'])?></li></ul>
+
+            <ul class="nav navbar-nav"><li><?php echo $this->Html->link('LIST CONTRIBUTIONS', ['controller' => 'CarsUsers', 'action' => 'index'])?></li></ul>
+
           <?php endif ?>
 
 
