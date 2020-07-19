@@ -12,7 +12,8 @@
         "cakephp/plugin-installer": "~1.0",
         "josegonzalez/dotenv": "2.*",
         "friendsofcake/bootstrap-ui": "^1.2",
-        "fzaninotto/faker": "^1.9"
+        "fzaninotto/faker": "^1.9",
+        "friendsofcake/cakephp-csvview": "^3.4"
     },
     "require-dev": {
         "psy/psysh": "@stable",
