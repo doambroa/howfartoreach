@@ -596,6 +596,7 @@ class CarsController extends AppController
         $this->set('_serialize', ['car']);
     */}
 
+    //todos los cars
     public function exportCars()
     {
             $cars = $this->Cars->find()->select(['Cars.marca','Cars.modelo','Cars.combustible','Cars.ano']);
@@ -608,19 +609,57 @@ class CarsController extends AppController
             $this->set(compact('cars', '_header', '_serialize'));
     }
 
+    //todas las contribuciones
     public function exportContributions()
     {
         $this->loadModel('CarsUsers');
               
-        $carsUsers = $this->paginate($this->CarsUsers);
+           $carsUsers = $this->CarsUsers->find()->select([
+                'car_marca' => 'Cars.marca',
+                'car_modelo' => 'Cars.modelo',
+                'car_ano' => 'Cars.ano',
+                'car_driving' => 'carsusers.tipoConduccion',
+                'consumoCiudad' => 'carsusers.consumoCiudad',
+                'consumoAutopista' => 'carsusers.consumoAutopista',
+                'combinado' => 'carsusers.combinado',
+                'combustible' => 'cars.combustible',
+                'created' => 'carsusers.creado'])
+                ->innerJoinWith('Cars');
 
-            $CarsUsers = $this->CarsUsers->find()->select(['Cars.marca','Cars.modelo','Cars.combustible','carsusers.tipoConduccion','carsusers.consumoCiudad','carsusers.consumoAutopista','carsusers.combinado','Cars.ano','carsusers.created']);
             $_serialize = 'carsUsers';
-            $_header = ['Brand', 'Model','Fuel','Driving','Year','City','Highway','Combined','Created'];
+            $_header = ['Brand', 'Model','Year','Driving','City','Highway','Combined','Fuel','Created'];
             
-            $this->response = $this->response->withDownload('cars.csv');
+            $this->response = $this->response->withDownload('contributions.csv');
             $this->viewBuilder()->setClassName('CsvView.Csv');
             $this->set(compact('carsUsers', '_header', '_serialize'));
+    }
+
+    //medias de consumo por modelo y tipo de combustible
+    public function exportAverages()
+    {
+             $this->loadModel('CarsUsers');
+
+        $averages = $this->paginate($this->CarsUsers->find()->select([
+                'marca' => 'Cars.marca',
+                'modelo' => 'Cars.modelo',
+                'car_ano' => 'Cars.ano',
+                'combustible' => 'cars.combustible',
+                'consumoCiudad' => 'AVG(carsusers.consumoCiudad)',
+                'pollsCity' => 'count(carsusers.consumoCiudad)',
+                'consumoAutopista' => 'AVG(carsusers.consumoAutopista)',
+                'pollsHighway' => 'count(carsusers.consumoAutopista)',
+                'combinado' => 'AVG(carsusers.combinado)',
+                'pollsCombined' => 'count(carsusers.combinado)'])
+            ->innerJoinWith('Cars')
+            ->group(['cars.modelo','cars.combustible'])
+        );
+        $_serialize = 'averages';
+        $_header = ['Brand', 'Model','Year','Fuel','City','pollsCity','Highway','pollsHighway','Combined','pollsCombined'];
+                
+
+            $this->response = $this->response->withDownload('averagesByModel.csv');
+            $this->viewBuilder()->setClassName('CsvView.Csv');
+            $this->set(compact('averages', '_header', '_serialize'));
     }
 
     public function howTo(){
