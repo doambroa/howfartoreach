@@ -629,6 +629,8 @@ class CarsController extends AppController
             $_serialize = 'carsUsers';
             $_header = ['Brand', 'Model','Year','Driving','City','Highway','Combined','Fuel','Created'];
             
+            debug($carsusers);
+
             $this->response = $this->response->withDownload('contributions.csv');
             $this->viewBuilder()->setClassName('CsvView.Csv');
             $this->set(compact('carsUsers', '_header', '_serialize'));
@@ -639,7 +641,7 @@ class CarsController extends AppController
     {
              $this->loadModel('CarsUsers');
 
-        $averages = $this->paginate($this->CarsUsers->find()->select([
+        $averagesByModel = $this->CarsUsers->find()->select([
                 'marca' => 'Cars.marca',
                 'modelo' => 'Cars.modelo',
                 'car_ano' => 'Cars.ano',
@@ -651,15 +653,44 @@ class CarsController extends AppController
                 'combinado' => 'AVG(carsusers.combinado)',
                 'pollsCombined' => 'count(carsusers.combinado)'])
             ->innerJoinWith('Cars')
-            ->group(['cars.modelo','cars.combustible'])
-        );
-        $_serialize = 'averages';
+            ->group(['cars.modelo','cars.combustible']);
+        $_serialize = 'averagesByModel';
+       
         $_header = ['Brand', 'Model','Year','Fuel','City','pollsCity','Highway','pollsHighway','Combined','pollsCombined'];
                 
 
-            $this->response = $this->response->withDownload('averagesByModel.csv');
-            $this->viewBuilder()->setClassName('CsvView.Csv');
-            $this->set(compact('averages', '_header', '_serialize'));
+        $this->response = $this->response->withDownload('averagesByModel.csv');
+        $this->viewBuilder()->setClassName('CsvView.Csv');
+        $this->set(compact('averagesByModel', '_header', '_serialize'));
+    }
+
+    //contribuciones por año de fabricación
+    //exportAveragesCar
+     public function exportCarContributions($carId=null)
+    {
+             $this->loadModel('CarsUsers');
+
+       $averagesByThis = $this->CarsUsers->find()->select([
+                'car_marca' => 'Cars.marca',
+                'car_modelo' => 'Cars.modelo',
+                'car_ano' => 'Cars.ano',
+                'car_driving' => 'carsusers.tipoConduccion',
+                'combustible' => 'cars.combustible',
+                'consumoCiudad' => 'carsusers.consumoCiudad',
+                'consumoAutopista' => 'carsusers.consumoAutopista',
+                'combinado' => 'carsusers.combinado',
+                'created' => 'carsusers.creado'])
+                ->innerJoinWith('Cars')
+                ->where(['Cars.id' =>  $carId]);
+
+        $_serialize = 'averagesByThis';
+       
+        $_header = ['Brand', 'Model','Year','Driving','Fuel','City','Highway','Combined'];
+                
+
+        $this->response = $this->response->withDownload('carContributions.csv');
+        $this->viewBuilder()->setClassName('CsvView.Csv');
+        $this->set(compact('averagesByThis', '_header', '_serialize'));
     }
 
     public function howTo(){

@@ -109,7 +109,7 @@
 
 METER PRECIO POR KM 
 <li><?=$avgCombined/100?> L/Km </li>
-<li><?=($avgCombined/100)*1.20?> €/km OBTENER PRECIO CARBURANTE EN TIEMPO REAL</li>
+<li><?=($avgCombined/100)*1.20?> €/km OBTENER PRECIO CARBURANTE EN TIEMPO REAL, la media de lso ultimos 10 años es la misma</li>
 METER PRECIO LLENAR DEPOSITO APROX
 Meter emisiones de CO2 si sobra tiempo
 
@@ -238,4 +238,8 @@ Meter emisiones de CO2 si sobra tiempo
 
 <div class="container" style="padding-top: 60px;">
     <?= $this->Html->link('Add your own measure', ['controller' => 'Cars', 'action' => 'addContribution', $contribution->car_id]) ?> <!-- Pasamos el id del coche para que en un fguturo el formulario se autorellene con esa info-->
+
+    <?= $this->Html->link('Download Data for this car', ['controller' => 'Cars', 'action' => 'exportCarContributions', $contribution->car_id]) ?>
+
+
 </div>
