@@ -9,6 +9,8 @@
 //     'before' => $this->Html->get('#procesando')->effect('fadeIn', array('buffer' => false)),
 //     'complete' => $this->Html->get('#procesando')->effect('fadeOut', array('buffer' => false))
 // ));
+
+$parameters=1234;
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
 <!--     <ul class="side-nav">
@@ -25,11 +27,15 @@
 <div class="container-fluid">
     <div class="row">
       <div class="col-xs-6 col-sm-3">
+        <?=$this->Form->create()?>
         <div id="accordion" class="panel panel-primary behclick-panel">
           <div class="panel-heading">
             <h3 class="panel-title">Filter Cars</h3>
           </div>
-          <div class="panel-body" >
+       <input type="submit" value="Apply filters" class="btn btn-primary btn-block">Apply filters
+          <?=$this->Html->link('Apply filters', ['controller' => 'Cars', 'action' => 'Contributions', $parameters])?>
+
+          <div class="panel-body">
           <!--   <div class="panel-heading " >
               <h4 class="panel-title">
                 <a data-toggle="collapse" href="#collapse0">
@@ -43,25 +49,25 @@
                   <i class="indicator fa fa-caret-down" aria-hidden="true"></i> Mileage measure
                 </a>
               </h4>
-            </div>    
+            </div>
             <div id="collapse0" class="panel-collapse collapse in" >
               <ul class="list-group">
                 <li class="list-group-item">
                   <p><!-- Filtro -->
                     <label for="amountC">Mileage range in City:</label>
-                    <input type="text" id="amountC" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    <input type="text" id="amountC" data-min="4" data-max="6.5" readonly style="border:0; color:#f6931f; font-weight:bold;">
                   </p> <div id="slider-rangeC"></div>
                 </li>
                  <li class="list-group-item">
                   <p><!-- Filtro -->
                     <label for="amountH">Mileage range in Highway:</label>
-                    <input type="text" id="amountH" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    <input type="text" id="amountH" data-min="3" data-max="11" readonly style="border:0; color:#f6931f; font-weight:bold;">
                   </p> <div id="slider-rangeH"></div>
                 </li>
                  <li class="list-group-item">
                   <p><!-- Filtro -->
                     <label for="amountCo">Mileage range Combined:</label>
-                    <input type="text" id="amountCo" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    <input type="text" id="amountCo" data-min="3.5" data-max="8" readonly style="border:0; color:#f6931f; font-weight:bold;">
                   </p> <div id="slider-rangeCo"></div>
                 </li>
               </ul>
@@ -100,21 +106,21 @@
               <h4 class="panel-title">
                 <a data-toggle="collapse" href="#collapse1">
                   <i class="indicator fa fa-caret-down" aria-hidden="true"></i> Brand
-                </a>
+                </a>0
               </h4>
             </div>
             <div id="collapse1" class="panel-collapse collapse in" >
               <ul class="list-group">
-              <?php foreach ($marcas as $marca) {?>
-                <li class="list-group-item">
-                  <div class="checkbox" style="text-align: center">
-                    <label>
-                      <input type="checkbox" class="marca" name="brand" value="<?php echo $marca->marca?>" id="<?php echo $marca->marca?>" onchange="checkBrand()">
-                        <?=$marca->marca?>
-                    </label>
-                  </div>
-                </li>
-              <?php } ?>
+                <?php foreach ($marcas as $marca) {?>
+                  <li class="list-group-item">
+                    <div class="checkbox" style="text-align: center">
+                      <label>
+                        <input type="checkbox" class="marca" name="brand" value="<?php echo $marca->marca?>" id="<?php echo $marca->marca?>" onchange="checkBrand()">
+                          <?=$marca->marca?>
+                      </label>
+                    </div>
+                  </li>
+                <?php } ?>
               </ul>
             </div>
              <div class="panel-heading" >
@@ -146,6 +152,7 @@
             </div>
           </div>
         </div>
+        <?= $this->Form->end() ?>
       </div>
 
      <div class="col-md-9 col-sm-6">
@@ -178,7 +185,7 @@
 
 
                 foreach ($contributions as $contribution): ?>  
-    			            <tr style="display: "";"  class="carBrands" id="contribution_<?=$contribution->id?>">
+    			            <tr style="display: "";"  class="carBrands" id="car_<?=$contribution->id?>">
     			                <!-- <td><a href=""><?= $this->Number->format($contribution->id) ?></a></td> -->
                            <td class="polls"><?= h($contribution->polls) ?></td>
     			                <td class="marca"><?= h($contribution->marca) ?></td>
@@ -221,12 +228,6 @@
   </div>
   </div>
 </div>
-
-
-
-
-
-
 </div>
 
 

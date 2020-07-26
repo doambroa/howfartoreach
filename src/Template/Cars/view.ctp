@@ -191,7 +191,7 @@ Meter emisiones de CO2 si sobra tiempo
 
        <button data-toggle="collapse" data-target="#allRegisters" type="button" class="btn btn-primary btn-block">See all registers for this car</button>
        <!-- quizá aquí desplegar una lista con cada uno de los registros de coche  en ultimo caso hacerle un redirect a cars-->
-<div id="allRegisters" class="collapse"> 
+    <div id="allRegisters" class="collapse"> 
         <table class="table table-striped" cellpadding="0" cellspacing="0" style="text-align: center;">
             <thead>
                 <tr>
@@ -231,15 +231,36 @@ Meter emisiones de CO2 si sobra tiempo
             <?php  endforeach ?>
             </tbody>
         </table>
-
-
-</div>
+    </div>
 </div>
 
-<div class="container" style="padding-top: 60px;">
-    <?= $this->Html->link('Add your own measure', ['controller' => 'Cars', 'action' => 'addContribution', $contribution->car_id]) ?> <!-- Pasamos el id del coche para que en un fguturo el formulario se autorellene con esa info-->
-
-    <?= $this->Html->link('Download Data for this car', ['controller' => 'Cars', 'action' => 'exportCarContributions', $contribution->car_id]) ?>
-
-
+<div class="container" style="padding-top: 20px">
+    <div class="row">
+        <div class="col-md-4">
+            <?= $this->Html->link('Add your own measure', ['controller' => 'Cars', 'action' => 'addContribution', $contribution->car_id]) ?> <!-- Pasamos el id del coche para que en un fguturo el formulario se autorellene con esa info-->
+        </div>
+        <div class="col-md-4 col-md-offset-4 text-right">
+            <?= $this->Html->link('Download Data for this car', ['controller' => 'Cars', 'action' => 'exportCarContributions', $contribution->car_id]) ?>
+        </div>
+    </div>
+     <div class="row">
+        <div class="col-md-4 col-md-offset-8 text-right">
+            <?= $this->Html->link('Averages by brand', ['controller' => 'Cars', 'action' => 'exportContributionsByBrand']) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-8 text-right">
+            <?= $this->Html->link('All time averages', ['controller' => 'Cars', 'action' => 'exportAverages']) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-8 text-right">
+            <?= $this->Html->link('All contributions', ['controller' => 'Cars', 'action' => 'exportContributions']) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-8 text-right">
+            <?= $this->Html->link('All cars', ['controller' => 'Cars', 'action' => 'exportContributions']) ?>
+        </div>
+    </div>
 </div>

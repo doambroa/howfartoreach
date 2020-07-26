@@ -1,12 +1,12 @@
 <?php if($ajax != 1): ?>
-<div class="col-md-12 text-center" style="background-image: url(../img/tires3.png);">
-<h1>Results</h1>
-<?php if(empty($query)): ?>
-<h3>Please, fill any search criteria.</h3>
-</div>
-<?php endif; ?>
-  <?php if(!empty($contributions)): ?>
-    <div class="row">
+  <div class="col-md-12 text-center" style="background-image: url(../img/tires3.png);">
+  <h1>Results</h1>
+  <?php if(empty($query)): ?>
+  <h3>Please, fill any search criteria.</h3>
+  </div>
+  <?php endif; ?>
+    <?php if(!empty($contributions)): ?>
+      <div class="row">
         <?php foreach($contributions as $contribution): ?>
             <div class="col-md-6">
                 <figure class="car">                     

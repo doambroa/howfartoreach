@@ -63,6 +63,37 @@
 //     }
 // }
 
+function filterList(){
+    // console.log( $(".fuelCheckBoxD").attr('value')/*$("#car_"+i).children("td.combustible").text()*/);
+    var typeOfFuel = [];
+    if($(".fuelCheckBoxD").is(":checked")){
+        typeOfFuel.push($(".fuelCheckBoxD").val());
+    }
+    if($(".fuelCheckBoxP").is(":checked")){
+        typeOfFuel.push($(".fuelCheckBoxP").val());
+    }
+    if($(".fuelCheckBoxE").is(":checked")){
+        typeOfFuel.push($(".fuelCheckBoxE").val());
+    }
+
+    var cityMin = $("#amountC").attr("data-min");
+    var cityMax = $("#amountC").attr("data-max");
+    var highwayMin = $("#amountH").attr("data-min");
+    var highwayMax = $("#amountH").attr("data-max");
+    var combinedMin = $("#amountCo").attr("data-min");
+    var combinedMax = $("#amountCo").attr("data-max");
+
+
+    var brands = [];
+    $.each($("input[name='brand']:checked"), function(){
+        brands.push($(this).val());
+    });
+
+    //ahora sería llamar con estos 3 datos a la query
+}
+
+/************ Filtros viejos ***************/
+
 function checkCheckboxes(i){
     if( ($(".fuelCheckBoxD").is(":checked")) && ($(".fuelCheckBoxP").is(":checked")) && ($(".fuelCheckBoxE").is(":checked")) || !($(".fuelCheckBoxD").is(":checked")) && !($(".fuelCheckBoxP").is(":checked")) && !($(".fuelCheckBoxE").is(":checked"))) {
         $("#car_"+i).show();
@@ -170,13 +201,16 @@ function checkFuel(){
             $( "#amountC" ).val( ui.values[ 0 ] + "%" + " - " + ui.values[ 1 ] + "%" );
             minC = ui.values[ 0 ];
             maxC = ui.values[ 1 ];
-            for(var i = 0; i< 600; ++i){
-                if ( ($("#car_"+i).children("td.consumoCiudad").text() >= minC) && ($("#car_"+i).children("td.consumoCiudad").text() <= maxC) && ($("#car_"+i).children("td.consumoAutopista").text() >= minH) && ($("#car_"+i).children("td.consumoAutopista").text() <= maxH) && (($("#car_"+i).children("td.consumoCombinado").text() >= minCo) && ($("#car_"+i).children("td.consumoCombinado").text() <= maxCo)) ){ 
-                    checkCheckboxes(i);
-                }else{
-                    $("#car_"+i).hide();
-                }
-            }
+
+            $( "#amountC" ).attr("data-min", minC);
+            $( "#amountC" ).attr("data-max", maxC);
+            // for(var i = 0; i< 600; ++i){
+            //     if ( ($("#car_"+i).children("td.consumoCiudad").text() >= minC) && ($("#car_"+i).children("td.consumoCiudad").text() <= maxC) && ($("#car_"+i).children("td.consumoAutopista").text() >= minH) && ($("#car_"+i).children("td.consumoAutopista").text() <= maxH) && (($("#car_"+i).children("td.consumoCombinado").text() >= minCo) && ($("#car_"+i).children("td.consumoCombinado").text() <= maxCo)) ){ 
+            //         checkCheckboxes(i);
+            //     }else{
+            //         $("#car_"+i).hide();
+            //     }
+            // }
         }
     });
         $( "#amountC" ).val($( "#slider-rangeC" ).slider( "values", 0 ) + "%" + " - " + $( "#slider-rangeC" ).slider( "values", 1 ) + "%" );
@@ -192,14 +226,17 @@ function checkFuel(){
             $( "#amountH" ).val( ui.values[ 0 ] + "%" + " - " + ui.values[ 1 ] + "%" );
             minH = ui.values[ 0 ];
             maxH = ui.values[ 1 ];
+
+            $( "#amountH" ).attr("data-min", minH);
+            $( "#amountH" ).attr("data-max", maxH);
                     //Si el consumo en autopista está entre el mínimo y el máximo lo enseño, sino lo oculto
-                    for(var i = 0; i< 600; ++i){
-                        if ( ($("#car_"+i).children("td.consumoCiudad").text() >= minC) && ($("#car_"+i).children("td.consumoCiudad").text() <= maxC) && ($("#car_"+i).children("td.consumoAutopista").text() >= minH) && ($("#car_"+i).children("td.consumoAutopista").text() <= maxH) && (($("#car_"+i).children("td.consumoCombinado").text() >= minCo) && ($("#car_"+i).children("td.consumoCombinado").text() <= maxCo)) ){ 
-                            checkCheckboxes(i);
-                        }else{
-                            $("#car_"+i).hide();
-                        }
-                    }
+                    // for(var i = 0; i< 600; ++i){
+                    //     if ( ($("#car_"+i).children("td.consumoCiudad").text() >= minC) && ($("#car_"+i).children("td.consumoCiudad").text() <= maxC) && ($("#car_"+i).children("td.consumoAutopista").text() >= minH) && ($("#car_"+i).children("td.consumoAutopista").text() <= maxH) && (($("#car_"+i).children("td.consumoCombinado").text() >= minCo) && ($("#car_"+i).children("td.consumoCombinado").text() <= maxCo)) ){ 
+                    //         checkCheckboxes(i);
+                    //     }else{
+                    //         $("#car_"+i).hide();
+                    //     }
+                    // }
                 }
             });
         $( "#amountH" ).val($( "#slider-rangeH" ).slider( "values", 0 ) + "%" + " - " + $( "#slider-rangeH" ).slider( "values", 1 ) + "%" );
@@ -215,15 +252,19 @@ function checkFuel(){
             $( "#amountCo" ).val( ui.values[ 0 ] + "%" + " - " + ui.values[ 1 ] + "%" );
             minCo = ui.values[ 0 ];
             maxCo = ui.values[ 1 ];
-            for(var i = 0; i< 600; ++i){
-                    //Si el consumo Combinado está entre el mínimo y el máximo lo enseño, sino lo oculto
-                    if ( ($("#car_"+i).children("td.consumoCiudad").text() >= minC) && ($("#car_"+i).children("td.consumoCiudad").text() <= maxC) && ($("#car_"+i).children("td.consumoAutopista").text() >= minH) && ($("#car_"+i).children("td.consumoAutopista").text() <= maxH) && (($("#car_"+i).children("td.consumoCombinado").text() >= minCo) && ($("#car_"+i).children("td.consumoCombinado").text() <= maxCo)) ){ 
-                        // console.log( $("#car_"+i).children("td.consumoCombinado").text() );
-                        checkCheckboxes(i);
-                    }else{
-                        $("#car_"+i).hide();
-                    }
-                }
+            
+            $( "#amountCo" ).attr("data-min", minCo);
+            $( "#amountCo" ).attr("data-max", maxCo);
+
+            // for(var i = 0; i< 600; ++i){
+            //         //Si el consumo Combinado está entre el mínimo y el máximo lo enseño, sino lo oculto
+            //         if ( ($("#car_"+i).children("td.consumoCiudad").text() >= minC) && ($("#car_"+i).children("td.consumoCiudad").text() <= maxC) && ($("#car_"+i).children("td.consumoAutopista").text() >= minH) && ($("#car_"+i).children("td.consumoAutopista").text() <= maxH) && (($("#car_"+i).children("td.consumoCombinado").text() >= minCo) && ($("#car_"+i).children("td.consumoCombinado").text() <= maxCo)) ){ 
+            //             // console.log( $("#car_"+i).children("td.consumoCombinado").text() );
+            //             checkCheckboxes(i);
+            //         }else{
+            //             $("#car_"+i).hide();
+            //         }
+            //     }
             }
         });
         $( "#amountCo" ).val($( "#slider-rangeCo" ).slider( "values", 0 ) + "%" + " - " + $( "#slider-rangeCo" ).slider( "values", 1 ) + "%" );
