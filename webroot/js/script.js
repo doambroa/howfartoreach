@@ -22,6 +22,7 @@
             success: function(html) {
                     //$("#loding1").hide();
                     $.each(html, function(key, value) {              
+                        console.log("MARDA");
                         //alert(key);
                         //alert(value);
                         //$('<option>').val('').text('select');
@@ -62,7 +63,14 @@
 //         }
 //     }
 // }
+$( document ).ready(function() {
 
+    $("form#filtersForm").submit(function() {
+        filterList();
+    });
+});
+
+   
 function filterList(){
     // console.log( $(".fuelCheckBoxD").attr('value')/*$("#car_"+i).children("td.combustible").text()*/);
     var typeOfFuel = [];
@@ -89,6 +97,55 @@ function filterList(){
         brands.push($(this).val());
     });
 
+    var data = { "typeOfFuel": typeOfFuel, "cityMin": cityMin, "cityMax": cityMax, "highwayMin": highwayMin, "highwayMax": highwayMax, "combinedMin": combinedMin, "combinedMax": combinedMax, "brands": brands};
+    
+    console.log("DATA " +  " typeOfFuel " + typeOfFuel + " cityMin: " + cityMin + " cityMax: " + cityMax + " highwayMin: " + highwayMin + " highwayMax: " + highwayMax + " combinedMin: " + combinedMin + " combinedMax: " + combinedMax + " brands: " + brands );
+    
+    $.ajax({
+        type: "POST",
+        url: "/cars/contributions/",
+        datatype: 'json',
+        data: {
+             typeOfFuel: typeOfFuel,
+             cityMin: cityMin,
+             cityMax: cityMax,
+             highwayMin: highwayMin,
+             highwayMax: highwayMax,
+             combinedMin: combinedMin,
+             combinedMax: combinedMax,
+             brands: brands
+        },
+        success: function( data )
+        {
+            console.log("peticion realizada con exito" + data);
+        },
+        error: function( data )
+        {
+          console.log("ERROR, DATOS ENVIADOS: " + this.data);  
+        }
+
+
+
+  // var data = { "typeOfFuel": typeOfFuel, "cityMin": cityMin, "cityMax": cityMax, "highwayMin": highwayMin, "highwayMax": highwayMax, "combinedMin": combinedMin, "combinedMax":combinedMax, "brands": brands};
+  //   console.log("DATRA " +  " typeOfFuel " + typeOfFuel + " cityMin: " + cityMin + " cityMax: " + cityMax + " highwayMin: " + highwayMin + " highwayMax: " + highwayMax + " combinedMin: " + combinedMin + " combinedMax: " + combinedMax + " Brands: " + brands );  
+
+  //   $.ajax({
+  //       type: "POST",
+  //       url: 'http://localhost/howfartoreach/cars/contributions',
+  //       datatype: 'json',
+  //       data: data,
+  //       success: function( data )
+  //       {
+  //           console.log("peticion realizada con exito");
+  //       }
+  //   });
+
+
+
+
+
+
+    });
     //ahora sería llamar con estos 3 datos a la query
 }
 

@@ -27,13 +27,13 @@ $parameters=1234;
 <div class="container-fluid">
     <div class="row">
       <div class="col-xs-6 col-sm-3">
-        <?=$this->Form->create()?>
+        <?=$this->Form->create('',['id' => 'filtersForm'])?>
         <div id="accordion" class="panel panel-primary behclick-panel">
           <div class="panel-heading">
             <h3 class="panel-title">Filter Cars</h3>
           </div>
-       <input type="submit" value="Apply filters" class="btn btn-primary btn-block">Apply filters
-          <?=$this->Html->link('Apply filters', ['controller' => 'Cars', 'action' => 'Contributions', $parameters])?>
+          <input type="submit" value="Apply filters" class="btn btn-primary btn-block">Apply filters
+          <!-- <?=$this->Html->link('Apply filters', ['controller' => 'Cars', 'action' => 'Contributions', $parameters])?> -->
 
           <div class="panel-body">
           <!--   <div class="panel-heading " >
@@ -55,19 +55,19 @@ $parameters=1234;
                 <li class="list-group-item">
                   <p><!-- Filtro -->
                     <label for="amountC">Mileage range in City:</label>
-                    <input type="text" id="amountC" data-min="4" data-max="6.5" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    <input type="text" id="amountC" name="amountC" data-min="4" data-max="6.5" value="4" readonly style="border:0; color:#f6931f; font-weight:bold;">
                   </p> <div id="slider-rangeC"></div>
                 </li>
                  <li class="list-group-item">
                   <p><!-- Filtro -->
                     <label for="amountH">Mileage range in Highway:</label>
-                    <input type="text" id="amountH" data-min="3" data-max="11" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    <input type="text" id="amountH" name="amountH" data-min="3" data-max="11" readonly style="border:0; color:#f6931f; font-weight:bold;">
                   </p> <div id="slider-rangeH"></div>
                 </li>
                  <li class="list-group-item">
                   <p><!-- Filtro -->
                     <label for="amountCo">Mileage range Combined:</label>
-                    <input type="text" id="amountCo" data-min="3.5" data-max="8" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    <input type="text" id="amountCo" name="amountCo"data-min="3.5" data-max="8" readonly style="border:0; color:#f6931f; font-weight:bold;">
                   </p> <div id="slider-rangeCo"></div>
                 </li>
               </ul>
@@ -80,33 +80,39 @@ $parameters=1234;
             </div>
             <div id="collapse3" class="panel-collapse collapse in">
               <ul class="list-group">
-               <?php foreach ($fuelTypes as $fuel ) {?>
+              
+              <?php foreach ($fuelTypes as $fuel ) {?>
                     <li class="list-group-item">
                       <div class="checkbox" >
-                        <label>
                               <?php if ($fuel->combustible == 'Diesel') {
-                              ?><input type="checkbox" class="fuelCheckBoxD" value="<?php echo $fuel->combustible;?>" onchange="checkFuel()"><?php
-                                  echo $fuel->combustible;
+                                  ?><input id="fuelD" type="checkbox" class="fuelCheckBoxD" name="typeOfFuel[]" value="<?php echo $fuel->combustible;?>" onchange="">
+                                  <label for="fuelD"><?=$fuel->combustible;?></label><?php
                               } ?>
                               <?php if ($fuel->combustible == 'Petrol') {
-                              ?><input type="checkbox" class="fuelCheckBoxP" value="<?php echo $fuel->combustible;?>" onchange="checkFuel()"><?php
-                                  echo "Petrol";
+                              
+                                ?><input id="fuelP" type="checkbox" class="fuelCheckBoxP"  name="typeOfFuel[]" value="<?php echo $fuel->combustible;?>" onchange="">
+                                <label for="fuelP"><?=$fuel->combustible;?></label><?php
                               } ?>
+                              </label>
                               <?php if ($fuel->combustible == 'Electric') {
-                                  ?><input type="checkbox" class="fuelCheckBoxE" value="<?php echo $fuel->combustible;?>" onchange="checkFuel()"><?php
-                                  echo "Electric";
+                                  ?>
+                                  <input id="fuelE" type="checkbox" class="fuelCheckBoxE"  name="typeOfFuel[]" value="<?php echo $fuel->combustible;?>" onchange="">
+                                  <label for="fuelE"><?=$fuel->combustible;?></label>
+                                  <?php
                               } ?>
                         </label>
                       </div>
                     </li>
-                <?php  } ?>
+                <?php  
+              }?>
+
               </ul>
             </div>
             <div class="panel-heading " >
               <h4 class="panel-title">
                 <a data-toggle="collapse" href="#collapse1">
                   <i class="indicator fa fa-caret-down" aria-hidden="true"></i> Brand
-                </a>0
+                </a>
               </h4>
             </div>
             <div id="collapse1" class="panel-collapse collapse in" >
@@ -115,7 +121,7 @@ $parameters=1234;
                   <li class="list-group-item">
                     <div class="checkbox" style="text-align: center">
                       <label>
-                        <input type="checkbox" class="marca" name="brand" value="<?php echo $marca->marca?>" id="<?php echo $marca->marca?>" onchange="checkBrand()">
+                        <input type="checkbox" class="marca" name="brands[]" value="<?php echo $marca->marca?>" id="<?php echo $marca->marca?>">
                           <?=$marca->marca?>
                       </label>
                     </div>
@@ -195,8 +201,6 @@ $parameters=1234;
     			                <td class="consumoAutopista"><?= $this->Number->format($contribution->consumoAutopista) ?></td>
     			                <td class="consumoCombinado"><?= $this->Number->format($contribution->combinado) ?></td>
     			                <td class="combustible"><?= h($contribution->combustible) ?></td>
-                         
-    			                
 
     			                
     			                <td class="actions">

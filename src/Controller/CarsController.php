@@ -37,7 +37,7 @@ class CarsController extends AppController
 
     public function beforeFilter(Event $event){//los de no registrado
 
-        $this->Auth->allow(['search', 'view', 'contributions', 'howTo']);
+        $this->Auth->allow(['search', 'view', 'contributions', 'howTo','exportCars','exportContributions','exportAverages','exportCarContributions','exportContributionsByBrand']);
         $this->set('current_user', $this->Auth->user());
     }
 
@@ -58,10 +58,59 @@ class CarsController extends AppController
 
     public function contributions($search = null){
 
-if($this->request->getData()){
-    debug($this->request->getData());
-}
-        if($search==null){
+         if ($this->request->is('post')){
+
+             if($this->request->getData()['typeOfFuel'] != null){
+                debug($this->request->getData()['typeOfFuel']);                
+             }
+            
+            $city = ($this->request->getData()["amountC"]);
+            $highway = ($this->request->getData()["amountH"]);
+            $combined = ($this->request->getData()["amountCo"]);
+
+            $city = str_replace('%', '', $city);
+            $city = str_replace(' ', '', $city);
+            $city = explode("-" , $city);
+            $highway = str_replace('%', '', $highway);
+            $highway = str_replace(' ', '', $highway);
+            $highway = explode("-" , $highway);
+            $combined = str_replace('%', '', $combined);
+            $combined = str_replace(' ', '', $combined);
+            $combined = explode("-" , $combined);
+
+            $minCity = $city[0];
+            $minHighway = $highway[0];
+            $minCombined = $combined[0];
+            $maxCity = $city[1];
+            $maxHighway = $highway[1];
+            $maxCombined = $combined[1];
+
+             if($this->request->getData()['brands'] != null){
+                debug($this->request->getData()['brands']);                
+             }
+
+                         $this->loadModel('CarsUsers');
+
+            $filter = $this->paginate($this->CarsUsers->find()->select([
+                'id',
+                'car_id' => 'cars.id', 
+                'marca' => 'cars.marca',
+                'modelo' => 'cars.modelo',
+                'consumoCiudad' => 'AVG(carsusers.consumoCiudad)',
+                'consumoAutopista' => 'AVG(carsusers.consumoAutopista)',
+                'combinado' => 'AVG(carsusers.combinado)',
+                'combustible' => 'cars.combustible',
+                'polls' => 'count(cars.id)'])
+                ->where(['marca IN' => $this->request->getData()['brands']])
+                ->innerJoinWith('Cars')
+                ->group(['cars.modelo','cars.combustible'])
+            );
+
+            debug($filter);
+         }
+
+
+        if($search == null){
             $this->paginate = [
                 'sortWhitelist' => ['polls','car_id','marca','modelo','consumoCiudad','consumoAutopista','combinado','combustible']
             ];
@@ -129,7 +178,7 @@ if($this->request->getData()){
 
         $carsUser = $this->CarsUsers->newEntity();
         
-        if ($this->request->is('post')) {
+            if ($this->request->is('post')) {
             //$cid =  select id from cars where modelo == this.modelo and combustible == this.combustble
             if($this->request->getData()['modelo']!=null){
                 $car_id = $this->Cars->find()->select(['id'])->where(['modelo =' => $this->request->getData()['modelo'], 'combustible ='=> $this->request->getData()['combustible']])->first()->get('id'); 
@@ -144,8 +193,7 @@ if($this->request->getData()){
                 $this->Flash->success(__('The contribution has been saved.'));
 
                 return $this->redirect(['controller' => 'Cars', 'action' => 'contributions']);
-            }
-            
+            }                       
             $this->Flash->error(__('The cars user could not be saved. Please, try again.'));
         }
 
