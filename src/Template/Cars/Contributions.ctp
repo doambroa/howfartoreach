@@ -32,8 +32,7 @@ $parameters=1234;
           <div class="panel-heading">
             <h3 class="panel-title">Filter Cars</h3>
           </div>
-          <input type="submit" value="Apply filters" class="btn btn-primary btn-block">Apply filters
-          <!-- <?=$this->Html->link('Apply filters', ['controller' => 'Cars', 'action' => 'Contributions', $parameters])?> -->
+          <input type="submit" value="Apply filters" class="btn btn-primary btn-block">
 
           <div class="panel-body">
           <!--   <div class="panel-heading " >
@@ -55,7 +54,7 @@ $parameters=1234;
                 <li class="list-group-item">
                   <p><!-- Filtro -->
                     <label for="amountC">Mileage range in City:</label>
-                    <input type="text" id="amountC" name="amountC" data-min="4" data-max="6.5" value="4" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    <input type="text" id="amountC" name="amountC" data-min="4" data-max="6.5" readonly style="border:0; color:#f6931f; font-weight:bold;">
                   </p> <div id="slider-rangeC"></div>
                 </li>
                  <li class="list-group-item">

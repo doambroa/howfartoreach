@@ -56,12 +56,16 @@ class CarsController extends AppController
         $this->set('_serialize', ['cars']);
     }
 
-    public function contributions($search = null){
-
+    public function contributions(){
+        $this->paginate = [
+            'sortWhitelist' => ['polls','car_id','marca','modelo','consumoCiudad','consumoAutopista','combinado','combustible']
+        ];
          if ($this->request->is('post')){
 
-             if($this->request->getData()['typeOfFuel'] != null){
-                debug($this->request->getData()['typeOfFuel']);                
+             if(isset($this->request->getData()['typeOfFuel'])){
+                $typeOfFuel = $this->request->getData()['typeOfFuel'];
+             }else{
+                $typeOfFuel = ['Diesel', 'Petrol', 'Electric'];;
              }
             
             $city = ($this->request->getData()["amountC"]);
@@ -85,13 +89,17 @@ class CarsController extends AppController
             $maxHighway = $highway[1];
             $maxCombined = $combined[1];
 
-             if($this->request->getData()['brands'] != null){
-                debug($this->request->getData()['brands']);                
+             if(isset($this->request->getData()['brands'])) {
+                $brands = $this->request->getData()['brands'];
+             } else{
+                $brands=$this->Cars->find()->select([
+                    'marca' => 'cars.marca'
+                ]);
              }
 
-                         $this->loadModel('CarsUsers');
+            $this->loadModel('CarsUsers');
 
-            $filter = $this->paginate($this->CarsUsers->find()->select([
+            $contributions = $this->paginate($this->CarsUsers->find()->select([
                 'id',
                 'car_id' => 'cars.id', 
                 'marca' => 'cars.marca',
@@ -101,29 +109,22 @@ class CarsController extends AppController
                 'combinado' => 'AVG(carsusers.combinado)',
                 'combustible' => 'cars.combustible',
                 'polls' => 'count(cars.id)'])
-                ->where(['marca IN' => $this->request->getData()['brands']])
+                ->where(['marca IN' => $brands, 'combustible IN' => $typeOfFuel, 'consumoCiudad >=' => $minCity, 'consumoCiudad <=' => $maxCity, 'consumoAutopista >=' => $minHighway, 'consumoAutopista <=' => $maxHighway, 'combinado >=' => $minCombined, 'combinado <=' => $maxCombined])
                 ->innerJoinWith('Cars')
                 ->group(['cars.modelo','cars.combustible'])
             );
+         
+         } else {
 
-            debug($filter);
-         }
-
-
-        if($search == null){
-            $this->paginate = [
-                'sortWhitelist' => ['polls','car_id','marca','modelo','consumoCiudad','consumoAutopista','combinado','combustible']
-            ];
-
-            $cars = $this->Cars->find()->group(['Cars.modelo']);
-
-            foreach ($cars as $car) {
-               //debug($car);
-             } 
-        
             // $connection = ConnectionManager::get('default');
             // $contributions = $connection->execute('SELECT cars.id as car_id, cars.marca as marca, cars.modelo as modelo, AVG(contribution.consumoCiudad) as avgCity, AVG(contribution.consumoAutopista) as avgHighway, AVG(contribution.combinado) as avgCombined, cars.combustible as combustible, count(cars.id) as polls FROM cars_users AS contribution INNER JOIN cars ON cars.id = contribution.car_id GROUP BY cars.modelo, cars.combustible')->fetchAll('assoc');
-            
+
+            $minCity = 4;
+            $minHighway = 3;
+            $minCombined = 3.5;
+            $maxCity = 6.5;
+            $maxHighway = 11;
+            $maxCombined = 8;
 
             $this->loadModel('CarsUsers');
 
@@ -140,27 +141,27 @@ class CarsController extends AppController
                 ->innerJoinWith('Cars')
                 ->group(['cars.modelo','cars.combustible']));
 
+        }
+            $cars = $this->Cars->find()->group(['Cars.modelo']);
             $fuelTypes = $this->Cars->find()->select(['Cars.combustible'])->distinct()->toArray();
             $marcas = $this->Cars->find()->select(['Cars.marca'])->distinct()->toArray();
 
            // $most = $this->Cars->find()->select(['count' => $this->Cars->find()->func()->count('*')])->group(['Cars.modelo']);
-            //$brands = $this->Cars->find('all', ['fields'=>['DISTINCT marca']]);
-
+            //$brands = $this->Cars->find('all', ['fields'=>['DISTINCT marca']]);   
             
+
+            $this->set('minCity', $minCity);
+            $this->set('minHighway ', $minHighway);
+            $this->set('minCombined', $minCombined);
+            $this->set('maxCity', $maxCity);
+            $this->set('maxHighway', $maxHighway);
+            $this->set('maxCombined', $maxCombined);
+
             $this->set('marcas', $marcas);
             $this->set('fuelTypes', $fuelTypes);
             $this->set(compact('cars'));
             $this->set('_serialize', ['cars']);
             $this->set(compact('contributions'));
-        } else{
-            //Viene con parámetros de los filtros en $search
-            debug($this);
-
-            $this->render('index');
-            // if(!empty($this->request->query['query'])){
-
-            // }
-        }
     }
 
     /**
