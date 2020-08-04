@@ -29,6 +29,7 @@ class Car extends Entity
         'marca' => true,
         'modelo' => true,
         'combustible' => true,
+        'ano' => true,
         'users' => true
     ];
 }

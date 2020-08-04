@@ -43,7 +43,7 @@ class PagesController extends AppController
 
          $numCarRegisters = $cars->find()->innerJoinWith('Users')->count();
         // $numCarRegisters = $cars->Users->find('all')->count();
-        $numUsers = $cars->find('all')->count();
+        $numUsers = $users->find('all')->count();
 
         $this->set('numModels', $numModels);
         $this->set('numBrands', $numBrands);

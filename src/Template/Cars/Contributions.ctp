@@ -10,7 +10,6 @@
 //     'complete' => $this->Html->get('#procesando')->effect('fadeOut', array('buffer' => false))
 // ));
 
-$parameters=1234;
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
 <!--     <ul class="side-nav">
@@ -29,10 +28,11 @@ $parameters=1234;
       <div class="col-xs-6 col-sm-3">
         <?=$this->Form->create('',['id' => 'filtersForm'])?>
         <div id="accordion" class="panel panel-primary behclick-panel">
-          <div class="panel-heading">
+          <!--<div class="panel-heading">
             <h3 class="panel-title">Filter Cars</h3>
-          </div>
-          <input type="submit" value="Apply filters" class="btn btn-primary btn-block">
+          </div>-->
+            <input type="submit" value="Apply filters" class="btn btn-primary btn-block"  style="text-align: center; margin-bottom: : 10px;">
+            <?=$this->Form->hidden('page', array('value' => 1));?>
 
           <div class="panel-body">
           <!--   <div class="panel-heading " >
@@ -164,11 +164,11 @@ $parameters=1234;
          <h3><?= __('All time averages') ?></h3>
 
          <div id="carsContainer">
-            <div class="progress oculto" id="procesando">
+     <!--        <div class="progress oculto" id="procesando">
                 <div class="progress-bar progress-bar-stripped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100", style="width: 100%">
                     <span class="sr-only"> 100% complete</span>
                 </div>
-            </div>
+            </div> -->
 
         <table class="table table-striped" cellpadding="0" cellspacing="0">
             <thead>

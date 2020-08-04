@@ -68,6 +68,10 @@ class CarsTable extends Table
             ->scalar('combustible')
             ->allowEmpty('combustible');
 
+        $validator
+            ->integer('ano')
+            ->allowEmpty('ano');
+
         return $validator;
     }
 }

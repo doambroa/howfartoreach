@@ -12,7 +12,7 @@
                 <figure class="car">                     
                   <div id="card">
                     <div> <!--div for car image -->
-                      <img src="<?php echo '../img/miniaturas/'.$contribution['car_modelo'].'.png'; ?>" style="float: left; padding-top: 20px; max-height: 180px; max-width: 190px;">
+                      <img src="<?php echo '../img/miniaturas/'.$contribution['car_modelo'].'.png'; ?>" style="float: left; padding-top: 20px; max-height: 180px; max-width: 190px;" onerror='this.src="../img/cars/cars.png"'>
                     </div> <!-- end div for car image-->
                     <h3 id="H3_2">
                       <a title="title" href="" id="A_3"><?php echo $this->Html->link($contribution['car_marca'].' '.$contribution['car_modelo'].' '.$contribution['combustible'][0], array('action' => 'view', $contribution['car_id'])); ?></a>

@@ -44,6 +44,7 @@ use Cake\Mailer\Email;
 use Cake\Utility\Inflector;
 use Cake\Utility\Security;
 
+
 /**
  * Read .env file if APP_NAME is not set.
  *
@@ -207,6 +208,9 @@ Type::build('timestamp')
  * Plugin::load('Migrations'); //Loads a single plugin named Migrations
  *
  */
+
+Plugin::loadAll();
+Plugin::load('GoogleCharts');
 
 /*
  * Only try to load DebugKit in development mode

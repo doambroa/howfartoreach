@@ -7,6 +7,12 @@
 <img class="img-responsive" src="img/main3.jpg" alt="main image">
 <div class="titf">
          <h1 class="titu"> How far can your car go? </strong></h1>
+
+  <div class="" >
+    <?php echo $numModels;?> different models along <?= $numBrands;?> car brands </br>
+        <?php echo $numCarRegisters; ?> total measure contributions
+        from <?php echo $numUsers;?> users
+  </div>
 </div>
 
 </div>

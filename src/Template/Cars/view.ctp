@@ -51,7 +51,7 @@
 
 <div class="container">
     <div class = col-md-6 style="margin: 0 auto;">
-        <?php echo $this->Html->image('../img/cars/' . $car->modelo . '.png', ['alt' => $car->marca . ' ' . $car->modelo, 'class' => 'img-responsive', 'style' => 'margin:auto;'])?>
+        <?php echo $this->Html->image('../img/cars/' . $car->modelo . '.png', ['alt' => $car->marca . ' ' . $car->modelo, 'class' => 'img-responsive', 'style' => 'margin:auto;', 'id' => 'carImg', 'onerror' => 'this.src="../../img/cars/cars.png"'])?>
     </div>
 <div id="diesel">
     <div class = col-md-6>
@@ -106,39 +106,53 @@
         </div>
     </div>
 
+    <div class = col-md-3>
+         <div class = col-md-2>
+            <img height="35" src="../../img/gasicon.png"/>
+        </div>
+        <div class = col-md-4>
+            <?=round($avgCombined/100,5)?> L/Km
+        </div>
+    </div>
+    
+    <div class = col-md-3>
+         <div class = col-md-2>
+            <img height="35" src="../../img/eurico.png"/>
+        </div>
+        <div class = col-md-4 title="(Based on 10 last year price average in Spain)">
+            <?=round(($avgCombined/100)*1.20,5)?> €/km
+        </div>
+    </div>
+     <!--OBTENER PRECIO CARBURANTE EN TIEMPO REAL, la media de lso ultimos 10 años es la misma<-->
 
-METER PRECIO POR KM 
-<li><?=$avgCombined/100?> L/Km </li>
-<li><?=($avgCombined/100)*1.20?> €/km OBTENER PRECIO CARBURANTE EN TIEMPO REAL, la media de lso ultimos 10 años es la misma</li>
-METER PRECIO LLENAR DEPOSITO APROX
-Meter emisiones de CO2 si sobra tiempo
+
 
 
 </div>  
 
-  <div class = "col-md-2" style=" visibility: ;">
+  <div class = "col-md-2" style="margin-top: 10px; visibility: ;">
     <center style="opacity:0.3; margin-top:10px; cursor: not-allowed;">
         <span title="NOT IMPLEMENTED">
             
-                    <input type="checkbox"> <?= $this->Html->image('../img/eco.png', ['width'=>'10%', 'height'=>'10%', 'style'=>'cursor: not-allowed;' ]) ?> <b> Eco driving  </b>
+                    <input type="radio"> <?= $this->Html->image('../img/eco.png', ['width'=>'10%', 'height'=>'10%', 'style'=>'cursor: not-allowed;' ]) ?> <b> Eco driving  </b>
                 
                 </span>
                 </center>
   </div>
-   <div class = "col-md-2" style=" visibility: ;">
+   <div class = "col-md-2" style="margin-top: 10px; visibility: ;">
     <center style="opacity:0.3; margin-top:10px; cursor: not-allowed;">
         <span title="NOT IMPLEMENTED">
             
-                    <input type="checkbox"> <?= $this->Html->image('../img/normal.png', ['width'=>'10%', 'height'=>'10%', 'style'=>'cursor: not-allowed;' ]) ?> <b> Normal driving  </b>
+                    <input type="radio"> <?= $this->Html->image('../img/velocimetro.png', ['width'=>'10%', 'height'=>'10%', 'style'=>'cursor: not-allowed;' ]) ?> <b> Normal driving  </b>
                 
                 </span>
                 </center>
   </div>
-   <div class = "col-md-2" style=" visibility: ;">
+   <div class = "col-md-2" style="margin-top: 10px; visibility: ;">
     <center style="opacity:0.3; margin-top:10px; cursor: not-allowed;">
         <span title="NOT IMPLEMENTED">
             
-                    <input type="checkbox"> <?= $this->Html->image('../img/sportive.png', ['width'=>'10%', 'height'=>'10%', 'style'=>'cursor: not-allowed;' ]) ?> <b> Sport driving  </b>
+                    <input type="radio"> <?= $this->Html->image('../img/sportive.png', ['width'=>'10%', 'height'=>'10%', 'style'=>'cursor: not-allowed;' ]) ?> <b> Sport driving  </b>
                 
                 </span>
                 </center>
@@ -163,15 +177,15 @@ Meter emisiones de CO2 si sobra tiempo
         <td><?= $pollsCity ?></td> 
         <td><?= round($avgCity,3) ?> %</td>
         <td><?=$medianCity?> %</td>
-        <td><?= $minCity  ?> %</td>
+        <td><?= round($minCity,3)  ?> %</td>
         <td><?= $maxCity ?> %</td>
       </tr>
       <tr>
         <td>Highway</td>
         <td><?= $pollsHighway ?></td>
         <td><?= round($avgHighway,3) ?> %</td>
-        <td><?=$medianHighway?> %</td>
-        <td><?= $minHighway ?> %</td>
+        <td><?= $medianHighway?> %</td>
+        <td><?= round($minHighway,3) ?> %</td>
         <td><?= $maxHighway ?> %</td>
       </tr>
       <tr>
@@ -179,7 +193,7 @@ Meter emisiones de CO2 si sobra tiempo
         <td><?= $pollsCombined ?></td>
         <td><?= round($avgCombined,3) ?> %</td>
         <td><?=$medianCombined?></td>
-        <td><?= $minCombined ?> %</td>
+        <td><?= round($minCombined,3) ?> %</td>
         <td><?= $maxCombined ?> %</td>
       </tr>
     </tbody>
@@ -207,7 +221,9 @@ Meter emisiones de CO2 si sobra tiempo
             </thead>
 
             <tbody>
-           <?php foreach ($relatedContributions as $contribution): ?>
+
+           <?php $cont = 0;
+            foreach ($relatedContributions as $contribution): ?>
                 <tr>
                     <!-- <td><a href=""><?= $this->Number->format($car->id) ?></a></td> -->
                     <td><?= h($car->marca) ?></td>
@@ -224,11 +240,13 @@ Meter emisiones de CO2 si sobra tiempo
                                                          ])?>
                                                          </td><?php
                     }else{
-                        ?><td><?= $this->Html->link($contribution->user_id, ['controller' => 'Users', 'action' => 'view', $contribution->user_id]) ?></td><?php
+                        ?> <!-- <td><?= $this->Html->link($contribution->user_id, ['controller' => 'Users', 'action' => 'view', $contribution->user_id]) ?></td>--><?php
+                        ?><td><?= $this->Html->link($loginArr[$cont]{"login"}, ['controller' => 'Users', 'action' => 'view', $contribution->user_id]) ?></td><?php
                     }
                     ?>
                 </tr> 
-            <?php  endforeach ?>
+            <?php  ++$cont;
+        endforeach ?>
             </tbody>
         </table>
     </div>
@@ -264,3 +282,57 @@ Meter emisiones de CO2 si sobra tiempo
         </div>
     </div>
 </div>
+
+
+
+<div class="container" style="padding-top: 20px">
+    <div class="col-md-6">
+        <img src="https://docs.moodle.org/dev/images_dev/c/c5/bar_chart.png">
+    </div>
+    <div class="col-md-6">
+        <img src="https://docs.moodle.org/dev/images_dev/a/a9/doughnut_pie_chart.png">
+    </div>
+</div>
+
+<!--     <?php debug($modelos)?>-->
+    <?php // debug($chartAverages->toArray())?> 
+
+<div id="chartByModel" class="col-md-10 col-md-offset-2">
+
+</div>
+
+<script type="text/javascript">
+// Load google charts
+
+//console.log( " <?php echo $car->modeldelo;?> ");
+
+var chartAverages = <?=json_encode($chartAverages);?>;
+
+// console.log(chartAverages);
+
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+var arrayData = [];
+arrayData.push(['Model', 'City', 'Highway', 'Combined']); //pusheamos los títulos en el primer índice
+
+for(var i in chartAverages){
+    arrayData.push([chartAverages[i].modelo, chartAverages[i].consumoCiudad, chartAverages[i].consumoAutopista, chartAverages[i].combinado]);
+};
+
+// Draw the chart and set the chart values
+function drawChart() {
+    var data = google.visualization.arrayToDataTable(arrayData);
+
+
+  // Optional; add a title and set the width and height of the chart
+  var options = {'title':'This brand averages by model',
+                 'width':1280,
+                 'height':480};
+
+
+  // Display the chart inside the <div> element with id="piechart"
+  var chart = new google.visualization.ColumnChart(document.getElementById('chartByModel'));
+  chart.draw(data, options);
+}
+</script>

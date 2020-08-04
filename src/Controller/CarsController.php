@@ -5,6 +5,7 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Datasource\ConnectionManager;
 
+
 /**
  * Cars Controller
  *
@@ -62,6 +63,10 @@ class CarsController extends AppController
         ];
          if ($this->request->is('post')){
 
+            debug($this->request->params);
+
+            $this->redirect(array('action' => 'contributions', 'page' => 1));
+
              if(isset($this->request->getData()['typeOfFuel'])){
                 $typeOfFuel = $this->request->getData()['typeOfFuel'];
              }else{
@@ -92,13 +97,12 @@ class CarsController extends AppController
              if(isset($this->request->getData()['brands'])) {
                 $brands = $this->request->getData()['brands'];
              } else{
-                $brands=$this->Cars->find()->select([
+                $brands = $this->Cars->find()->select([
                     'marca' => 'cars.marca'
                 ]);
              }
-
             $this->loadModel('CarsUsers');
-
+            // $this->paginate['CarsUsers']['page'] = 1;
             $contributions = $this->paginate($this->CarsUsers->find()->select([
                 'id',
                 'car_id' => 'cars.id', 
@@ -108,7 +112,8 @@ class CarsController extends AppController
                 'consumoAutopista' => 'AVG(carsusers.consumoAutopista)',
                 'combinado' => 'AVG(carsusers.combinado)',
                 'combustible' => 'cars.combustible',
-                'polls' => 'count(cars.id)'])
+                'polls' => 'count(cars.id)',
+                'page' => 1])
                 ->where(['marca IN' => $brands, 'combustible IN' => $typeOfFuel, 'consumoCiudad >=' => $minCity, 'consumoCiudad <=' => $maxCity, 'consumoAutopista >=' => $minHighway, 'consumoAutopista <=' => $maxHighway, 'combinado >=' => $minCombined, 'combinado <=' => $maxCombined])
                 ->innerJoinWith('Cars')
                 ->group(['cars.modelo','cars.combustible'])
@@ -276,14 +281,47 @@ class CarsController extends AppController
 
 
         $combustibles = $this->Cars->find()->select(['Cars.combustible'])->distinct()->where(['modelo'=>$car->modelo])->toArray();
+        $queryModelos = $this->Cars->find()->select(['Cars.modelo'])->distinct()->where(['marca'=>$car->marca, 'combustible'=>$car->combustible])->toArray();
+        
+        $modelos = array();
+
+        foreach ($queryModelos as $objetoModelo) {
+
+            array_push($modelos, $objetoModelo->modelo);
+        }
         
         //obtenemos los datos de la relación
         $this->loadModel('CarsUsers');
 
+       $chartAverages = $this->CarsUsers->find()->select([
+            'modelo' => 'Cars.modelo',
+            'combustible' => 'cars.combustible',
+            'consumoCiudad' => 'AVG(carsusers.consumoCiudad)',
+            'pollsCity' => 'count(carsusers.consumoCiudad)',
+            'consumoAutopista' => 'AVG(carsusers.consumoAutopista)',
+            'pollsHighway' => 'count(carsusers.consumoAutopista)',
+            'combinado' => 'AVG(carsusers.combinado)',
+            'pollsCombined' => 'count(carsusers.combinado)'])
+        ->where(['cars.marca' => $car->marca, 'cars.combustible' => $car->combustible])
+        ->innerJoinWith('Cars')
+        ->group(['cars.marca','cars.modelo','cars.combustible']);
+
+$chartAverages->enableHydration(false); // esto hace que devuelva un array en lugar de un objeto
+
+        // $chartModels = array();
+
+        //me lo puedo crear y parsearlo en JS
+        // foreach ($chartAverages as $chart) {
+
+        //     array_push($chartModels, $chart->modelo.",".$chart->combustible );
+        // }
+        // debug($chartModels);
+
+
+        // debug($modelsChart->toArray());
+
         $relatedContributions = $this->CarsUsers->find()->where(['car_id =' => $car->id])->all();
 
-     //   $maxCity = $this->CarsUsers->find()->where(['car_id =' => $car->id, '' => '' ]);
-       
         $maxHighway = $relatedContributions->max(function ($max) {
             return $max->consumoAutopista;
         });
@@ -299,20 +337,33 @@ class CarsController extends AppController
         });
         $maxCombined = $maxCombined->combinado;
 
-        $minHighway = $relatedContributions->min(function ($min) {
-            return $min->consumoAutopista;
-        });
-        $minHighway = $minHighway->consumoAutopista;
+        //esto se trae los nulls
+        // $minCity = $relatedContributions->min(function ($min) {
+        //     return $min->consumoCiudad;
+        // });
+        // $minCity = $minCity->consumoCiudad; 
 
-        $minCity = $relatedContributions->min(function ($min) {
-            return $min->consumoCiudad;
-        });
-        $minCity = $minCity->consumoCiudad; 
+        $minCity = $this->CarsUsers->find()->select([
+            "consumoCiudad" => "min(consumoCiudad)"
+        ])->where(['car_id =' => $car->id, 'consumoCiudad IS NOT' => null])->first()->consumoCiudad;
 
-        $minCombined = $relatedContributions->min(function ($min) {
-            return $min->combinado;
-        });
-        $minCombined = $minCombined->combinado;
+        // $minHighway = $relatedContributions->min(function ($min) {
+        //     return $min->consumoAutopista;
+        // });
+        // $minHighway = $minHighway->consumoAutopista;
+
+        $minHighway = $this->CarsUsers->find()->select([
+            "consumoAutopista" => "min(consumoAutopista)"
+        ])->where(['car_id =' => $car->id, 'consumoAutopista IS NOT' => null])->first()->consumoAutopista;
+
+        // $minCombined = $relatedContributions->min(function ($min) {
+        //     return $min->combinado;
+        // });
+        // $minCombined = $minCombined->combinado;
+
+        $minCombined = $this->CarsUsers->find()->select([
+            "combinado" => "min(combinado)"
+        ])->where(['car_id =' => $car->id, 'combinado IS NOT' => null])->first()->combinado;
 
         $totalContributions = count($relatedContributions);
 
@@ -328,6 +379,8 @@ class CarsController extends AppController
         $medianHighway = array();
         $medianCombined = array();
     
+        $loginArr = array();
+
         foreach ($relatedContributions as $contribution) {
             if($contribution->consumoCiudad != null && $contribution->consumoCiudad != 0){
                $totalCity += $contribution->consumoCiudad;
@@ -344,6 +397,16 @@ class CarsController extends AppController
                array_push($medianCombined,$contribution->combinado);
                $pollsCombined++;
             }
+            $login = $this->CarsUsers->Users->find()->select([
+                'login'
+            ])->where(['id' => $contribution->user_id])->first();
+
+
+           array_push($loginArr, $login);
+
+            
+          //  debug($loginArr);
+
         }
         
         //ordenamos los arrays de medianas y tomamos el valor del medio en pares e impares
@@ -382,9 +445,13 @@ class CarsController extends AppController
         $avgCombined = $totalCombined / $pollsCombined;
 
 
-        $this->set('car', $car);
         $this->set('relatedContributions', $relatedContributions);
+
         $this->set('combustibles', $combustibles);
+        
+        $this->set('modelos', $modelos);
+        $this->set('chartAverages', $chartAverages);
+        $this->set('loginArr', $loginArr);
 
 
         //inicializamos las variables con los ids del mismo coche pero con distinto combustible

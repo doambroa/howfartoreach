@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-group">
                         <div class="input-group">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-glass"></span></span>
+                            <span class="input-group-addon"><span class="fa fa-birthday-cake"></span></span>
                             <?=  $this->Form->control('age', ['placeholder' => 'Age', 'label' => false ]); ?>
                         </div>
                     </div>
