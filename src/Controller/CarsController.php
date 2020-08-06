@@ -63,9 +63,9 @@ class CarsController extends AppController
         ];
          if ($this->request->is('post')){
 
-            debug($this->request->params);
+            // debug($this->request->params);
 
-            $this->redirect(array('action' => 'contributions', 'page' => 1));
+            // $this->redirect(array('action' => 'contributions', 'page' => 1));
 
              if(isset($this->request->getData()['typeOfFuel'])){
                 $typeOfFuel = $this->request->getData()['typeOfFuel'];
@@ -306,8 +306,42 @@ class CarsController extends AppController
         ->innerJoinWith('Cars')
         ->group(['cars.marca','cars.modelo','cars.combustible']);
 
-$chartAverages->enableHydration(false); // esto hace que devuelva un array en lugar de un objeto
+        $chartAverages->enableHydration(false); // esto hace que devuelva un array en lugar de un objeto
 
+        $averagesByYear = $this->CarsUsers->find()->select([
+                'marca' => 'Cars.marca',
+                'modelo' => 'Cars.modelo',
+                'car_ano' => 'Cars.ano',
+                'combustible' => 'cars.combustible',
+                'consumoCiudad' => 'AVG(carsusers.consumoCiudad)',
+                'pollsCity' => 'count(carsusers.consumoCiudad)',
+                'consumoAutopista' => 'AVG(carsusers.consumoAutopista)',
+                'pollsHighway' => 'count(carsusers.consumoAutopista)',
+                'combinado' => 'AVG(carsusers.combinado)',
+                'pollsCombined' => 'count(carsusers.combinado)',
+                'mediaGlobal' => '(AVG(carsusers.consumoCiudad)+AVG(carsusers.consumoAutopista)+AVG(carsusers.combinado))/3'
+            ])
+            ->where(['cars.marca' => $car->marca, 'cars.combustible' => $car->combustible])
+            ->innerJoinWith('Cars')
+            ->group(['cars.marca', 'cars.ano'])
+            ->order('cars.ano');
+        
+        $averagesByYear->enableHydration(false);
+
+          $averagesByBrand = $this->CarsUsers->find()->select([
+                'marca' => 'Cars.marca',
+                'combustible' => 'cars.combustible',
+                'consumoCiudad' => 'AVG(carsusers.consumoCiudad)',
+                'pollsCity' => 'count(carsusers.consumoCiudad)',
+                'consumoAutopista' => 'AVG(carsusers.consumoAutopista)',
+                'pollsHighway' => 'count(carsusers.consumoAutopista)',
+                'combinado' => 'AVG(carsusers.combinado)',
+                'pollsCombined' => 'count(carsusers.combinado)'])
+            ->where(['cars.marca' => $car->marca, 'cars.combustible' => $car->combustible])
+            ->innerJoinWith('Cars')
+            ->group(['cars.marca','cars.combustible']);
+
+            $averagesByBrand->enableHydration(false);
         // $chartModels = array();
 
         //me lo puedo crear y parsearlo en JS
@@ -451,7 +485,9 @@ $chartAverages->enableHydration(false); // esto hace que devuelva un array en lu
         
         $this->set('modelos', $modelos);
         $this->set('chartAverages', $chartAverages);
+        $this->set('averagesByYear', $averagesByYear);
         $this->set('loginArr', $loginArr);
+        $this->set('averagesByBrand', $averagesByBrand);
 
 
         //inicializamos las variables con los ids del mismo coche pero con distinto combustible
