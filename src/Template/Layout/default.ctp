@@ -50,4 +50,13 @@ $cakeDescription = 'HowFarToReach - Car consumption measures from users to users
   <p>Footer Text</p>
 </footer> -->
 </body>
+<footer class="page-footer font-small blue" style="margin-top: 20px;">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2020
+    <a href="https://mdbootstrap.com/"> HowFarToReach</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
 </html>

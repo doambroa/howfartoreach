@@ -110,8 +110,7 @@ use Cake\Routing\Router;
         <?= $this->Form->button(__('Submit')) ?>
         <?= $this->Form->end() ?>   
 
-          <a data-toggle="collapse" data-target="#allRegisters" type="button" class="">How can I calculate my own mileage?</a>
-       <!-- quizá aquí desplegar una lista con cada uno de los registros de coche  en ultimo caso hacerle un redirect a cars-->
+          <a data-toggle="collapse" data-target="#allRegisters" type="button" style="cursor:pointer">How can I calculate my own mileage?</a>
             <div id="allRegisters" class="collapse"> 
 
                 <div id="calculator" class="form-group"><h2>Calculator</h2>

@@ -166,8 +166,12 @@ class UsersController extends AppController
         } else {
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
-
-        return $this->redirect(['action' => 'index']);
+        $current_user = $this->Auth->user();
+        if($current_user->role=="admin"){
+            return $this->redirect(['action' => 'index']);    
+        }else{
+           return $this->redirect(['action' => 'logout']);
+        }
     }
 
     /**

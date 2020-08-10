@@ -48,9 +48,14 @@
         <!-- poner en gris los otros dos a ambos lados seleccionables FUEL y ELECTRIC y que se peuda cambmiar entre ellos-->
     </div>
 </div>
-
-<div class="container">
-    <div class = col-md-6 style="margin: 0 auto;">
+<div class = "col-md-12 text-center" style="margin-top: 10px;margin-bottom: 10px; visibility: ;">
+  <?php if(isset($current_user) && $current_user['role'] == 'admin'):?>
+                <?= $this->Html->link('Edit this car', ['controller' => 'Cars', 'action' => 'Edit', $car->id],['class' => 'btn btn-sm btn-warning']) ?>
+                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $car->id], ['class' => 'btn btn-sm btn-danger', 'confirm' => __('Are you sure you want to delete # {0}?', $car->id)]) ?>
+  <?php endif?> 
+</div>
+<div class="container text-center">
+    <div class="col-md-6" style="margin: 0 auto;">
         <?php echo $this->Html->image('../img/cars/' . $car->modelo . '.png', ['alt' => $car->marca . ' ' . $car->modelo, 'class' => 'img-responsive', 'style' => 'margin:auto;', 'id' => 'carImg', 'onerror' => 'this.src="../../img/cars/cars.png"'])?>
     </div>
 <div id="diesel">
@@ -157,6 +162,7 @@
                 </span>
                 </center>
   </div>
+
 </div>
 
 <div class="container" style="padding-top: 20px;">
@@ -210,7 +216,7 @@
             <thead>
                 <tr>
                     <!-- <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('id') ?></th> -->
-                    <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('marca', ['label' => 'Brand'])//en un array se mete el nombre que se queire que aparezca, habría que echarle un ojo a la internacionalización para ver como se hace ?></th>
+                    <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('marca', ['label' => 'Brand'])?></th>
                     <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('modelo', ['label' => 'Model']) ?></th>
                     <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('consumoCiudad', ['label' => 'City']) ?></th>
                     <th style="text-align: center;" scope="col"><?= $this->Paginator->sort('consumoAutopista', ['label' => 'Highway']) ?></th>
@@ -235,9 +241,12 @@
                     <?php
                       if($contribution->user_id == $current_user['id']){
                         ?><td><?=$this->Html->link('Edit', ['controller' => 'CarsUsers',
-                                                            'action' => 'edit',$contribution->id, $contribution->car_id, $contribution->user_id
+                                                            'action' => 'edit',$contribution->id, $contribution->car_id, $contribution->user_id                                                            
+                                                         ], ['class' => 'btn btn-sm btn-warning'])?>
+                        <?=$this->Form->postLink('Delete', ['controller' => 'CarsUsers',
+                                                            'action' => 'Delete',$contribution->id, $contribution->car_id, $contribution->user_id
                                                             
-                                                         ])?>
+                                                         ], ['class' => 'btn btn-sm btn-danger', 'confirm' => __('Are you sure you want to delete # {0}?', $car->id)])?>
                                                          </td><?php
                     }else{
                         ?> <!-- <td><?= $this->Html->link($contribution->user_id, ['controller' => 'Users', 'action' => 'view', $contribution->user_id]) ?></td>--><?php
@@ -255,7 +264,7 @@
 <div class="container" style="padding-top: 20px">
     <div class="row">
         <div class="col-md-4">
-            <?= $this->Html->link('Add your own measure', ['controller' => 'Cars', 'action' => 'addContribution', $contribution->car_id]) ?> <!-- Pasamos el id del coche para que en un fguturo el formulario se autorellene con esa info-->
+            <?= $this->Html->link('Add your own measure', ['controller' => 'Cars', 'action' => 'addContribution', $contribution->car_id]) ?>
         </div>
         <div class="col-md-4 col-md-offset-4 text-right">
             <?= $this->Html->link('Download Data for this car', ['controller' => 'Cars', 'action' => 'exportCarContributions', $contribution->car_id]) ?>

@@ -18,25 +18,28 @@
                         <div class="form-group">
                           <label class="col-md-4 control-label" for="login">Login</label>  
                           <div class="col-md-4">
-                         <div class="input-group">
-                               <div class="input-group-addon">
-                                <i class="fa fa-user">
-                                </i>
-                               </div>
-                               <input id="login" name="login" type="text" placeholder="New username" class="form-control input-md">
+                            <div class="input-group">
+                             <div class="input-group-addon" style="background-color: orange; border-color:red;">
+                                <span class="fa fa-user"></span>
                               </div>
+                              <input type="text" name="login" required="required" maxlength="50" id="login" class="form-control" value="<?=$user->login?>">                           
+                            </div>
                           </div>
                         </div>
+
+
+
+
 
                         <div class="form-group">
                           <label class="col-md-4 control-label" for="Password">Password</label>  
                           <div class="col-md-4">
                          <div class="input-group">
-                               <div class="input-group-addon">
+                               <div class="input-group-addon" style="background-color: orange; border-color:red;">
                                 <i class="fa fa-key">
                                 </i>
                                </div>
-                               <input id="Password" name="Password" type="Password" placeholder="New Password" class="form-control input-md">
+                               <input id="Password" name="Password" type="Password" placeholder="New Password" value="<?=$user->password?>" class="form-control input-md">
                               </div>
                           </div>
                         </div>
@@ -45,11 +48,11 @@
                           <label class="col-md-4 control-label" for="Age">Age</label>  
                           <div class="col-md-4">
                          <div class="input-group">
-                               <div class="input-group-addon">
+                               <div class="input-group-addon" style="background-color: orange; border-color:red;">
                                 <i class="fa fa-birthday-cake">
                                 </i>
                                </div>
-                               <input type="number" name="age" id="age" class="form-control" placeholder='<?=$current_user['age']?>'>
+                               <input type="number" name="age" id="age" class="form-control" placeholder='<?=$current_user['age']?>' value="<?=$current_user['age']?>">
                               </div>
                           </div>
                         </div>
@@ -58,16 +61,16 @@
                         <div class="form-group">
                           <label class="col-md-4 control-label" for="Sex">Sex</label>
                           <div class="col-md-4"> 
-                            <label class="radio-inline" for="sex">
-                              <input type="radio" name="sex" id="male" value="male">
+                            <label class="radio-inline" for="male">
+                              <input type="radio" name="sex" id="male" value="male" required>
                               Male
                             </label> 
-                            <label class="radio-inline" for="sex">
-                              <input type="radio" name="sex" id="female" value="female">
+                            <label class="radio-inline" for="female">
+                              <input type="radio" name="sex" id="female" value="female" required>
                               Female
                             </label> 
-                            <label class="radio-inline" for="sex">
-                              <input type="radio" name="sex" id="undefined" value="undefined">
+                            <label class="radio-inline" for="undefined">
+                              <input type="radio" name="sex" id="undefined" value="undefined" required>
                               Other
                             </label>
                           </div>
@@ -77,11 +80,11 @@
                           <label class="col-md-4 control-label" for="Email Address">Email Address</label>  
                           <div class="col-md-4">
                           <div class="input-group">
-                               <div class="input-group-addon">
+                               <div class="input-group-addon" style="background-color: orange; border-color:red;">
                              <i class="fa fa-envelope-o"></i>
                                 
                                </div>
-                            <input id="Email Address" name="Email Address" type="text" placeholder="Email Address" class="form-control input-md">
+                            <input id="Email Address" name="Email Address" type="text" placeholder="Email Address" class="form-control input-md" value="<?=$user->mail?>">
                             
                               </div>
                           
@@ -93,7 +96,7 @@
                           <label class="col-md-4 control-label" for="Login">Country</label>  
                           <div class="col-md-4">
                          <div class="input-group">
-                               <div class="input-group-addon">
+                               <div class="input-group-addon" style="background-color: orange; border-color:red;">
                                 <i class="fa fa-flag">
                                 </i>
                                </div>

@@ -15,7 +15,10 @@ use Cake\Routing\Router;
             <legend><?= __('Edit car') ?><div class="ajax_loading_image"></div></legend>
                 <div class="form-group select">
                     <div class="input-group">
-                        <span class="input-group-addon" style="background-color: orange; border-color:red;"><span class="glyphicon glyphicon-tags"></span><?php echo $this->Form->control('marca',['label'=>'Brand','required']);?></span>
+                        <span class="input-group-addon" style="background-color: orange; border-color:red;">
+                            <span class="glyphicon glyphicon-tags"></span>
+                            <?php echo $this->Form->control('marca',['label'=>'Brand','required']);?>
+                        </span>
                     </div>
                 </div>
                 <div class="form-group select">
@@ -31,6 +34,15 @@ use Cake\Routing\Router;
                         <?php echo $this->Form->control('combustible', ['label' => false, 'options' => ['Diesel' => 'Diesel', 'Gasolina' => 'Petrol', 'electrico' => 'Electric']]);?>
                     </div>
                 </div>    
+                <div class="form-group">
+                    <span style="font-weight: bold;">Year</span>
+                    <div class="input-group">
+                        <span class="input-group-addon" style="background-color: orange; border-color:red;">
+                            <span class="fa fa-birthday-cake"></span>
+                        </span>
+                        <?php echo $this->Form->control('ano', ['label' => false,'placeholder' => 'ie: 2015']);?>
+                    </div>
+                </div>
             </div>
         </fieldset>
         <?= $this->Form->button(__('Create')) ?>
