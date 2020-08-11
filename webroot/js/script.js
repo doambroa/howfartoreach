@@ -7,32 +7,7 @@
    var maxCo = 8;
 
 
-   $("#brands").on('change',function() {
-    var brand = $(this).val();
 
-    $("#models").find('option').remove();
-    if (brand) {
-        var dataString = 'id='+ brands;
-        $.ajax({
-            dataType:'json',
-            type: "POST",
-            url: '<?php echo Router::url(["controller" => "cars", "action" => "getModelByBrand"]);?>',
-            data: dataString,
-            cache: false,
-            success: function(html) {
-                    //$("#loding1").hide();
-                    $.each(html, function(key, value) {              
-                        console.log("MARDA");
-                        //alert(key);
-                        //alert(value);
-                        //$('<option>').val('').text('select');
-                        $('<option>').val(key).text(value).appendTo($("#models"));
-                        //$('<option>').val(value['id']).text(value['title']).appendTo($("#subcategories"));
-                    });
-                } 
-            });
-    }
-});
 
 
 
@@ -65,9 +40,40 @@
 // }
 $( document ).ready(function() {
 
-    $("form#filtersForm").submit(function() {
-        filterList();
-    });
+//     $("form#filtersForm").submit(function() {
+//         filterList();
+//     });
+
+//     $("#brands").on('change',function() {
+//     var brand = $(this).val();
+
+//     $("#models").find('option').remove();
+//     if (brand) {
+//         var dataString = 'id='+ brands;
+//         console.log("entramos");
+//         $.ajax({
+//             dataType:'json',
+//             type: "POST",
+//             url: '<?php echo Router::url(["controller" => "cars", "action" => "getModelByBrand"]);?>',
+//             data: dataString,
+//             cache: false,
+//             success: function(html) {
+//             console.log("en ajax");
+//                 //$("#loding1").hide();
+//                 $.each(html, function(key, value) {              
+//                     console.log("");
+//                     //alert(key);
+//                     //alert(value);
+//                     //$('<option>').val('').text('select');
+//                     $('<option>').val(key).text(value).appendTo($("#models"));
+//                     //$('<option>').val(value['id']).text(value['title']).appendTo($("#subcategories"));
+//                 });
+//             }
+//         });
+//     }
+// });
+
+
 });
 
    
@@ -225,10 +231,10 @@ function checkCheckboxesInverted(i){
 
 function checkFuel(){
         // console.log( $(".fuelCheckBoxD").attr('value')/*$("#car_"+i).children("td.combustible").text()*/);
-        for(var i = 0; i< 600; ++i){
-            $("#car_"+i).hide();
-            checkCheckboxes(i);
-        }
+        // for(var i = 0; i< 600; ++i){
+        //     $("#car_"+i).hide();
+        //     checkCheckboxes(i);
+        // }
     }
 
     function checkBrand(){
@@ -328,6 +334,8 @@ function checkFuel(){
 
     });
 
+
+    //DEPRECATED, sólo se aprovecha la pate de los logos
     function filterBrands(){
 
         var brand = document.getElementById("brands").value;

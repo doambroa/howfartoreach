@@ -22,7 +22,7 @@ use Cake\Routing\Router;
                     <span style="font-weight: bold;">Type of fuel</span>
                     <div class="input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-tint"></span></span>
-                        <?php echo $this->Form->control('combustible', ['label' => false, 'options' => ['Diesel' => 'Diesel', 'Gasolina' => 'Petrol', 'electrico' => 'Electric']]);?>
+                        <?php echo $this->Form->control('combustible', ['label' => false, 'required', 'options' => ['Diesel' => 'Diesel', 'Petrol' => 'Petrol', 'Electric' => 'Electric']]);?>
                     </div>
                 </div>    
                 <div class="form-group">

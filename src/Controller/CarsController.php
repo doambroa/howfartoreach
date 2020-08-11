@@ -92,7 +92,7 @@ class CarsController extends AppController
             $minCombined = $combined[0];
             $maxCity = $city[1];
             $maxHighway = $highway[1];
-            $maxCombined = $combined[1];
+            $maxCombined = $combined[1];            
 
              if(isset($this->request->getData()['brands'])) {
                 $brands = $this->request->getData()['brands'];
@@ -186,7 +186,7 @@ class CarsController extends AppController
         
             if ($this->request->is('post')) {
             //$cid =  select id from cars where modelo == this.modelo and combustible == this.combustble
-            if($this->request->getData()['modelo']!=null){
+            if($this->request->getData()['modelo'] != null){
                 $car_id = $this->Cars->find()->select(['id'])->where(['modelo =' => $this->request->getData()['modelo'], 'combustible ='=> $this->request->getData()['combustible']])->first()->get('id'); 
             } else {
                 debug("el modelo no existe");
@@ -658,7 +658,7 @@ class CarsController extends AppController
         } else {
             $this->Flash->error(__('The car could not be deleted. Please, try again.'));
         }
-
+        
         return $this->redirect(['action' => 'index']);
     }
 
@@ -914,9 +914,19 @@ class CarsController extends AppController
     }
 
     public function getModelByBrand(){
-        $model = $this->request->data('model');
-        $models = $this->Cars->find('list', [ 'conditions' => [ 'modelo' => $model ]]); 
-        echo json_encode($models); 
+         if ($this->request->is(['ajax', 'post'])) {
+            $results = $this->Cars->find()->select(['modelo'])->where(['marca =' => $this->request->getData()['marca']])->group('modelo')->toList();
+            $this->response->getBody()->write(json_encode($results));
+            return $this->response;
+         }
+    }
+
+    public function getFuelByModel(){
+        if ($this->request->is(['ajax', 'post'])) {
+            $results = $this->Cars->find()->select(['combustible'])->where(['modelo =' => $this->request->getData()['modelo']])->group('combustible')->toList();
+            $this->response->getBody()->write(json_encode($results));
+            return $this->response;
+        }
     }
 
 }

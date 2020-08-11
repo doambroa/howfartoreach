@@ -11,9 +11,10 @@
             <thead>
                 <tr>
                     <th scope="col" style="text-align: center;"><?= $this->Paginator->sort('id') ?></th>
-                    <th scope="col" style="text-align: center;"><?= $this->Paginator->sort('marca') ?></th>
-                    <th scope="col" style="text-align: center;"><?= $this->Paginator->sort('modelo') ?></th>
-                    <th scope="col" style="text-align: center;"><?= $this->Paginator->sort('combustible') ?></th>
+                    <th scope="col" style="text-align: center;"><?= $this->Paginator->sort('Brand') ?></th>
+                    <th scope="col" style="text-align: center;"><?= $this->Paginator->sort('Model') ?></th>
+                    <th scope="col" style="text-align: center;"><?= $this->Paginator->sort('Fuel') ?></th>
+                    <th scope="col" style="text-align: center;"><?= $this->Paginator->sort('Year') ?></th>
                     <th scope="col" style="text-align: center;" class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
@@ -25,6 +26,7 @@
                     <td><?= h($car->marca) ?></td>
                     <td><?= h($car->modelo) ?></td>
                     <td><?= h($car->combustible) ?></td>
+                    <td><?= h($car->ano) ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $car->id], ['class' => 'btn btn-sm btn-info']) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $car->id], ['class' => 'btn btn-sm btn-warning']) ?>

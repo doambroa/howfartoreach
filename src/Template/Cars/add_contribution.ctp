@@ -7,32 +7,93 @@ use Cake\Routing\Router;
 ?>
 
 <script type="text/javascript">
+
+$( document ).ready(function() {
+
         $("#brands").on('change',function() {
         var brand = $(this).val();
 
         $("#models").find('option').remove();
         if (brand) {
-            var dataString = 'id='+ brands;
+            var dataString = 'marca='+ brand;
             $.ajax({
                 dataType:'json',
                 type: "POST",
                 url: '<?php echo Router::url(["controller" => 'Cars', 'action' => "getModelByBrand"]);?>',
                 data: dataString,
                 cache: false,
-                success: function(html) {
+                success: function(data) {
                     //$("#loding1").hide();
-                    $.each(html, function(key, value) {              
-                        alert(key);
-                        alert(value);
+                    $.each(data, function(key, value) {              
+                        // alert(key);
+                        // alert(value);
                         //$('<option>').val('').text('select');
-                        $('<option>').val(key).text(value).appendTo($("#models"));
-                        //$('<option>').val(value['id']).text(value['title']).appendTo($("#subcategories"));
+                        $('<option>').val(value['modelo']).text(value['modelo']).appendTo($("#models"));
                     });
-                } 
+                    $("#combustible").find('option').remove();
+                        
+                        var dataString = 'modelo='+ $("#models").val();
+                        $.ajax({
+                            dataType:'json',
+                            type: "POST",
+                            url: '<?php echo Router::url(["controller" => 'Cars', 'action' => "getFuelByModel"]);?>',
+                            data: dataString,
+                            cache: false,
+                            success: function(data) {
+                                //$("#loding1").hide();
+                                $.each(data, function(key, value) {              
+                                    // alert(key);
+                                    // alert(value);
+                                    //$('<option>').val('').text('select');
+                                    $('<option>').val(value['combustible']).text(value['combustible']).appendTo($("#combustible"));
+                                });
+                            },
+                            error: function(data){
+                                console.log("Error en la petición: " + data);
+                            }
+                        });
+                },
+                error: function(data){
+                    console.log("Error en la petición: " + data);
+                }
             });
         }
     });
+
+
+     $("#models").on('change',function() {
+        var model = $(this).val();
+
+        $("#combustible").find('option').remove();
+        if (model) {
+            var dataString = 'modelo='+ model;
+            $.ajax({
+                dataType:'json',
+                type: "POST",
+                url: '<?php echo Router::url(["controller" => 'Cars', 'action' => "getFuelByModel"]);?>',
+                data: dataString,
+                cache: false,
+                success: function(data) {
+                    //$("#loding1").hide();
+                    $.each(data, function(key, value) {              
+                        // alert(key);
+                        // alert(value);
+                        //$('<option>').val('').text('select');
+                        $('<option>').val(value['combustible']).text(value['combustible']).appendTo($("#combustible"));
+                    });
+                },
+                error: function(data){
+                    console.log("Error en la petición: " + data);
+                }
+            });
+        }
+    });
+
+});
+
+
 </script>
+
 <div class="container">
     <div class="" style=" margin-top: 40px;background-image: url(http://localhost/howfartoreach/img/tires3.png);">
         <?= $this->Form->create($carsUser,['type' => 'file', 'class' => 'ajax_page']) ?>
