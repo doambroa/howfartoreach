@@ -23,35 +23,30 @@ $( document ).ready(function() {
                 data: dataString,
                 cache: false,
                 success: function(data) {
-                    //$("#loding1").hide();
                     $.each(data, function(key, value) {              
-                        // alert(key);
-                        // alert(value);
-                        //$('<option>').val('').text('select');
                         $('<option>').val(value['modelo']).text(value['modelo']).appendTo($("#models"));
                     });
-                    $("#combustible").find('option').remove();
-                        
-                        var dataString = 'modelo='+ $("#models").val();
-                        $.ajax({
-                            dataType:'json',
-                            type: "POST",
-                            url: '<?php echo Router::url(["controller" => 'Cars', 'action' => "getFuelByModel"]);?>',
-                            data: dataString,
-                            cache: false,
-                            success: function(data) {
-                                //$("#loding1").hide();
-                                $.each(data, function(key, value) {              
-                                    // alert(key);
-                                    // alert(value);
-                                    //$('<option>').val('').text('select');
-                                    $('<option>').val(value['combustible']).text(value['combustible']).appendTo($("#combustible"));
-                                });
-                            },
-                            error: function(data){
-                                console.log("Error en la petición: " + data);
-                            }
-                        });
+                    $("#combustible").find('option').remove();    
+                    var dataString = 'modelo='+ $("#models").val();
+                    $.ajax({
+                        dataType:'json',
+                        type: "POST",
+                        url: '<?php echo Router::url(["controller" => 'Cars', 'action' => "getFuelByModel"]);?>',
+                        data: dataString,
+                        cache: false,
+                        success: function(data) {
+                            //$("#loding1").hide();
+                            $.each(data, function(key, value) {              
+                                // alert(key);
+                                // alert(value);
+                                //$('<option>').val('').text('select');
+                                $('<option>').val(value['combustible']).text(value['combustible']).appendTo($("#combustible"));
+                            });
+                        },
+                        error: function(data){
+                            console.log("Error en la petición: " + data);
+                        }
+                    });
                 },
                 error: function(data){
                     console.log("Error en la petición: " + data);

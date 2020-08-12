@@ -188,8 +188,6 @@ class CarsController extends AppController
             //$cid =  select id from cars where modelo == this.modelo and combustible == this.combustble
             if($this->request->getData()['modelo'] != null){
                 $car_id = $this->Cars->find()->select(['id'])->where(['modelo =' => $this->request->getData()['modelo'], 'combustible ='=> $this->request->getData()['combustible']])->first()->get('id'); 
-            } else {
-                debug("el modelo no existe");
             }
             $data = $this->request->getData();            
             $data['car_id'] = $car_id;
@@ -359,17 +357,29 @@ class CarsController extends AppController
         $maxHighway = $relatedContributions->max(function ($max) {
             return $max->consumoAutopista;
         });
-        $maxHighway = $maxHighway->consumoAutopista;
+        if($maxHighway->consumoAutopista !=null){
+            $maxHighway = $maxHighway->consumoAutopista;
+        }else{
+            $maxHighway = 0;
+        }
 
         $maxCity = $relatedContributions->max(function ($max) {
             return $max->consumoCiudad;
         });
-        $maxCity = $maxCity->consumoCiudad;
+        if($maxCity->consumoCiudad != null){
+            $maxCity = $maxCity->consumoCiudad;
+        }else{
+            $maxCity = 0;
+        }
 
         $maxCombined = $relatedContributions->max(function ($max) {
             return $max->combinado;
         });
-        $maxCombined = $maxCombined->combinado;
+        if($maxCombined->combinado != null){
+            $maxCombined = $maxCombined->combinado;
+        }else{
+            $maxCombined = 0;
+        }
 
         //esto se trae los nulls
         // $minCity = $relatedContributions->min(function ($min) {
@@ -412,6 +422,14 @@ class CarsController extends AppController
         $medianCity = array();
         $medianHighway = array();
         $medianCombined = array();
+
+        $middlevalCity = 0;
+        $middlevalHighway = 0;
+        $middlevalCombined = 0;
+
+        $avgCity = 0;
+        $avgHighway = 0;
+        $avgCombined = 0;
     
         $loginArr = array();
 
@@ -438,13 +456,14 @@ class CarsController extends AppController
 
            array_push($loginArr, $login);
 
-            
-          //  debug($loginArr);
-
         }
         
         //ordenamos los arrays de medianas y tomamos el valor del medio en pares e impares
-        sort($medianCity);
+        if(!empty($medianCity)){
+            sort($medianCity);
+        }else{
+            $medianCity = 0;
+        }
         $middlevalCity = floor(($pollsCity-1)/2);
         if($pollsCity % 2) {
             $medianCity = $medianCity[$middlevalCity];
@@ -454,29 +473,47 @@ class CarsController extends AppController
             $medianCity = (($low+$high)/2);
         }
 
-        sort($medianHighway);
+        if(!empty($medianHighway)){
+            sort($medianHighway);
+        }else{
+            $medianHighway = 0;
+        }
         $middlevalHighway = floor(($pollsHighway-1)/2);
-        if($pollsHighway % 2) {
-            $medianHighway = $medianHighway[$middlevalHighway];
-        } else {
-            $low = $medianHighway[$middlevalHighway];
-            $high = $medianHighway[$middlevalHighway+1];
-            $medianHighway = (($low+$high)/2);
+        
+        if($middlevalHighway > -1){
+            if($pollsHighway % 2) {
+                $medianHighway = $medianHighway[$middlevalHighway];
+            } else {
+                $low = $medianHighway[$middlevalHighway];
+                $high = $medianHighway[$middlevalHighway+1];
+                $medianHighway = (($low+$high)/2);
+            }
         }
 
-        sort($medianCombined);
+        if(!empty($medianCombined)){
+            sort($medianCombined);
+        }else{
+            $medianCombined = 0;
+        }
         $middlevalCombined = floor(($pollsCombined-1)/2);
-        if($pollsCombined % 2) {
-            $medianCombined = $medianCombined[$middlevalCombined];
-        } else {
-            $low = $medianCombined[$middlevalCombined];
-            $high = $medianCombined[$middlevalCombined+1];
-            $medianCombined = (($low+$high)/2);
+        if($middlevalCombined > -1){
+            if($pollsCombined % 2) {
+                $medianCombined = $medianCombined[$middlevalCombined];
+            } else {
+                $low = $medianCombined[$middlevalCombined];
+                $high = $medianCombined[$middlevalCombined+1];
+                $medianCombined = (($low+$high)/2);
+            }
         }
-
-        $avgCity = $totalCity / $pollsCity;
-        $avgHighway = $totalHighway / $pollsHighway;
-        $avgCombined = $totalCombined / $pollsCombined;
+        if($pollsCity > 0){
+            $avgCity = $totalCity / $pollsCity;
+        }
+        if($pollsHighway > 0){
+            $avgHighway = $totalHighway / $pollsHighway;
+        }
+        if($pollsCombined > 0){
+            $avgCombined = $totalCombined / $pollsCombined;
+        }               
 
 
         $this->set('relatedContributions', $relatedContributions);

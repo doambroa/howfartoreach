@@ -29,6 +29,7 @@ $cakeDescription = 'HowFarToReach - Car consumption measures from users to users
     <?= $this->Html->script(['jquery-3.2.1.min', 'bootstrap.min','script.js'])?> <!-- imperante llamar primero a jquery porque bootstrap lo necesita-->
     
     <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

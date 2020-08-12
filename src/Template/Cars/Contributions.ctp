@@ -114,6 +114,15 @@
                 </a>
               </h4>
             </div>
+
+<select id="multiselect" multiple="multiple">
+  <option value="http://ipv4.download.thinkbroadband.com/5MB.zip">Option 1</option>
+  <option value="http://ipv4.download.thinkbroadband.com/10MB.zip">Option 2</option>
+  <option value="http://ipv4.download.thinkbroadband.com/20MB.zip">Option 3</option>
+  <option value="http://ipv4.download.thinkbroadband.com/50MB.zip">Option 4</option>
+</select>
+<input type="submit" onclick="getSelectedValues()" class="btn btn-primary" value="Download">
+
             <div id="collapse1" class="panel-collapse collapse in" >
               <ul class="list-group">
                 <?php foreach ($marcas as $marca) {?>
