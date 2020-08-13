@@ -118,6 +118,9 @@ class CarsController extends AppController
                 ->innerJoinWith('Cars')
                 ->group(['cars.modelo','cars.combustible'])
             );
+
+            debug($this->passedArgs);
+            debug($this->request->getData());
          
          } else {
 

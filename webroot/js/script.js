@@ -73,6 +73,22 @@ $( document ).ready(function() {
 //     }
 // });
 
+    //para poder seleccionar del listado de marcas sin tener que pulsar control
+    // multiple select: selectable without Control
+$('select[multiple] option').on('mousedown', function(e) {
+    var $this = $(this),
+        that = this,
+        scroll = that.parentElement.scrollTop;
+
+    e.preventDefault();
+    $this.prop('selected', !$this.prop('selected'));
+
+    setTimeout(function() {
+        that.parentElement.scrollTop = scroll;
+    }, 0);
+
+    return false;
+});
 
 });
 
