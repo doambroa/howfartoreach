@@ -58,24 +58,22 @@ class CarsController extends AppController
     }
 
     public function contributions(){
+
         $this->paginate = [
             'sortWhitelist' => ['polls','car_id','marca','modelo','consumoCiudad','consumoAutopista','combinado','combustible']
         ];
-         if ($this->request->is('post')){
 
-            // debug($this->request->params);
+        if ($this->request->getQuery('amountC') || $this->request->getQuery('amountH') || $this->request->getQuery('amountCo') || $this->request->getQuery('brands') || $this->request->getQuery('typeOfFuel')){
 
-            // $this->redirect(array('action' => 'contributions', 'page' => 1));
-
-             if(isset($this->request->getData()['typeOfFuel'])){
-                $typeOfFuel = $this->request->getData()['typeOfFuel'];
-             }else{
-                $typeOfFuel = ['Diesel', 'Petrol', 'Electric'];;
-             }
+            if(isset($this->request->getQuery()['typeOfFuel'])){
+               $typeOfFuel = $this->request->getQuery()['typeOfFuel'];
+            }else{
+               $typeOfFuel = ['Diesel', 'Petrol', 'Electric'];;
+            }
             
-            $city = ($this->request->getData()["amountC"]);
-            $highway = ($this->request->getData()["amountH"]);
-            $combined = ($this->request->getData()["amountCo"]);
+            $city = ($this->request->getQuery()["amountC"]);
+            $highway = ($this->request->getQuery()["amountH"]);
+            $combined = ($this->request->getQuery()["amountCo"]);
 
             $city = str_replace('%', '', $city);
             $city = str_replace(' ', '', $city);
@@ -94,8 +92,8 @@ class CarsController extends AppController
             $maxHighway = $highway[1];
             $maxCombined = $combined[1];            
 
-             if(isset($this->request->getData()['brands'])) {
-                $brands = $this->request->getData()['brands'];
+             if(isset($this->request->getQuery()['brands'])) {
+                $brands = $this->request->getQuery()['brands'];
              } else{
                 $brands = $this->Cars->find()->select([
                     'marca' => 'cars.marca'
@@ -119,8 +117,8 @@ class CarsController extends AppController
                 ->group(['cars.modelo','cars.combustible'])
             );
 
-            debug($this->passedArgs);
-            debug($this->request->getData());
+            // debug($this->passedArgs);
+            // debug($this->request->getData());
          
          } else {
 

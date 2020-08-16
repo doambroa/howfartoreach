@@ -26,13 +26,12 @@
 <div class="container-fluid">
     <div class="row">
       <div class="col-xs-6 col-sm-3">
-        <?=$this->Form->create('',['id' => 'filtersForm'])?>
+        <?=$this->Form->create('',['id' => 'filtersForm','type'=>'get'])?>
         <div id="accordion" class="panel panel-primary behclick-panel">
           <!--<div class="panel-heading">
             <h3 class="panel-title">Filter Cars</h3>
           </div>-->
-            <input type="submit" value="Apply filters" class="btn btn-primary btn-block"  style="text-align: center; margin-bottom: : 10px;">
-            <?=$this->Form->hidden('page', array('value' => 1));?>
+            <input type="submit" value="Apply filters" class="btn btn-primary btn-block" name="submitSearch" style="text-align: center; margin-bottom: : 10px;">
 
           <div class="panel-body">
           <!--   <div class="panel-heading " >
@@ -116,7 +115,7 @@
             </div>
 
             <div id="collapse1" class="panel-collapse collapse in" >
-              <select multiple size="20" name=brands[]>
+              <select multiple size="20" name=brands[] style="width: 150px;">
                 <?php foreach ($marcas as $marca) {?>
                     <option class="marca" value="<?php echo $marca->marca?>" id="<?php echo $marca->marca?>">
                           <?=$marca->marca?>

@@ -88,64 +88,62 @@ $('select[multiple] option').on('mousedown', function(e) {
     }, 0);
 
     return false;
-});
+    });
 
 });
 
    
 function filterList(){
     // console.log( $(".fuelCheckBoxD").attr('value')/*$("#car_"+i).children("td.combustible").text()*/);
-    var typeOfFuel = [];
-    if($(".fuelCheckBoxD").is(":checked")){
-        typeOfFuel.push($(".fuelCheckBoxD").val());
-    }
-    if($(".fuelCheckBoxP").is(":checked")){
-        typeOfFuel.push($(".fuelCheckBoxP").val());
-    }
-    if($(".fuelCheckBoxE").is(":checked")){
-        typeOfFuel.push($(".fuelCheckBoxE").val());
-    }
+   //  var typeOfFuel = [];
+   //  if($(".fuelCheckBoxD").is(":checked")){
+   //      typeOfFuel.push($(".fuelCheckBoxD").val());
+   //  }
+   //  if($(".fuelCheckBoxP").is(":checked")){
+   //      typeOfFuel.push($(".fuelCheckBoxP").val());
+   //  }
+   //  if($(".fuelCheckBoxE").is(":checked")){
+   //      typeOfFuel.push($(".fuelCheckBoxE").val());
+   //  }
 
-    var cityMin = $("#amountC").attr("data-min");
-    var cityMax = $("#amountC").attr("data-max");
-    var highwayMin = $("#amountH").attr("data-min");
-    var highwayMax = $("#amountH").attr("data-max");
-    var combinedMin = $("#amountCo").attr("data-min");
-    var combinedMax = $("#amountCo").attr("data-max");
+   //  var cityMin = $("#amountC").attr("data-min");
+   //  var cityMax = $("#amountC").attr("data-max");
+   //  var highwayMin = $("#amountH").attr("data-min");
+   //  var highwayMax = $("#amountH").attr("data-max");
+   //  var combinedMin = $("#amountCo").attr("data-min");
+   //  var combinedMax = $("#amountCo").attr("data-max");
 
+   //  var brands = [];
+   //  $.each($("input[name='brand']:checked"), function(){
+   //      brands.push($(this).val());
+   //  });
 
-    var brands = [];
-    $.each($("input[name='brand']:checked"), function(){
-        brands.push($(this).val());
-    });
+   //  var data = { "typeOfFuel": typeOfFuel, "cityMin": cityMin, "cityMax": cityMax, "highwayMin": highwayMin, "highwayMax": highwayMax, "combinedMin": combinedMin, "combinedMax": combinedMax, "brands": brands};
 
-    var data = { "typeOfFuel": typeOfFuel, "cityMin": cityMin, "cityMax": cityMax, "highwayMin": highwayMin, "highwayMax": highwayMax, "combinedMin": combinedMin, "combinedMax": combinedMax, "brands": brands};
+   // // console.log("DATA " +  " typeOfFuel " + typeOfFuel + " cityMin: " + cityMin + " cityMax: " + cityMax + " highwayMin: " + highwayMin + " highwayMax: " + highwayMax + " combinedMin: " + combinedMin + " combinedMax: " + combinedMax + " brands: " + brands );
     
-    console.log("DATA " +  " typeOfFuel " + typeOfFuel + " cityMin: " + cityMin + " cityMax: " + cityMax + " highwayMin: " + highwayMin + " highwayMax: " + highwayMax + " combinedMin: " + combinedMin + " combinedMax: " + combinedMax + " brands: " + brands );
-    
-    $.ajax({
-        type: "POST",
-        url: "/cars/contributions/",
-        datatype: 'json',
-        data: {
-             typeOfFuel: typeOfFuel,
-             cityMin: cityMin,
-             cityMax: cityMax,
-             highwayMin: highwayMin,
-             highwayMax: highwayMax,
-             combinedMin: combinedMin,
-             combinedMax: combinedMax,
-             brands: brands
-        },
-        success: function( data )
-        {
-            console.log("peticion realizada con exito" + data);
-        },
-        error: function( data )
-        {
-          console.log("ERROR, DATOS ENVIADOS: " + this.data);  
-        }
-
+   //  $.ajax({
+   //      type: "POST",
+   //      url: "/cars/contributions/",
+   //      datatype: 'json',
+   //      data: {
+   //           typeOfFuel: typeOfFuel,
+   //           cityMin: cityMin,
+   //           cityMax: cityMax,
+   //           highwayMin: highwayMin,
+   //           highwayMax: highwayMax,
+   //           combinedMin: combinedMin,
+   //           combinedMax: combinedMax,
+   //           brands: brands
+   //      },
+   //      success: function( data )
+   //      {
+   //          console.log("peticion realizada con exito" + data);
+   //      },
+   //      error: function( data )
+   //      {
+   //        console.log("ERROR, DATOS ENVIADOS: " + this.data);  
+   //      }
 
 
   // var data = { "typeOfFuel": typeOfFuel, "cityMin": cityMin, "cityMax": cityMax, "highwayMin": highwayMin, "highwayMax": highwayMax, "combinedMin": combinedMin, "combinedMax":combinedMax, "brands": brands};
@@ -163,15 +161,11 @@ function filterList(){
   //   });
 
 
-
-
-
-
-    });
+    // });
     //ahora sería llamar con estos 3 datos a la query
 }
 
-/************ Filtros viejos ***************/
+/************ Filtros viejos DEPRECATED***************/ 
 
 function checkCheckboxes(i){
     if( ($(".fuelCheckBoxD").is(":checked")) && ($(".fuelCheckBoxP").is(":checked")) && ($(".fuelCheckBoxE").is(":checked")) || !($(".fuelCheckBoxD").is(":checked")) && !($(".fuelCheckBoxP").is(":checked")) && !($(".fuelCheckBoxE").is(":checked"))) {
