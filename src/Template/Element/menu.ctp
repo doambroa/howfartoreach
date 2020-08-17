@@ -25,7 +25,7 @@
 <!--             <li class="active">
               <?php echo $this->Html->link('Home', ['controller' => 'users', 'action' => 'index'])?>
             </li>  -->
-            <li><?php echo $this->Html->link('Cars', ['controller' => 'cars', 'action' => 'contributions'])?></li>
+            <li><?php echo $this->Html->link('Measures', ['controller' => 'cars', 'action' => 'contributions'])?></li>
 
             <?php if(isset($current_user) && $current_user['role'] == 'admin'): ?>
               <li><?php echo $this->Html->link('Users', ['controller' => 'users', 'action' => 'index'])?></li>

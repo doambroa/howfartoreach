@@ -68,9 +68,8 @@ class CarsController extends AppController
             if(isset($this->request->getQuery()['typeOfFuel'])){
                $typeOfFuel = $this->request->getQuery()['typeOfFuel'];
             }else{
-               $typeOfFuel = ['Diesel', 'Petrol', 'Electric'];;
+               $typeOfFuel = ['Diesel', 'Petrol', 'Electric'];
             }
-            
             $city = ($this->request->getQuery()["amountC"]);
             $highway = ($this->request->getQuery()["amountH"]);
             $combined = ($this->request->getQuery()["amountCo"]);
@@ -98,7 +97,8 @@ class CarsController extends AppController
                 $brands = $this->Cars->find()->select([
                     'marca' => 'cars.marca'
                 ]);
-             }
+             }             
+
             $this->loadModel('CarsUsers');
             // $this->paginate['CarsUsers']['page'] = 1;
             $contributions = $this->paginate($this->CarsUsers->find()->select([
@@ -121,7 +121,6 @@ class CarsController extends AppController
             // debug($this->request->getData());
          
          } else {
-
             // $connection = ConnectionManager::get('default');
             // $contributions = $connection->execute('SELECT cars.id as car_id, cars.marca as marca, cars.modelo as modelo, AVG(contribution.consumoCiudad) as avgCity, AVG(contribution.consumoAutopista) as avgHighway, AVG(contribution.combinado) as avgCombined, cars.combustible as combustible, count(cars.id) as polls FROM cars_users AS contribution INNER JOIN cars ON cars.id = contribution.car_id GROUP BY cars.modelo, cars.combustible')->fetchAll('assoc');
 
@@ -131,6 +130,7 @@ class CarsController extends AppController
             $maxCity = 6.5;
             $maxHighway = 11;
             $maxCombined = 8;
+            $typeOfFuel = [];
 
             $this->loadModel('CarsUsers');
 
@@ -157,11 +157,12 @@ class CarsController extends AppController
             
 
             $this->set('minCity', $minCity);
-            $this->set('minHighway ', $minHighway);
+            $this->set('minHighway', $minHighway);
             $this->set('minCombined', $minCombined);
             $this->set('maxCity', $maxCity);
             $this->set('maxHighway', $maxHighway);
             $this->set('maxCombined', $maxCombined);
+            $this->set('typeOfFuel', $typeOfFuel);
 
             $this->set('marcas', $marcas);
             $this->set('fuelTypes', $fuelTypes);

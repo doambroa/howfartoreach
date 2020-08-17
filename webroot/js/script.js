@@ -168,73 +168,73 @@ function filterList(){
 /************ Filtros viejos DEPRECATED***************/ 
 
 function checkCheckboxes(i){
-    if( ($(".fuelCheckBoxD").is(":checked")) && ($(".fuelCheckBoxP").is(":checked")) && ($(".fuelCheckBoxE").is(":checked")) || !($(".fuelCheckBoxD").is(":checked")) && !($(".fuelCheckBoxP").is(":checked")) && !($(".fuelCheckBoxE").is(":checked"))) {
-        $("#car_"+i).show();
-    }else{
-        if( ($(".fuelCheckBoxD").is(":checked")) && ($(".fuelCheckBoxP").is(":checked"))){
-            if ( ($("#car_"+i).children("td.combustible").text() == "Diesel") || ($("#car_"+i).children("td.combustible").text() == "Gasolina") ){
-                $("#car_"+i).show();
-            }
-        }
-        if( ($(".fuelCheckBoxD").is(":checked")) && ($(".fuelCheckBoxE").is(":checked"))){
-            if ( ($("#car_"+i).children("td.combustible").text() == "Diesel") || ($("#car_"+i).children("td.combustible").text() == "electrico") ){
-                $("#car_"+i).show();
-            }
-        }
-        if( ($(".fuelCheckBoxP").is(":checked")) && ($(".fuelCheckBoxE").is(":checked"))){
-            if ( ($("#car_"+i).children("td.combustible").text() == "Gasolina") || ($("#car_"+i).children("td.combustible").text() == "electrico") ){
-                $("#car_"+i).show();
-            }
-        }
-    }
-    if($(".fuelCheckBoxD").is(":checked")) {
-        if ( ($("#car_"+i).children("td.combustible").text() == "Diesel") ){ 
-            $("#car_"+i).show(); 
-        }
-    }
-    if($(".fuelCheckBoxP").is(":checked")) {
-        if ( ($("#car_"+i).children("td.combustible").text() == "Gasolina") ){ 
-            $("#car_"+i).show();
-        }
-    }
-    if($(".fuelCheckBoxE").is(":checked")) {
-        if ( ($("#car_"+i).children("td.combustible").text() == "electrico") ){ 
-            $("#car_"+i).show();
-        }
-    }
+    // if( ($(".fuelCheckBoxD").is(":checked")) && ($(".fuelCheckBoxP").is(":checked")) && ($(".fuelCheckBoxE").is(":checked")) || !($(".fuelCheckBoxD").is(":checked")) && !($(".fuelCheckBoxP").is(":checked")) && !($(".fuelCheckBoxE").is(":checked"))) {
+    //     $("#car_"+i).show();
+    // }else{
+    //     if( ($(".fuelCheckBoxD").is(":checked")) && ($(".fuelCheckBoxP").is(":checked"))){
+    //         if ( ($("#car_"+i).children("td.combustible").text() == "Diesel") || ($("#car_"+i).children("td.combustible").text() == "Gasolina") ){
+    //             $("#car_"+i).show();
+    //         }
+    //     }
+    //     if( ($(".fuelCheckBoxD").is(":checked")) && ($(".fuelCheckBoxE").is(":checked"))){
+    //         if ( ($("#car_"+i).children("td.combustible").text() == "Diesel") || ($("#car_"+i).children("td.combustible").text() == "electrico") ){
+    //             $("#car_"+i).show();
+    //         }
+    //     }
+    //     if( ($(".fuelCheckBoxP").is(":checked")) && ($(".fuelCheckBoxE").is(":checked"))){
+    //         if ( ($("#car_"+i).children("td.combustible").text() == "Gasolina") || ($("#car_"+i).children("td.combustible").text() == "electrico") ){
+    //             $("#car_"+i).show();
+    //         }
+    //     }
+    // }
+    // if($(".fuelCheckBoxD").is(":checked")) {
+    //     if ( ($("#car_"+i).children("td.combustible").text() == "Diesel") ){ 
+    //         $("#car_"+i).show(); 
+    //     }
+    // }
+    // if($(".fuelCheckBoxP").is(":checked")) {
+    //     if ( ($("#car_"+i).children("td.combustible").text() == "Gasolina") ){ 
+    //         $("#car_"+i).show();
+    //     }
+    // }
+    // if($(".fuelCheckBoxE").is(":checked")) {
+    //     if ( ($("#car_"+i).children("td.combustible").text() == "electrico") ){ 
+    //         $("#car_"+i).show();
+    //     }
+    // }
 }
 
 function checkCheckboxesInverted(i){
-    if( ($(".fuelCheckBoxD").is(":checked")) && ($(".fuelCheckBoxP").is(":checked"))){
-        if ( ($("#car_"+i).children("td.combustible").text() == "electrico") ){
-            $("#car_"+i).hide();
-        }
-    }
-    if( ($(".fuelCheckBoxD").is(":checked")) && ($(".fuelCheckBoxE").is(":checked"))){
-        if ( ($("#car_"+i).children("td.combustible").text() == "Gasolina") ){
-            $("#car_"+i).hide();
-        }
-    }
-    if( ($(".fuelCheckBoxP").is(":checked")) && ($(".fuelCheckBoxE").is(":checked"))){
-        if ( ($("#car_"+i).children("td.combustible").text() == "Diesel") ){
-            $("#car_"+i).hide();
-        }
-    }
-    if($(".fuelCheckBoxD").is(":checked") && !($(".fuelCheckBoxP").is(":checked")) && !($(".fuelCheckBoxE").is(":checked")) ) {
-        if ( ($("#car_"+i).children("td.combustible").text() != "Diesel") ){ 
-            $("#car_"+i).hide(); 
-        }
-    }
-    if($(".fuelCheckBoxP").is(":checked") && !($(".fuelCheckBoxD").is(":checked")) && !($(".fuelCheckBoxE").is(":checked")) ) {
-        if ( ($("#car_"+i).children("td.combustible").text() != "Gasolina") ){ 
-            $("#car_"+i).hide();
-        }
-    }
-    if($(".fuelCheckBoxE").is(":checked") && !($(".fuelCheckBoxP").is(":checked")) && !($(".fuelCheckBoxD").is(":checked")) ) {
-        if ( ($("#car_"+i).children("td.combustible").text() != "electrico") ){ 
-            $("#car_"+i).hide();
-        }
-    }
+    // if( ($(".fuelCheckBoxD").is(":checked")) && ($(".fuelCheckBoxP").is(":checked"))){
+    //     if ( ($("#car_"+i).children("td.combustible").text() == "electrico") ){
+    //         $("#car_"+i).hide();
+    //     }
+    // }
+    // if( ($(".fuelCheckBoxD").is(":checked")) && ($(".fuelCheckBoxE").is(":checked"))){
+    //     if ( ($("#car_"+i).children("td.combustible").text() == "Gasolina") ){
+    //         $("#car_"+i).hide();
+    //     }
+    // }
+    // if( ($(".fuelCheckBoxP").is(":checked")) && ($(".fuelCheckBoxE").is(":checked"))){
+    //     if ( ($("#car_"+i).children("td.combustible").text() == "Diesel") ){
+    //         $("#car_"+i).hide();
+    //     }
+    // }
+    // if($(".fuelCheckBoxD").is(":checked") && !($(".fuelCheckBoxP").is(":checked")) && !($(".fuelCheckBoxE").is(":checked")) ) {
+    //     if ( ($("#car_"+i).children("td.combustible").text() != "Diesel") ){ 
+    //         $("#car_"+i).hide(); 
+    //     }
+    // }
+    // if($(".fuelCheckBoxP").is(":checked") && !($(".fuelCheckBoxD").is(":checked")) && !($(".fuelCheckBoxE").is(":checked")) ) {
+    //     if ( ($("#car_"+i).children("td.combustible").text() != "Gasolina") ){ 
+    //         $("#car_"+i).hide();
+    //     }
+    // }
+    // if($(".fuelCheckBoxE").is(":checked") && !($(".fuelCheckBoxP").is(":checked")) && !($(".fuelCheckBoxD").is(":checked")) ) {
+    //     if ( ($("#car_"+i).children("td.combustible").text() != "electrico") ){ 
+    //         $("#car_"+i).hide();
+    //     }
+    // }
 }
 
 
@@ -248,26 +248,26 @@ function checkFuel(){
     }
 
     function checkBrand(){
-        $selectedFilters = $("input:checkbox[name='brand']").filter(':checked');
+        // $selectedFilters = $("input:checkbox[name='brand']").filter(':checked');
 
-        $categoryContent = $('.carBrands');
+        // $categoryContent = $('.carBrands');
 
-        $categoryContent.hide(); 
-        $selectedFilters.each(function (i, el) {
-            $categoryContent.filter(':contains(' + el.value + ')').show();
-        });
+        // $categoryContent.hide(); 
+        // $selectedFilters.each(function (i, el) {
+        //     $categoryContent.filter(':contains(' + el.value + ')').show();
+        // });
 
-        for(var i = 0; i< 600; ++i){
-            checkCheckboxesInverted(i);
-        }
+        // for(var i = 0; i< 600; ++i){
+        //     checkCheckboxesInverted(i);
+        // }
     }
 
     $( function() {
         $( "#slider-rangeC" ).slider({
           range: true,
           min: 0,
-          max: 20,
-          values: [ 4, 6.5 ],
+          max: 30,
+          values: [  $( "#amountC" ).attr("data-min"),  $( "#amountC" ).attr("data-max")],
           step: 0.1,
 
           slide: function( event, ui ) {
@@ -292,8 +292,8 @@ function checkFuel(){
         $( "#slider-rangeH" ).slider({
           range: true,
           min: 0,
-          max: 20,
-          values: [ 3, 11 ],
+          max: 30,
+          values: [ $( "#amountH" ).attr("data-min"),  $( "#amountH" ).attr("data-max") ],
           step: 0.1,
           slide: function( event, ui ) {
             $( "#amountH" ).val( ui.values[ 0 ] + "%" + " - " + ui.values[ 1 ] + "%" );
@@ -318,8 +318,8 @@ function checkFuel(){
         $( "#slider-rangeCo" ).slider({
           range: true,
           min: 0,
-          max: 20,
-          values: [ 3.5, 8 ],
+          max: 30,
+          values: [  $( "#amountCo" ).attr("data-min"),  $( "#amountCo" ).attr("data-max") ],
           step: 0.1,
           slide: function( event, ui ) {
             $( "#amountCo" ).val( ui.values[ 0 ] + "%" + " - " + ui.values[ 1 ] + "%" );

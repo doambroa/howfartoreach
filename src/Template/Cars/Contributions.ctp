@@ -53,24 +53,23 @@
                 <li class="list-group-item">
                   <p><!-- Filtro -->
                     <label for="amountC">Mileage range in City:</label>
-                    <input type="text" id="amountC" name="amountC" data-min="4" data-max="6.5" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    <input type="text" id="amountC" name="amountC" data-min="<?=$minCity?>" data-max="<?=$maxCity?>" readonly style="border:0; color:#f6931f; font-weight:bold;">
                   </p> <div id="slider-rangeC"></div>
                 </li>
                  <li class="list-group-item">
                   <p><!-- Filtro -->
                     <label for="amountH">Mileage range in Highway:</label>
-                    <input type="text" id="amountH" name="amountH" data-min="3" data-max="11" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    <input type="text" id="amountH" name="amountH" data-min="<?=$minHighway?>" data-max="<?=$maxHighway?>" readonly style="border:0; color:#f6931f; font-weight:bold;">
                   </p> <div id="slider-rangeH"></div>
                 </li>
                  <li class="list-group-item">
                   <p><!-- Filtro -->
                     <label for="amountCo">Mileage range Combined:</label>
-                    <input type="text" id="amountCo" name="amountCo"data-min="3.5" data-max="8" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    <input type="text" id="amountCo" name="amountCo"data-min="<?=$minCombined?>" data-max="<?=$maxCombined?>" readonly style="border:0; color:#f6931f; font-weight:bold;">
                   </p> <div id="slider-rangeCo"></div>
                 </li>
               </ul>
             </div>
-
             <div class="panel-heading" >
               <h4 class="panel-title">
                 <a data-toggle="collapse" href="#collapse3"><i class="indicator fa fa-caret-down" aria-hidden="true"></i> Type of fuel</a>
@@ -83,21 +82,35 @@
                     <li class="list-group-item">
                       <div class="checkbox" >
                               <?php if ($fuel->combustible == 'Diesel') {
-                                  ?><input id="fuelD" type="checkbox" class="fuelCheckBoxD" name="typeOfFuel[]" value="<?php echo $fuel->combustible;?>" onchange="">
-                                  <label for="fuelD"><?=$fuel->combustible;?></label><?php
-                              } ?>
-                              <?php if ($fuel->combustible == 'Petrol') {
-                              
-                                ?><input id="fuelP" type="checkbox" class="fuelCheckBoxP"  name="typeOfFuel[]" value="<?php echo $fuel->combustible;?>" onchange="">
+                                if(in_array("Diesel", $typeOfFuel)){
+                                 $checked="checked";
+                                }else{
+                                 $checked="";
+                                }
+                                ?><input id="fuelD" type="checkbox" class="fuelCheckBoxD" name="typeOfFuel[]" <?=$checked?> value="<?php echo $fuel->combustible;?>" onchange="">
+                                <label for="fuelD"><?=$fuel->combustible;?></label><?php
+                              }?>
+                              <?php if ($fuel->combustible == 'Petrol') {    
+                                  if(in_array("Petrol", $typeOfFuel)){
+                                   $checked="checked";
+                                  }else{
+                                    $checked="";
+                                  }
+                                ?><input id="fuelP" type="checkbox" class="fuelCheckBoxP" <?=$checked?> name="typeOfFuel[]" value="<?php echo $fuel->combustible;?>" onchange="">
                                 <label for="fuelP"><?=$fuel->combustible;?></label><?php
                               } ?>
                               </label>
-                              <?php if ($fuel->combustible == 'Electric') {
-                                  ?>
-                                  <input id="fuelE" type="checkbox" class="fuelCheckBoxE"  name="typeOfFuel[]" value="<?php echo $fuel->combustible;?>" onchange="">
-                                  <label for="fuelE"><?=$fuel->combustible;?></label>
-                                  <?php
-                              } ?>
+                              <?php if ($fuel->combustible == 'Electric') {                           
+                                if(in_array("Electric", $typeOfFuel)){
+                                 $checked="checked";
+                                }else{
+                                  $checked="";
+                                }
+                                ?>
+                                <input id="fuelE" type="checkbox" class="fuelCheckBoxE" <?=$checked?> name="typeOfFuel[]" value="<?php echo $fuel->combustible;?>" onchange="">
+                                <label for="fuelE"><?=$fuel->combustible;?></label>
+                                <?php
+                              }?>
                         </label>
                       </div>
                     </li>
@@ -134,7 +147,7 @@
                 <li class="list-group-item">
                   <div class="checkbox">
                     <label>
-                      <a href="/howfartoreach">
+                      <a href="/howfartoreach" style="visibility: hidden;" >
                       Most contributed cars
                       </a>
                     </label>
