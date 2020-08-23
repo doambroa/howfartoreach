@@ -36,7 +36,7 @@
                 if (isset($idPetrol)){
                     ?><span class="col-md-4"><h1><?= $this->Form->postLink('Petrol', ['action' => 'view',  $idPetrol],['style' => 'color: lightgrey;']) ?></h1></span><?php
                 }
-                if (isset($idPetrol)){
+                if (isset($idDiesel)){
                     ?><span class="col-md-4"><h1><?= $this->Html->link('Diesel', ['action' => 'view', $idDiesel],['style' => 'color: lightgrey;']) ?></h1></span><?php
                 }
                 break;                    
@@ -287,7 +287,7 @@
     </div>
     <div class="row">
         <div class="col-md-4 col-md-offset-8 text-right">
-            <?= $this->Html->link('All cars', ['controller' => 'Cars', 'action' => 'exportContributions']) ?>
+            <?= $this->Html->link('All cars', ['controller' => 'Cars', 'action' => 'exportCars']) ?>
         </div>
     </div>
 </div>

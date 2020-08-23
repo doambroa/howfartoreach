@@ -19,7 +19,7 @@ class CarsController extends AppController
      public function isAuthorized($user){
         // los de registrado 
         if(isset($user['role']) and $user['role'] === 'user'){
-            if(in_array($this->request->action, ['view', 'search', 'filter', 'addContribution', 'howTo']))
+            if(in_array($this->request->action, ['view', 'search', 'filter', 'addContribution','getModelByBrand','getFuelByModel', 'howTo']))
             {
                 return true;
             }
@@ -186,12 +186,12 @@ class CarsController extends AppController
 
         $carsUser = $this->CarsUsers->newEntity();
         
-            if ($this->request->is('post')) {
+        if ($this->request->is('post')) {
             //$cid =  select id from cars where modelo == this.modelo and combustible == this.combustble
             if($this->request->getData()['modelo'] != null){
                 $car_id = $this->Cars->find()->select(['id'])->where(['modelo =' => $this->request->getData()['modelo'], 'combustible ='=> $this->request->getData()['combustible']])->first()->get('id'); 
             }
-            $data = $this->request->getData();            
+            $data = $this->request->getData();
             $data['car_id'] = $car_id;
 
             $carsUser = $this->CarsUsers->patchEntity($carsUser, $data);
@@ -200,9 +200,8 @@ class CarsController extends AppController
 
                 return $this->redirect(['controller' => 'Cars', 'action' => 'contributions']);
             }                       
-            $this->Flash->error(__('The cars user could not be saved. Please, try again.'));
+            $this->Flash->error(__('The contribution could not be saved. Please, try again.'));
         }
-
 
         $this->Cars->find('all');
 
