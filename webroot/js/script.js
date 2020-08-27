@@ -271,7 +271,7 @@ function checkFuel(){
           step: 0.1,
 
           slide: function( event, ui ) {
-            $( "#amountC" ).val( ui.values[ 0 ] + "%" + " - " + ui.values[ 1 ] + "%" );
+            $( "#amountC" ).val( ui.values[ 0 ]+ " - " + ui.values[ 1 ] );
             minC = ui.values[ 0 ];
             maxC = ui.values[ 1 ];
 
@@ -286,7 +286,7 @@ function checkFuel(){
             // }
         }
     });
-        $( "#amountC" ).val($( "#slider-rangeC" ).slider( "values", 0 ) + "%" + " - " + $( "#slider-rangeC" ).slider( "values", 1 ) + "%" );
+        $( "#amountC" ).val($( "#slider-rangeC" ).slider( "values", 0 )+ " - " + $( "#slider-rangeC" ).slider( "values", 1 )  );
     });
     $( function() {
         $( "#slider-rangeH" ).slider({
@@ -296,7 +296,7 @@ function checkFuel(){
           values: [ $( "#amountH" ).attr("data-min"),  $( "#amountH" ).attr("data-max") ],
           step: 0.1,
           slide: function( event, ui ) {
-            $( "#amountH" ).val( ui.values[ 0 ] + "%" + " - " + ui.values[ 1 ] + "%" );
+            $( "#amountH" ).val( ui.values[ 0 ]+ " - " + ui.values[ 1 ] );
             minH = ui.values[ 0 ];
             maxH = ui.values[ 1 ];
 
@@ -312,7 +312,7 @@ function checkFuel(){
                     // }
                 }
             });
-        $( "#amountH" ).val($( "#slider-rangeH" ).slider( "values", 0 ) + "%" + " - " + $( "#slider-rangeH" ).slider( "values", 1 ) + "%" );
+        $( "#amountH" ).val($( "#slider-rangeH" ).slider( "values", 0 )+ " - " + $( "#slider-rangeH" ).slider( "values", 1 ) );
     });
     $( function() {
         $( "#slider-rangeCo" ).slider({
@@ -322,7 +322,7 @@ function checkFuel(){
           values: [  $( "#amountCo" ).attr("data-min"),  $( "#amountCo" ).attr("data-max") ],
           step: 0.1,
           slide: function( event, ui ) {
-            $( "#amountCo" ).val( ui.values[ 0 ] + "%" + " - " + ui.values[ 1 ] + "%" );
+            $( "#amountCo" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
             minCo = ui.values[ 0 ];
             maxCo = ui.values[ 1 ];
             
@@ -340,7 +340,7 @@ function checkFuel(){
             //     }
             }
         });
-        $( "#amountCo" ).val($( "#slider-rangeCo" ).slider( "values", 0 ) + "%" + " - " + $( "#slider-rangeCo" ).slider( "values", 1 ) + "%" );
+        $( "#amountCo" ).val($( "#slider-rangeCo" ).slider( "values", 0 ) + " - " + $( "#slider-rangeCo" ).slider( "values", 1 )  );
 
     });
 

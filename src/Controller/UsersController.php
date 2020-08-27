@@ -54,7 +54,6 @@ class UsersController extends AppController
                 $this->Auth->setUser($user);
                 return $this->redirect($this->Auth->redirectUrl());
             }else{
-                debug($user);
                 $this->Flash->error('Invalid credentials, please try again', ['key' => 'auth']);
             }
         }

@@ -108,6 +108,21 @@
    </div>
 </div> <!--row-->
 
+<section class="container" style="padding-top: 20px;text-align: center">
+
+<h2>Download some of our Datasets</h2>
+  <div id="sampleTable" class="col-md-12 col-sm-12" style="text-align: center; font-family: lato;">
+      <ul class="list-group table">
+        <li class="list-group-item"><?= $this->Html->link('Averages by brand', ['controller' => 'Cars', 'action' => 'exportContributionsByBrand']) ?></li>
+        <li class="list-group-item"><?= $this->Html->link('All time averages', ['controller' => 'Cars', 'action' => 'exportAverages']) ?>
+        <li class="list-group-item"><?= $this->Html->link('All contributions', ['controller' => 'Cars', 'action' => 'exportContributions']) ?>
+        <li class="list-group-item"><?= $this->Html->link('All cars', ['controller' => 'Cars', 'action' => 'exportCars']) ?>
+      </ul>
+     </div>
+   </div>
+</div> <!--row-->
+</section>
+
 <section>
 <div class="overlay"> <!--contribute -->
 <?php if(!isset($current_user)){ ?>

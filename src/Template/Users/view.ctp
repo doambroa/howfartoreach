@@ -105,7 +105,7 @@
                 <td><?= h($cars->_joinData->tipoConduccion) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Cars', 'action' => 'view', $cars->id], ['class' => 'btn btn-sm btn-info']) ?>
-                      <?php if($current_user['role'] == 'admin' || $current_user['id'] == $user->id){ ?>
+                      <?php if($current_user['id'] == $user->id){ ?>
                         <?= $this->Html->link(__('Edit'), ['controller' => 'CarsUsers', 'action' => 'edit', $cars->_joinData->id,$cars->id,$user->id], ['class' => 'btn btn-sm btn-warning']) ?>
                       <?php } ?>
                       <?php if($current_user['role'] == 'admin' || $current_user['id'] == $user->id){ ?>

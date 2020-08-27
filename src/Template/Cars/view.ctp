@@ -64,10 +64,11 @@
                 <b>City</b>
             </span>
              <div class="progress col-md-10">
-                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$avgCity*7?>%">
+                <span style="font-style: italic;">L / 100Km</span>
+                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="background:<?=$colorC?>; width:<?=$avgCity*7?>% ">
                   <span>
                     <?php if ($avgCity != 0) {
-                       echo round($avgCity,3) . '%'; 
+                       echo round($avgCity,3); 
                     }else{
                         echo 'No polls';
                     }?>
@@ -81,10 +82,11 @@
                 <b>Highway</b>
             </span> 
             <div class="progress col-md-10">
-                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$avgHighway*7?>%">
+                <span style="font-style: italic;">L / 100Km</span>
+                <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="background:<?=$colorH?>; width:<?=$avgHighway*7?>%">
                     <span>
                     <?php if ($avgHighway != 0) {
-                       echo round($avgHighway,3) . '%'; 
+                       echo round($avgHighway,3); 
                     }else{
                         echo 'No polls';
                     }
@@ -99,10 +101,11 @@
             <b>Combined</b>
         </span>
         <div class="progress col-md-10">
-            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:<?=$avgCombined*7?>%">
+            <span style="font-style: italic;">L / 100Km</span>
+            <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="background:<?=$colorCo?>; width:<?=$avgCombined*7?>%">
                 <span>
                     <?php if ($avgCombined != 0) {
-                       echo round($avgCombined,3) . '%'; 
+                       echo round($avgCombined,3); 
                     }else{
                         echo 'No polls';
                     }?>
@@ -111,17 +114,17 @@
         </div>
     </div>
 
-    <div class = col-md-3>
-         <div class = col-md-2>
+    <div class = "col-md-3">
+         <div class = "col-md-2">
             <img height="35" src="../../img/gasicon.png"/>
         </div>
-        <div class = col-md-4>
+        <div class = "col-md-4">
             <?=round($avgCombined/100,5)?> L/Km
         </div>
     </div>
     
-    <div class = col-md-3>
-         <div class = col-md-2>
+    <div class = "col-md-3">
+         <div class = "col-md-2">
             <img height="35" src="../../img/eurico.png"/>
         </div>
         <div class = col-md-4 title="(Based on 10 last year price average in Spain)">
@@ -135,7 +138,7 @@
 
 </div>  
 
-  <div class = "col-md-2" style="margin-top: 10px; visibility: ;">
+<!--   <div class = "col-md-2" style="margin-top: 10px; visibility: ;">
     <center style="opacity:0.3; margin-top:10px; cursor: not-allowed;">
         <span title="NOT IMPLEMENTED">
             
@@ -161,10 +164,10 @@
                 
                 </span>
                 </center>
-  </div>
+  </div> -->
 
 </div>
-
+<h3 style="text-align: center;padding-top: 20px;">Other measures (in L/100Km)</h3>
 <div class="container" style="padding-top: 20px;">
     <table class="table">
     <thead>
@@ -181,26 +184,26 @@
       <tr>
         <td>City</td>
         <td><?= $pollsCity ?></td> 
-        <td><?= round($avgCity,3) ?> %</td>
-        <td><?=$medianCity?> %</td>
-        <td><?= round($minCity,3)  ?> %</td>
-        <td><?= $maxCity ?> %</td>
+        <td><?= round($avgCity,3) ?></td>
+        <td><?=$medianCity?></td>
+        <td><?= round($minCity,3)  ?></td>
+        <td><?= $maxCity ?></td>
       </tr>
       <tr>
         <td>Highway</td>
         <td><?= $pollsHighway ?></td>
-        <td><?= round($avgHighway,3) ?> %</td>
-        <td><?= $medianHighway?> %</td>
-        <td><?= round($minHighway,3) ?> %</td>
-        <td><?= $maxHighway ?> %</td>
+        <td><?= round($avgHighway,3) ?></td>
+        <td><?= $medianHighway?> </td>
+        <td><?= round($minHighway,3) ?></td>
+        <td><?= $maxHighway ?> </td>
       </tr>
       <tr>
         <td>Combined</td>
         <td><?= $pollsCombined ?></td>
-        <td><?= round($avgCombined,3) ?> %</td>
+        <td><?= round($avgCombined,3) ?></td>
         <td><?=$medianCombined?></td>
-        <td><?= round($minCombined,3) ?> %</td>
-        <td><?= $maxCombined ?> %</td>
+        <td><?= round($minCombined,3) ?></td>
+        <td><?= $maxCombined ?></td>
       </tr>
     </tbody>
   </table>
@@ -239,7 +242,8 @@
                     <td><?= $this->Number->format(round($contribution->combinado, 3))?></td>
                     <td><?= h($car->combustible) ?></td>
                     <?php
-                      if($contribution->user_id == $current_user['id']){
+                      if(isset($current_user) && ($contribution->user_id == $current_user['id'])) {
+
                         ?><td><?=$this->Html->link('Edit', ['controller' => 'CarsUsers',
                                                             'action' => 'edit',$contribution->id, $contribution->car_id, $contribution->user_id                                                            
                                                          ], ['class' => 'btn btn-sm btn-warning'])?>
@@ -248,9 +252,15 @@
                                                             
                                                          ], ['class' => 'btn btn-sm btn-danger', 'confirm' => __('Are you sure you want to delete # {0}?', $car->id)])?>
                                                          </td><?php
-                    }else{
-                        ?> <!-- <td><?= $this->Html->link($contribution->user_id, ['controller' => 'Users', 'action' => 'view', $contribution->user_id]) ?></td>--><?php
-                        ?><td><?= $this->Html->link($loginArr[$cont]{"login"}, ['controller' => 'Users', 'action' => 'view', $contribution->user_id]) ?></td><?php
+                    }else if (isset($current_user) && ($current_user['role'] == "admin")){
+                                                ?><td><?= $this->Html->link($loginArr[$cont]{"login"}, ['controller' => 'Users', 'action' => 'view', $contribution->user_id]) ?></td><?php                        
+
+                        ?><td><?=$this->Form->postLink('Delete', ['controller' => 'CarsUsers',
+                                                            'action' => 'Delete',$contribution->id, $contribution->car_id, $contribution->user_id
+                                                            
+                                                         ], ['class' => 'btn btn-sm btn-danger', 'confirm' => __('Are you sure you want to delete # {0}?', $car->id)])?></td><?php
+                    } else{
+                        ?><td><?= $this->Html->link($loginArr[$cont]{"login"}, ['controller' => 'Users', 'action' => 'view', $contribution->user_id]) ?></td><?php                        
                     }
                     ?>
                 </tr> 
@@ -268,26 +278,6 @@
         </div>
         <div class="col-md-4 col-md-offset-4 text-right">
             <?= $this->Html->link('Download Data for this car', ['controller' => 'Cars', 'action' => 'exportCarContributions', $contribution->car_id]) ?>
-        </div>
-    </div>
-     <div class="row">
-        <div class="col-md-4 col-md-offset-8 text-right">
-            <?= $this->Html->link('Averages by brand', ['controller' => 'Cars', 'action' => 'exportContributionsByBrand']) ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-8 text-right">
-            <?= $this->Html->link('All time averages', ['controller' => 'Cars', 'action' => 'exportAverages']) ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-8 text-right">
-            <?= $this->Html->link('All contributions', ['controller' => 'Cars', 'action' => 'exportContributions']) ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-8 text-right">
-            <?= $this->Html->link('All cars', ['controller' => 'Cars', 'action' => 'exportCars']) ?>
         </div>
     </div>
 </div>
@@ -309,13 +299,13 @@
 
 <div class="container" style="padding-top: 20px">
     <div class="col-md-12 text-center">   
-        <h2> This brand averages by model</h2>
+        <h2> <?=$car->marca?> averages by model</h2>
         <div id="chartByModel" style="margin-left: -100px"></div>
     </div>
 </div>
 <div class="container"  style="padding-top: 20px">
      <div class="col-md-6 text-center">   
-        <h2>Brand global average for all models</h2>
+        <h2><?=$car->marca?> brand global average for all models</h2>
         <div id="chartByBrand">
         </div>
     </div>
@@ -330,7 +320,7 @@
 </div>
 <div class="container">
     <div class="col-md-12 text-center">
-        <h2> This brand average measures over the years</h2>
+        <h2> <?=$car->marca?> average measures over the years</h2>
         <div id="averageByYearBrand" style="margin-left: -100px">
         </div>
     </div>

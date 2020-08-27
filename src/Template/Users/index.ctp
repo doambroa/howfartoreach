@@ -5,12 +5,12 @@
  */
 ?>
 
-<div class="" style="text-align: center; margin-top: 40px;">
+<div class="col-md-12" style="text-align: center; margin-top: 40px;">
 
     <?= $this->Html->image('user.png', ['alt' => 'users image', 'style' => 'width:8%;height:8%;']); ?>
 
     <h3><?= __('Users') ?></h3>
-    <table class="table table-striped" cellpadding="0" cellspacing="0">
+    <table class="table table-striped cellpadding=" cellpadding="0" cellspacing="0">
         <thead>
             <tr>
                 <th  style="text-align: center;" scope="col"><?= $this->Paginator->sort('id') ?></th>

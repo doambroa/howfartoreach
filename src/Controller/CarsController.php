@@ -520,6 +520,43 @@ class CarsController extends AppController
         $this->set('relatedContributions', $relatedContributions);
 
         $this->set('combustibles', $combustibles);
+
+        $colorC = "";
+        $colorH = "";
+        $colorCo = "";
+
+        if($pollsCity < 5 ){
+            $colorC = "red";
+        }else if ($pollsCity < 10){
+            $colorC = "orange";
+
+        }else if($pollsCity >= 10){
+            $colorC = "#337ab7";
+        }
+        if($pollsHighway < 5 ){
+            $colorH = "red";
+        }else if ($pollsHighway < 10){
+            $colorH = "orange";
+
+        }else if($pollsHighway >= 10){
+            $colorH = "#337ab7";
+        }
+        if($pollsCombined < 5 ){
+            $colorCo = "red";
+        }else if ($pollsCombined < 10){
+            $colorCo = "orange";
+
+        }else if($pollsCombined >= 10){
+            $colorCo = "#337ab7";
+        }
+
+
+
+
+                $this->set('colorC', $colorC);
+                $this->set('colorH', $colorH);
+                $this->set('colorCo', $colorCo);
+
         
         $this->set('modelos', $modelos);
         $this->set('chartAverages', $chartAverages);
@@ -594,6 +631,26 @@ class CarsController extends AppController
             $car = $this->Cars->patchEntity($car, $this->request->getData());
             if ($this->Cars->save($car)) {
                 $this->Flash->success(__('The car has been saved.'));
+
+                      $this->loadModel('CarsUsers');
+
+                        $carsUser = $this->CarsUsers->newEntity();
+
+                        //creamos una contribución vacía como  inicio
+                            // //$cid =  select id from cars where modelo == this.modelo and combustible == this.combustble
+                            // if($this->request->getData()['modelo'] != null){
+                            //     $car_id = $this->Cars->find()->select(['id'])->where(['modelo =' => $this->request->getData()['modelo'], 'combustible ='=> $this->request->getData()['combustible']])->first()->get('id'); 
+                            // }
+                            // $data = $this->request->getData();
+                            // $data['car_id'] = $car_id;
+
+                            // $carsUser = $this->CarsUsers->patchEntity($carsUser, $data);
+                            // if ($this->CarsUsers->save($carsUser)) {
+                            //     $this->Flash->success(__('The contribution has been saved.'));
+
+                            //     return $this->redirect(['controller' => 'Cars', 'action' => 'contributions']);
+                            // }                       
+                            // $this->Flash->error(__('The contribution could not be saved. Please, try again.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -739,8 +796,7 @@ class CarsController extends AppController
                     'pollsCombined' => 'count(carsusers.combinado)'])
                     ->where([$conditions])
                     ->innerJoinWith('Cars')
-                    ->group(['cars.modelo','cars.combustible']) // el añadir aqui el cars. combustible saca casquetones, aunque saca la info bien.
-            ;
+                    ->group(['cars.modelo','cars.combustible']);
             $this->set(compact('contributions'));
 
             // foreach ($contributions as $contribution) {

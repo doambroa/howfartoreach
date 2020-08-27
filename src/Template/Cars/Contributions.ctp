@@ -137,12 +137,12 @@
               </select>
             </div>
 
-             <div class="panel-heading" >
+            <!--  <div class="panel-heading" >
               <h4 class="panel-title">
                 <a data-toggle="collapse" href="#collapseColor"><i class="indicator fa fa-caret-down" aria-hidden="true"></i>Other</a>
               </h4>
-            </div>
-            <div id="collapseColor" class="panel-collapse collapse in">
+            </div> -->
+          <!--   <div id="collapseColor" class="panel-collapse collapse in">
               <ul class="list-group">
                 <li class="list-group-item">
                   <div class="checkbox">
@@ -163,7 +163,7 @@
                   </div>
                 </li>
               </ul>
-            </div>
+            </div> -->
           </div>
         </div>
         <?= $this->Form->end() ?>

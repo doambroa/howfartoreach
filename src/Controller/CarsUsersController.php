@@ -113,11 +113,11 @@ class CarsUsersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $carsUser = $this->CarsUsers->patchEntity($carsUser, $this->request->getData());
             if ($this->CarsUsers->save($carsUser)) {
-                $this->Flash->success(__('The cars user has been saved.'));
+                $this->Flash->success(__('The contribution has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'cars', 'action' => 'contributions']);
             }
-            $this->Flash->error(__('The cars user could not be saved. Please, try again.'));
+            $this->Flash->error(__('The contribution could not be saved. Please, try again.'));
         }
         $cars = $this->CarsUsers->Cars->get($car_id);
         $users = $this->CarsUsers->Users->find('list', ['limit' => 200]);
