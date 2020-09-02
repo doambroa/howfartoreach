@@ -5,7 +5,6 @@
  * @var \App\Model\Entity\Car $car
  */
 ?>
-
     <div class="container" style="text-align: center;">
     <div class="col-md-6" style="padding-bottom: 20px">
         <h1> <?= $car->marca . ' ' . $car->modelo ?></h1> <!-- aqui tiene que ir marca y modelo del coche traído de la BD así -->
@@ -178,6 +177,8 @@
         <th>Median</th>
         <th>Lowest</th>
         <th>Highest</th>
+        <th>σ2</th>
+        <th>SD</th>
       </tr>
     </thead>
     <tbody>
@@ -188,6 +189,8 @@
         <td><?=$medianCity?></td>
         <td><?= round($minCity,3)  ?></td>
         <td><?= $maxCity ?></td>
+        <td><?= round($averagesByModel->varianceCiudad,3) ?></td>
+        <td><?= round($averagesByModel->stdDevCiudad,3) ?></td>
       </tr>
       <tr>
         <td>Highway</td>
@@ -196,6 +199,8 @@
         <td><?= $medianHighway?> </td>
         <td><?= round($minHighway,3) ?></td>
         <td><?= $maxHighway ?> </td>
+         <td><?= round($averagesByModel->varianceAutopista,3) ?></td>
+         <td><?= round($averagesByModel->stdDevAutopista,3) ?></td>
       </tr>
       <tr>
         <td>Combined</td>
@@ -204,6 +209,8 @@
         <td><?=$medianCombined?></td>
         <td><?= round($minCombined,3) ?></td>
         <td><?= $maxCombined ?></td>
+        <td><?= round($averagesByModel->varianceCombined,3) ?></td>
+        <td><?= round($averagesByModel->stdDevCombined,3) ?></td>
       </tr>
     </tbody>
   </table>
@@ -300,7 +307,7 @@
 <div class="container" style="padding-top: 20px">
     <div class="col-md-12 text-center">   
         <h2> <?=$car->marca?> averages by model</h2>
-        <div id="chartByModel" style="margin-left: -100px"></div>
+        <div id="chartByModel" style="margin-left: -100px" (window:resize) = "resetWindowSize($event)"></div>
     </div>
 </div>
 <div class="container"  style="padding-top: 20px">
@@ -327,132 +334,131 @@
 </div>
 
 <script type="text/javascript">
-// Load google charts
 
-//console.log( " <?php echo $car->modeldelo;?> ");
+    // Load google charts
 
-var chartAverages = <?=json_encode($chartAverages);?>;
-var averagesByYear = <?=json_encode($averagesByYear)?>;
-var averagesByBrand = <?=json_encode($averagesByBrand)?>;
+    var chartAverages = <?=json_encode($chartAverages);?>;
+    var averagesByYear = <?=json_encode($averagesByYear)?>;
+    var averagesByBrand = <?=json_encode($averagesByBrand)?>;
 
-google.charts.load('current', {'packages':['corechart']});
-google.charts.load('current', {'packages':['bar']});
-google.charts.setOnLoadCallback(drawChart);
-google.charts.setOnLoadCallback(drawbyBrandChart);
-google.charts.setOnLoadCallback(drawPieChart);
-google.charts.setOnLoadCallback(averageByYearBrandChart);
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.load('current', {'packages':['bar']});
+    google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawbyBrandChart);
+    google.charts.setOnLoadCallback(drawPieChart);
+    google.charts.setOnLoadCallback(averageByYearBrandChart);
 
-var arrayData = [];
-arrayData.push(['Model', 'City', 'Highway', 'Combined']); //pusheamos los títulos en el primer índice
+    var arrayData = [];
+    arrayData.push(['Model', 'City', 'Highway', 'Combined']); //pusheamos los títulos en el primer índice
 
-for(var i in chartAverages){
-    arrayData.push([chartAverages[i].modelo, chartAverages[i].consumoCiudad, chartAverages[i].consumoAutopista, chartAverages[i].combinado]);
-};
+    for(var i in chartAverages){
+        arrayData.push([chartAverages[i].modelo, chartAverages[i].consumoCiudad, chartAverages[i].consumoAutopista, chartAverages[i].combinado]);
+    };
 
-// Draw the chart and set the chart values
-function drawChart() {
-  var data = google.visualization.arrayToDataTable(arrayData);
-
-  // Optional; add a title and set the width and height of the chart
-  var options = {
-                 'width':1280,
-                 'height':480};
-
-
-  // Display the chart inside the <div> element with id="piechart"
-  var chart = new google.visualization.ColumnChart(document.getElementById('chartByModel'));
-  chart.draw(data, options);  
-}
-
-var arrayData2 = [];
-arrayData2.push(['Year', 'City', 'Highway', 'Combined']); //pusheamos los títulos en el primer índice
-
-var arrayDataAverageBrand = [];
-arrayDataAverageBrand.push(['Brand', 'City', 'Highway', 'Combined', { role: 'annotation' }]);
-
-var arrayDataLine = [];
-arrayDataLine.push(['Year', 'City', 'Highway', 'Combined','Global Average']);
-
-var arrayPie = [];
-arrayPie.push(['Year', 'City', 'Highway', 'Combined','Global Average']);
-
-for(var i in averagesByYear){
-    
-    arrayData2.push([averagesByYear[i].car_ano, averagesByYear[i].consumoCiudad, averagesByYear[i].consumoAutopista, averagesByYear[i].combinado]);
-    
-    arrayDataLine.push([averagesByYear[i].car_ano, averagesByYear[i].consumoCiudad, averagesByYear[i].consumoAutopista, averagesByYear[i].combinado, parseFloat(averagesByYear[i].mediaGlobal)]);
-
-    arrayPie.push([averagesByYear[i].modelo, averagesByYear[i].pollsCity]);
-    arrayPie.push([averagesByYear[i].modelo, averagesByYear[i].pollsHighway]);
-    arrayPie.push([averagesByYear[i].modelo, averagesByYear[i].pollsCombined]);
-};
-
-for(var i in averagesByBrand){
-    arrayDataAverageBrand.push([averagesByBrand[i].marca, averagesByBrand[i].consumoCiudad, averagesByBrand[i].consumoAutopista, averagesByBrand[i].combinado,averagesByBrand[i].pollsCombined]);
-    console.log(arrayDataAverageBrand);
-};
-
-for(var i in averagesByYear){
-    arrayPie.push([averagesByYear[i].modelo, averagesByYear[i].pollsCity]);
-    arrayPie.push([averagesByYear[i].modelo, averagesByYear[i].pollsHighway]);
-    arrayPie.push([averagesByYear[i].modelo, averagesByYear[i].pollsCombined]);
-};
-
-function drawbyBrandChart() {
-    var data = google.visualization.arrayToDataTable(arrayDataAverageBrand);
-
-  // Optional; add a title and set the width and height of the chart
-  var options = {
-                 bars: 'horizontal',
-                 'width':700,
-                 'height':250};
+    // Draw the chart and set the chart values
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable(arrayData);
+      var alto = (arrayData.length/2)*280;
+      // Optional; add a title and set the width and height of the chart
+      var options = {
+        'width': document.documentElement.ClientWidth,
+        'height': alto,
+        chartArea: {height: '90%'}
+    };
 
 
-  // Display the chart inside the <div> element with id="piechart"
-          var chart = new google.charts.Bar(document.getElementById('chartByBrand'));
+      // Display the chart inside the <div> element with id="piechart"
+      var chart = new google.visualization.BarChart(document.getElementById('chartByModel'));
+      chart.draw(data, options);
+    }
 
-  chart.draw(data, google.charts.Bar.convertOptions(options));
-}
+    var arrayData2 = [];
+    arrayData2.push(['Year', 'City', 'Highway', 'Combined']); //pusheamos los títulos en el primer índice
 
-//numero de registros por modelo
-function drawPieChart() {
+    var arrayDataAverageBrand = [];
+    arrayDataAverageBrand.push(['Brand', 'City', 'Highway', 'Combined', { role: 'annotation' }]);
 
-        // Create the data table for Sarah's pizza.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', 'Slices');
-        data.addRows([
-          ['City refuels', <?=$pollsCity?>],
-          ['Highway refuels', <?=$pollsHighway?>],
-          ['Combined refuels', <?=$pollsCombined?>]
-        ]);
+    var arrayDataLine = [];
+    arrayDataLine.push(['Year', 'City', 'Highway', 'Combined','Global Average']);
 
-        // Set options for Pie's pie chart.
-        var options = {
-                       width:600,
-                       height:300,
-                       pieHole: 0.4};
+    var arrayPie = [];
+    arrayPie.push(['Year', 'City', 'Highway', 'Combined','Global Average']);
 
-        // Instantiate and draw the chart for Sarah's pizza.
-        var chart = new google.visualization.PieChart(document.getElementById('PieChart'));
-        chart.draw(data, options);
-      };
+    for(var i in averagesByYear){
+        
+        arrayData2.push([averagesByYear[i].car_ano, averagesByYear[i].consumoCiudad, averagesByYear[i].consumoAutopista, averagesByYear[i].combinado]);
+        
+        arrayDataLine.push([averagesByYear[i].car_ano, averagesByYear[i].consumoCiudad, averagesByYear[i].consumoAutopista, averagesByYear[i].combinado, parseFloat(averagesByYear[i].mediaGlobal)]);
+
+        arrayPie.push([averagesByYear[i].modelo, averagesByYear[i].pollsCity]);
+        arrayPie.push([averagesByYear[i].modelo, averagesByYear[i].pollsHighway]);
+        arrayPie.push([averagesByYear[i].modelo, averagesByYear[i].pollsCombined]);
+    };
+
+    for(var i in averagesByBrand){
+        arrayDataAverageBrand.push([averagesByBrand[i].marca, averagesByBrand[i].consumoCiudad, averagesByBrand[i].consumoAutopista, averagesByBrand[i].combinado,averagesByBrand[i].pollsCombined]);
+        console.log(arrayDataAverageBrand);
+    };
+
+    for(var i in averagesByYear){
+        arrayPie.push([averagesByYear[i].modelo, averagesByYear[i].pollsCity]);
+        arrayPie.push([averagesByYear[i].modelo, averagesByYear[i].pollsHighway]);
+        arrayPie.push([averagesByYear[i].modelo, averagesByYear[i].pollsCombined]);
+    };
+
+    function drawbyBrandChart() {
+        var data = google.visualization.arrayToDataTable(arrayDataAverageBrand);
+
+      // Optional; add a title and set the width and height of the chart
+      var options = {
+                     bars: 'horizontal',
+                     'width':700,
+                     'height':250};
 
 
- function averageByYearBrandChart() {
-         var data = google.visualization.arrayToDataTable(arrayDataLine);
+      // Display the chart inside the <div> element with id="piechart"
+      var chart = new google.charts.Bar(document.getElementById('chartByBrand'));
+      chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
 
-        var options = {
-          curveType: 'none',
-          legend: { position: 'right' },
-          seriesType: 'bars',
-          series: {3: {type: 'line'}}
-        };
+    //numero de registros por modelo
+    function drawPieChart() {
 
-        var chart = new google.visualization.ComboChart(document.getElementById('averageByYearBrand'));
-        chart.draw(data, options);
+            // Create the data table for Sarah's pizza.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Topping');
+            data.addColumn('number', 'Slices');
+            data.addRows([
+              ['City refuels', <?=$pollsCity?>],
+              ['Highway refuels', <?=$pollsHighway?>],
+              ['Combined refuels', <?=$pollsCombined?>]
+            ]);
 
-};
+            // Set options for Pie's pie chart.
+            var options = {
+                           width:600,
+                           height:300,
+                           pieHole: 0.4};
 
+            // Instantiate and draw the chart for Sarah's pizza.
+            var chart = new google.visualization.PieChart(document.getElementById('PieChart'));
+            chart.draw(data, options);
+          };
+
+
+     function averageByYearBrandChart() {
+             var data = google.visualization.arrayToDataTable(arrayDataLine);
+
+            var options = {
+              curveType: 'none',
+              legend: { position: 'right' },
+              seriesType: 'bars',
+              series: {3: {type: 'line'}}
+            };
+
+            var chart = new google.visualization.ComboChart(document.getElementById('averageByYearBrand'));
+            chart.draw(data, options);
+
+    };
 
 </script>

@@ -23,18 +23,9 @@ class CarsController extends AppController
             {
                 return true;
             }
-        
-           // if (in_array($this->request->getParam('action'), ['edit', 'delete'])) {
-           //  // Prior to 3.4.0 $this->request->params('pass.0')
-           //      $carId = (int)$this->request->getParam('pass.0');
-           //      if ($this->Cars->isOwnedBy($carId, $user['id'])) {
-           //          return true;
-           //      }
-           //  }
         }
-            return parent::isAuthorized($user);
-
-        }
+        return parent::isAuthorized($user);
+    }
 
     public function beforeFilter(Event $event){//los de no registrado
 
@@ -100,7 +91,6 @@ class CarsController extends AppController
              }             
 
             $this->loadModel('CarsUsers');
-            // $this->paginate['CarsUsers']['page'] = 1;
             $contributions = $this->paginate($this->CarsUsers->find()->select([
                 'id',
                 'car_id' => 'cars.id', 
@@ -116,13 +106,8 @@ class CarsController extends AppController
                 ->innerJoinWith('Cars')
                 ->group(['cars.modelo','cars.combustible'])
             );
-
-            // debug($this->passedArgs);
-            // debug($this->request->getData());
          
          } else {
-            // $connection = ConnectionManager::get('default');
-            // $contributions = $connection->execute('SELECT cars.id as car_id, cars.marca as marca, cars.modelo as modelo, AVG(contribution.consumoCiudad) as avgCity, AVG(contribution.consumoAutopista) as avgHighway, AVG(contribution.combinado) as avgCombined, cars.combustible as combustible, count(cars.id) as polls FROM cars_users AS contribution INNER JOIN cars ON cars.id = contribution.car_id GROUP BY cars.modelo, cars.combustible')->fetchAll('assoc');
 
             $minCity = 4;
             $minHighway = 3;
@@ -187,7 +172,6 @@ class CarsController extends AppController
         $carsUser = $this->CarsUsers->newEntity();
         
         if ($this->request->is('post')) {
-            //$cid =  select id from cars where modelo == this.modelo and combustible == this.combustble
             if($this->request->getData()['modelo'] != null){
                 $car_id = $this->Cars->find()->select(['id'])->where(['modelo =' => $this->request->getData()['modelo'], 'combustible ='=> $this->request->getData()['combustible']])->first()->get('id'); 
             }
@@ -204,15 +188,6 @@ class CarsController extends AppController
         }
 
         $this->Cars->find('all');
-
-        //  $data->tags->_joinData->data_from_join_data);
-
-        //  //$users = $this->Cars->Users->find('list', ['limit' => 200]);
-
-           // $brands = $this->Cars->find('all', ['fields'=>['DISTINCT marca']]);
-            // foreach ($result as $res) {
-            //     debug($res->marca);
-            // }
             
             $brands = $this->Cars->find()->select(['Cars.marca'])->distinct()->toArray();
             $models = $this->Cars->find()->select(['Cars.modelo'])->distinct()->toArray();
@@ -238,18 +213,6 @@ class CarsController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null){
-
-        // if($combustible != null && $modelo != null){
-           
-        //     //se saca ese modelo para el combustible que nos llega, viene del enlace por get
-        //     $id = $this->Cars->find()->select(['Cars.id'])->where(['modelo' => $modelo, 'combustible' => $combustible]);
-            
-
-        //     // debug($carOtroCombustible->first());
-        //     // foreach ($carOtroCombustible as $idOtroCombustuble) {
-        //     //     debug($idOtroCombustuble);
-        //     // }
-        // }
 
         $car = $this->Cars->get($id, [
             'contain' => ['Users']
@@ -303,7 +266,8 @@ class CarsController extends AppController
             'pollsCombined' => 'count(carsusers.combinado)'])
         ->where(['cars.marca' => $car->marca, 'cars.combustible' => $car->combustible])
         ->innerJoinWith('Cars')
-        ->group(['cars.marca','cars.modelo','cars.combustible']);
+        ->group(['cars.marca','cars.modelo','cars.combustible'])
+        ->order('combinado');
 
         $chartAverages->enableHydration(false); // esto hace que devuelva un array en lugar de un objeto
 
@@ -341,17 +305,33 @@ class CarsController extends AppController
             ->group(['cars.marca','cars.combustible']);
 
             $averagesByBrand->enableHydration(false);
-        // $chartModels = array();
-
-        //me lo puedo crear y parsearlo en JS
-        // foreach ($chartAverages as $chart) {
-
-        //     array_push($chartModels, $chart->modelo.",".$chart->combustible );
-        // }
-        // debug($chartModels);
 
 
-        // debug($modelsChart->toArray());
+
+          $averagesByModel = $this->CarsUsers->find()->select([
+            'marca' => 'Cars.marca',
+            'modelo' => 'Cars.modelo',
+            'car_ano' => 'Cars.ano',
+            'combustible' => 'cars.combustible',
+            'consumoCiudad' => 'AVG(carsusers.consumoCiudad)',
+            'pollsCity' => 'count(carsusers.consumoCiudad)',
+            'varianceCiudad' => 'VARIANCE(carsusers.consumoCiudad)',
+            'stdDevCiudad' => 'STDDEV_POP(carsusers.consumoCiudad)',
+            'consumoAutopista' => 'AVG(carsusers.consumoAutopista)',
+            'pollsHighway' => 'count(carsusers.consumoAutopista)',
+            'varianceAutopista' => 'VARIANCE(carsusers.consumoAutopista)',
+            'stdDevAutopista' => 'STDDEV_POP(carsusers.consumoAutopista)',
+            'combinado' => 'AVG(carsusers.combinado)',
+            'pollsCombined' => 'count(carsusers.combinado)',
+            'varianceCombined' => 'VARIANCE(carsusers.combinado)',
+            'stdDevCombined' => 'STDDEV_POP(carsusers.combinado)'])
+        ->innerJoinWith('Cars')
+        ->where(['car_id =' => $car->id])
+        ->group(['cars.modelo','cars.combustible'])->first();
+
+        // $averagesByModel->enableHydration(false);
+        $this->set(compact('averagesByModel', '_header', '_serialize'));
+
 
         $relatedContributions = $this->CarsUsers->find()->where(['car_id =' => $car->id])->all();
 
@@ -382,29 +362,14 @@ class CarsController extends AppController
             $maxCombined = 0;
         }
 
-        //esto se trae los nulls
-        // $minCity = $relatedContributions->min(function ($min) {
-        //     return $min->consumoCiudad;
-        // });
-        // $minCity = $minCity->consumoCiudad; 
-
         $minCity = $this->CarsUsers->find()->select([
             "consumoCiudad" => "min(consumoCiudad)"
         ])->where(['car_id =' => $car->id, 'consumoCiudad IS NOT' => null])->first()->consumoCiudad;
 
-        // $minHighway = $relatedContributions->min(function ($min) {
-        //     return $min->consumoAutopista;
-        // });
-        // $minHighway = $minHighway->consumoAutopista;
 
         $minHighway = $this->CarsUsers->find()->select([
             "consumoAutopista" => "min(consumoAutopista)"
         ])->where(['car_id =' => $car->id, 'consumoAutopista IS NOT' => null])->first()->consumoAutopista;
-
-        // $minCombined = $relatedContributions->min(function ($min) {
-        //     return $min->combinado;
-        // });
-        // $minCombined = $minCombined->combinado;
 
         $minCombined = $this->CarsUsers->find()->select([
             "combinado" => "min(combinado)"
@@ -525,45 +490,40 @@ class CarsController extends AppController
         $colorH = "";
         $colorCo = "";
 
-        if($pollsCity < 5 ){
+        if($pollsCity < 5 || $averagesByModel->stdDevCity > 10 ){
             $colorC = "red";
-        }else if ($pollsCity < 10){
+        }else if ($pollsCity < 10 || ($averagesByModel->stdDevCity < 10 && $averagesByModel->stdDevCity >= 5) ){
             $colorC = "orange";
 
-        }else if($pollsCity >= 10){
+        }else if($pollsCity >= 10 || $averagesByModel->stdDevCity < 5){
             $colorC = "#337ab7";
         }
-        if($pollsHighway < 5 ){
+        if($pollsHighway < 5 || $averagesByModel->stdDevHighway > 10){
             $colorH = "red";
-        }else if ($pollsHighway < 10){
+        }else if ($pollsHighway < 10 || ($averagesByModel->stdDevHighway < 10 && $averagesByModel->stdDevHighway >= 5)){
             $colorH = "orange";
 
-        }else if($pollsHighway >= 10){
+        }else if($pollsHighway >= 10 || $averagesByModel->stdDevHighway < 5){
             $colorH = "#337ab7";
         }
-        if($pollsCombined < 5 ){
+        if($pollsCombined < 5 || $averagesByModel->stdDevCombined > 10){
             $colorCo = "red";
-        }else if ($pollsCombined < 10){
+        }else if ($pollsCombined < 10 || ($averagesByModel->stdDevCombined < 10 && $averagesByModel->stdDevCombined >=5 )){
             $colorCo = "orange";
 
-        }else if($pollsCombined >= 10){
+        }else if($pollsCombined >= 10 || $averagesByModel->stdDevCombined < 5){
             $colorCo = "#337ab7";
         }
 
-
-
-
-                $this->set('colorC', $colorC);
-                $this->set('colorH', $colorH);
-                $this->set('colorCo', $colorCo);
-
+        $this->set('colorC', $colorC);
+        $this->set('colorH', $colorH);
+        $this->set('colorCo', $colorCo);
         
         $this->set('modelos', $modelos);
         $this->set('chartAverages', $chartAverages);
         $this->set('averagesByYear', $averagesByYear);
         $this->set('loginArr', $loginArr);
         $this->set('averagesByBrand', $averagesByBrand);
-
 
         //inicializamos las variables con los ids del mismo coche pero con distinto combustible
         if(isset($idDiesel) && $idDiesel->first() != null){
@@ -575,24 +535,6 @@ class CarsController extends AppController
         if(isset($idElectric) && $idElectric->first() != null){
             $this->set('idElectric', $idElectric->first()->id);   
         }
-// // // hacer un find con todos los vehiculos cuyo modelo counter_reset()ponde con el de $car->modelo y sacar las medias y tal
-//         $modelArray = $this->Cars->find()
-//         ->where(['modelo LIKE' => '%'.$car->modelo.'%'])->all();
-
-//         $modelArrayDiesel = $this->Cars->find()
-//         ->where(['modelo LIKE' => '%'.$car->modelo.'%','combustible' => 'Diesel'])->all();
-//         //        ->where(['modelo LIKE' => '%'.$car->modelo.'%', 'combustible' => 'Diesel'])->all();
-
-//         $modelArrayFuel = $this->Cars->find()
-//         ->where(['modelo LIKE' => '%'.$car->modelo.'%','combustible' => 'Gasolina'])->all();
-        
-//         $modelArrayElectric = $this->Cars->find()
-//         ->where(['modelo LIKE' => '%'.$car->modelo.'%','combustible' => 'electrico'])->all();
-
-//         $this->set('modelo', $modelArray);
-
-//         //debug($car);
-//         $this->loadModel('CarsUsers');
 
         $this->set('avgCity', $avgCity);
         $this->set('avgHighway', $avgHighway);
@@ -613,7 +555,6 @@ class CarsController extends AppController
         $this->set('medianCity', $medianCity);
         $this->set('medianHighway', $medianHighway);
         $this->set('medianCombined', $medianCombined);
-
 
         $this->set('car', $car);
         $this->set('_serialize', ['car']);
@@ -757,9 +698,6 @@ class CarsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    // mi idea es renderiz el método view pero 
-    //con los datos de la búsqueda para no hacer
-    // otra página search, aunque también valdría.
     public function search($query=null){
 
         if(!empty($this->request->query['query'])){
@@ -799,24 +737,6 @@ class CarsController extends AppController
                     ->group(['cars.modelo','cars.combustible']);
             $this->set(compact('contributions'));
 
-            // foreach ($contributions as $contribution) {
-            //     # code
-            //  //    debug($contribution->pollsCiudad);
-            // }
-
-            // foreach ($cars as $car) {
-                
-
-            //   //  $measures = $this->CarsUsers->find()->select(['carsusers.tipoConduccion','carsusers.consumoCiudad','carsusers.consumoAutopista','carsusers.combinado','Cars.ano'])->where(['carsusers.car_id=' => $car->id]);
-            // }
-
-            // //Terminamos de calcular las medias dividiendol as sumas totales entre el número de elementos de cada una de las apariciones concretas, pero para la búsqueda de momento mostramos simplemente el primero que aparezca 
-
-            // if(count($cars) == 1) //lo mando directamente al coche que es
-            // {
-            //     // debug($cars);
-            //     //return $this->redirect(array('controller' => 'cars', 'action' => 'view', $cars[0]['Car']['id']));
-            // }
             $this->set(compact('cars'));
 
         }
@@ -838,21 +758,7 @@ class CarsController extends AppController
         {
             $this->set('ajax', 0);
         }
-
-
-        /* anterior
-        $query = $this->Cars->find();
-
-        return $this->redirect(['action' => 'index']);
-            */
-//      $this->render(); lo llama automáticamente al final de cada acción
-   /*     $query = $this->Cars->get($query, [
-            'contain' => ['marca']
-        ]);
-
-        $this->set('car', $car);
-        $this->set('_serialize', ['car']);
-    */}
+    }
 
     //todos los cars
     public function exportCars()
@@ -904,15 +810,21 @@ class CarsController extends AppController
                 'combustible' => 'cars.combustible',
                 'consumoCiudad' => 'AVG(carsusers.consumoCiudad)',
                 'pollsCity' => 'count(carsusers.consumoCiudad)',
+                'varianceCiudad' => 'VARIANCE(carsusers.consumoCiudad)',
+                'stdDevCiudad' => 'STDDEV_POP(carsusers.consumoCiudad)',
                 'consumoAutopista' => 'AVG(carsusers.consumoAutopista)',
                 'pollsHighway' => 'count(carsusers.consumoAutopista)',
+                'varianceAutopista' => 'VARIANCE(carsusers.consumoAutopista)',
+                'stdDevAutopista' => 'STDDEV_POP(carsusers.consumoAutopista)',
                 'combinado' => 'AVG(carsusers.combinado)',
-                'pollsCombined' => 'count(carsusers.combinado)'])
+                'pollsCombined' => 'count(carsusers.combinado)',
+                'varianceCombined' => 'VARIANCE(carsusers.combinado)',
+                'stdDevCombined' => 'STDDEV_POP(carsusers.combinado)'])
             ->innerJoinWith('Cars')
             ->group(['cars.modelo','cars.combustible']);
+
         $_serialize = 'averagesByModel';
-       
-        $_header = ['Brand', 'Model','Year','Fuel','City','pollsCity','Highway','pollsHighway','Combined','pollsCombined'];
+        $_header = ['Brand', 'Model','Year','Fuel','City','pollsCity','varianceCity','stdDevCity','Highway','pollsHighway','varianceHighway','stdDevHighway','Combined','pollsCombined','varianceCombined','stdDevCombined'];
                 
 
         $this->response = $this->response->withDownload('averagesByModel.csv');
@@ -978,30 +890,6 @@ class CarsController extends AppController
         $this->viewBuilder()->setClassName('CsvView.Csv');
         $this->set(compact('averagesByBrand', '_header', '_serialize'));
     }
-
-    //medias de consumo por año de matriculación 
-    // public function exportByYear()
-    // {
-    //     $this->loadModel('CarsUsers');
-
-    //     $averagesByYear = $this->CarsUsers->find()->select([
-    //             'marca' => 'Cars.marca',
-    //             'modelo' => 'Cars.modelo',
-    //             'car_ano' => 'Cars.ano',
-    //             'combustible' => 'cars.combustible',
-    //             'consumoCiudad' => 'AVG(carsusers.consumoCiudad)',
-    //             'consumoAutopista' => 'AVG(carsusers.consumoAutopista)',
-    //             'combinado' => 'AVG(carsusers.combinado)'])
-    //         ->innerJoinWith('Cars')
-    //         ->group(['cars.modelo','cars.combustible','cars.ano']);
-    //     $_serialize = 'averagesByModel';
-       
-    //     $_header = ['Brand', 'Model','Year','Fuel','City','pollsCity','Highway','pollsHighway','Combined','pollsCombined'];
-
-    //     $this->response = $this->response->withDownload('averagesByYear .csv');
-    //     $this->viewBuilder()->setClassName('CsvView.Csv');
-    //     $this->set(compact('averagesByModel', '_header', '_serialize'));
-    // }
 
     public function howTo(){
         $this->render();
